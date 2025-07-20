@@ -6,8 +6,10 @@ public class LevelDataEditorWindow : EditorWindow
     #region Temp variables
     private LevelData currentData;
     private int row, column, level;
+    private float time;
     private List<TileRow> boardData;
     private bool isShowDebugBoard;
+    private int targetScore;
     #endregion
     [MenuItem("Tools/Level Data Editor")]
     public static void ShowWindow()
@@ -40,12 +42,12 @@ public class LevelDataEditorWindow : EditorWindow
         level = EditorGUILayout.IntField("Level ID", level);
         column = EditorGUILayout.IntField("Column", column);
         row = EditorGUILayout.IntField("Row", row);
-        
+        time = EditorGUILayout.FloatField("Time", time);
         isShowDebugBoard = EditorGUILayout.Toggle("ShowDebugBoard", isShowDebugBoard);
-        
+        targetScore =  EditorGUILayout.IntField("Target Score", targetScore);
         
         // handle button Gen board onclick event
-        if (GUILayout.Button("Generate Board"))
+        if (GUILayout.Button("Generate BoardManager"))
         {
             boardData = GenBoard(row, column, currentData.boardData);
             if(isShowDebugBoard) ShowDebugBoard(boardData);
@@ -60,6 +62,8 @@ public class LevelDataEditorWindow : EditorWindow
             currentData.levelId = level;
             currentData.row = row;
             currentData.column = column;
+            currentData.time = time;
+            currentData.targetScore  =  targetScore;
             currentData.boardData = GenBoard(row, column, currentData.boardData);
             if(isShowDebugBoard) ShowDebugBoard(boardData);
             EditorUtility.SetDirty(currentData);
@@ -100,12 +104,12 @@ public class LevelDataEditorWindow : EditorWindow
             }
             newBoard.Add(rowTmp);
         }
-        Debug.Log("Board generated.");
+        Debug.Log("BoardManager generated.");
         return newBoard;
     }
     void ShowDebugBoard(List<TileRow> board)
     {
-        string result = "Board:\n";
+        string result = "BoardManager:\n";
 
         for (int i = 0; i < board.Count; i++)
         {
@@ -143,8 +147,15 @@ public class LevelDataEditorWindow : EditorWindow
                
                 for (int y = 0; y < currentColumn; y++)
                 {
-                    TileJson cell = currentBoard[x].column[y];
-                    cell.value = EditorGUILayout.IntField(cell.value, GUILayout.Width(width));
+                    if (x > 0 && x < currentColumn-1 && y > 0 && y < currentColumn-1)
+                    {
+                        TileJson cell = currentBoard[x].column[y];
+                        cell.value = EditorGUILayout.IntField(cell.value, GUILayout.Width(width));
+                    }
+                    else
+                    {
+                        EditorGUILayout.TextField("X", GUILayout.Width(width));
+                    }
                 }
                 EditorGUILayout.EndHorizontal();
             }

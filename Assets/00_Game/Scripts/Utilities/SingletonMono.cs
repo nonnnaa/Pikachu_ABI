@@ -15,7 +15,6 @@ public class SingletonMono<T>: MonoBehaviour where T: MonoBehaviour
                     go.name = "[@" + typeof(T).Name + "]";
                     instance_ = go.AddComponent<T>();
                 }
-
             }
             return instance_;
         }

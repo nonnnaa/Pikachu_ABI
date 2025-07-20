@@ -3,14 +3,16 @@ using UnityEngine;
 
 public class BFS_Solver : MonoBehaviour
 {
-    static readonly Vector2Int[] directions = {
+    // Dinh nghia 4 huong co the di chuyen trong ma tran
+    private static readonly Vector2Int[] directions = {
         new Vector2Int(0, 1),  // up
         new Vector2Int(1, 0),  // right
         new Vector2Int(0, -1), // down
         new Vector2Int(-1, 0)  // left
     };
-
-    public static (bool, List<Vector2Int>?) BFS(List<List<Fruit>> currentBoard, Vector2Int start, Vector2Int goal, int maxSegments)
+    
+    // Goi BFS
+    public static (bool, List<Vector2Int>) BFS(List<List<Fruit>> currentBoard, Vector2Int start, Vector2Int goal, int maxSegments)
     {
         var path = FindPath(currentBoard, start, goal, maxSegments);
         if (path != null)
@@ -22,7 +24,9 @@ public class BFS_Solver : MonoBehaviour
         Debug.Log("No valid path found.");
         return (false, null);
     }
-    public static List<Vector2Int> FindPath(List<List<Fruit>> board, Vector2Int start, Vector2Int goal, int maxSegments)
+    
+    // Duyet BFS
+    private static List<Vector2Int> FindPath(List<List<Fruit>> board, Vector2Int start, Vector2Int goal, int maxSegments)
     {
         int height = board.Count;
         if (height <= 0) return null;
@@ -76,24 +80,25 @@ public class BFS_Solver : MonoBehaviour
                 queue.Enqueue((next, i, newTurns));
             }
         }
-
         return null;
     }
-
     
-
-    static bool IsCanMove(Fruit cell, Vector2Int pos, Vector2Int goal)
+    // Check Dieu kien thoa man de di chuyen
+    private static bool IsCanMove(Fruit cell, Vector2Int pos, Vector2Int goal)
     {
         if (pos == goal) return true;
         if (cell == null) return false;
         return !cell.gameObject.activeSelf || cell.nameType == TileNameType.TileEmpty;
     }
 
-    static bool IsInBounds(int width, int height, int x, int y)
+    // Check dieu kien co nam trong board hay khong
+    private static bool IsInBounds(int width, int height, int x, int y)
     {
         return x >= 0 && x < width && y >= 0 && y < height;
     }
-    static List<Vector2Int> ReconstructPath(Dictionary<(Vector2Int pos, int dir), (Vector2Int parentPos, int parentDir)> parentMap, (Vector2Int pos, int dir) endKey, Vector2Int start)
+    
+    // Tim duong start -> end bang parent map
+    private static List<Vector2Int> ReconstructPath(Dictionary<(Vector2Int pos, int dir), (Vector2Int parentPos, int parentDir)> parentMap, (Vector2Int pos, int dir) endKey, Vector2Int start)
     {
         List<Vector2Int> path = new List<Vector2Int>();
         HashSet<(Vector2Int, int)> visitedSet = new HashSet<(Vector2Int, int)>();
@@ -124,9 +129,9 @@ public class BFS_Solver : MonoBehaviour
         path.Reverse();
         return path;
     }
-
     
-    static int CountStraightSegments(List<Vector2Int> path)
+    // Dem doan thang tren path
+    private static int CountStraightSegments(List<Vector2Int> path)
     {
         if (path == null || path.Count < 2) return 0;
 
@@ -145,7 +150,8 @@ public class BFS_Solver : MonoBehaviour
         return segments;
     }
 
-    public static void PrintPath(List<Vector2Int> path)
+    // In path
+    private static void PrintPath(List<Vector2Int> path)
     {
         if (path == null || path.Count == 0)
         {
@@ -161,5 +167,4 @@ public class BFS_Solver : MonoBehaviour
         }
         Debug.Log(output);
     }
-
 }

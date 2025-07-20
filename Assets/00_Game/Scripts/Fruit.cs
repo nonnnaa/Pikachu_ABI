@@ -2,14 +2,14 @@ using UnityEngine;
 
 public enum TileNameType
 {
-    Apple = 0,
-    Banana = 1,
-    Blueberry = 2,
-    Grapes = 3,
-    Orange = 4,
-    Pear = 5,
-    Strawberry = 6,
-    TileEmpty = 100,
+    TileEmpty = 0,
+    Apple = 1,
+    Banana = 2,
+    Blueberry = 3,
+    Grapes = 4,
+    Orange = 5,
+    Pear = 6,
+    Strawbery = 7,
 }
 public class Fruit : MonoBehaviour
 {
@@ -33,11 +33,10 @@ public class Fruit : MonoBehaviour
             animator.SetBool(Constant.FruitAnim.isChosen, isChoosen);
         }
     }
-
     public void OnClick()
     {
         SetupFruit();
-        Board.Instance.SetFruit(this);
+        BoardManager.Instance.SetFruit(this);
     }
 
 }

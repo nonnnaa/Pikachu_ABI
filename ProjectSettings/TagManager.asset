@@ -47,3 +47,9 @@ TagManager:
   - name: Fruit
     uniqueID: 2552917975
     locked: 0
+  - name: Level
+    uniqueID: 311133115
+    locked: 0
+  - name: LevelStar
+    uniqueID: 2707666817
+    locked: 0

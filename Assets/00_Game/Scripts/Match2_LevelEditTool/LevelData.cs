@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "Level Data", menuName = "Scriptable Object Data/Level Data")]
+[CreateAssetMenu(fileName = "LevelData", menuName = "ScriptableObjectData/LevelData")]
 public class LevelData : ScriptableObject
 {
    public int levelId;
    public int row, column;
+   public float time;
+   public int targetScore;
    public List<TileRow> boardData;
+   public List<float> starTimeGoals;
 }
 
 
@@ -17,7 +20,6 @@ public class LevelData : ScriptableObject
 public class TileJson
 {
    public int x, y, value;
-
    public TileJson(int x, int y, int value)
    {
       this.x = x;

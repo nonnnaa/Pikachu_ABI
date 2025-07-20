@@ -6,33 +6,50 @@ using UnityEngine;
 public class PathLineDrawer : SingletonMono<PathLineDrawer>
 {
     public float lineWidth = 0.15f;
-    public Color lineColor = Color.yellow;
-
+    [SerializeField] private Texture[] textures;
+    [SerializeField] private float duration = .5f;
+    [SerializeField] private float fps = 30f;
+    private int animationStep;
+    
+    private float fpsCounnter;
     private LineRenderer lineRenderer;
+
+    private bool isDrawing = false;
 
     void Awake()
     {
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.startWidth = lineWidth;
         lineRenderer.endWidth = lineWidth;
-        lineRenderer.startColor = lineColor;
-        lineRenderer.endColor = lineColor;
+
+        if (textures != null && textures.Length > 0)
+        {
+            lineRenderer.material = new Material(Shader.Find("Unlit/Transparent"));
+            lineRenderer.material.mainTexture = textures[0];
+            lineRenderer.material.mainTextureScale = new Vector2(1, 1);
+        }
     }
 
-    /// <summary>
-    /// Vẽ đường nối dựa trên danh sách tọa độ Vector2Int (path từ thuật toán tìm đường)
-    /// </summary>
-    /// <param name="path">Danh sách điểm (grid)</param>
-    /// <param name="cellSize">Kích thước mỗi ô trong bảng</param>
-    /// <param name="boardOrigin">Góc trên bên trái của bảng (tọa độ thế giới)</param>
-    /// <summary>
-    /// Vẽ đường đi dựa trên danh sách tọa độ thế giới. Tự động ẩn sau 1 giây.
-    /// </summary>
-    public void DrawPath(List<Vector3> worldPositions, float duration = 1f)
+    void Update()
+    {
+        if (!isDrawing || textures == null || textures.Length == 0)
+            return;
+
+        fpsCounnter += Time.deltaTime;
+        if (fpsCounnter >= 1f / fps)
+        {
+            animationStep = (animationStep + 1) % textures.Length;
+            lineRenderer.material.mainTexture = textures[animationStep];
+            fpsCounnter = 0f;
+        }
+    }
+
+    public void DrawPath(List<Vector3> worldPositions)
     {
         if (worldPositions == null || worldPositions.Count < 2)
         {
             lineRenderer.positionCount = 0;
+            isDrawing = false;
             return;
         }
 
@@ -42,6 +59,8 @@ public class PathLineDrawer : SingletonMono<PathLineDrawer>
         {
             lineRenderer.SetPosition(i, worldPositions[i]);
         }
+
+        isDrawing = true;
 
         StopAllCoroutines();
         StartCoroutine(HideAfterSeconds(duration));
@@ -53,20 +72,9 @@ public class PathLineDrawer : SingletonMono<PathLineDrawer>
         ClearPath();
     }
 
-    
-    public void DrawLine(Vector3 from, Vector3 to)
-    {
-        if (Instance == null) return;
-
-        Instance.lineRenderer.positionCount = 2;
-        Instance.lineRenderer.SetPosition(0, from);
-        Instance.lineRenderer.SetPosition(1, to);
-    }
-    /// <summary>
-    /// Xóa đường nối hiện tại
-    /// </summary>
     public void ClearPath()
     {
+        isDrawing = false;
         lineRenderer.positionCount = 0;
     }
 }

@@ -1,18 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 public class SoundManager : SingletonMono<SoundManager>
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip audioClip;
+
+    [Range(0f, 1f), SerializeField] private float musicBGVolumn, musicVFXVolumn;
+    
+    public void SetMusicBGVolumn(float volume)
     {
-        
+        musicBGVolumn = volume;
+        Debug.Log(musicBGVolumn);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetMusicVFXVolumn(float volume)
     {
-        
+        musicVFXVolumn = volume;
+        Debug.Log(musicVFXVolumn);
     }
 }
