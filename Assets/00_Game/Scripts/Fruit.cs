@@ -10,6 +10,10 @@ public enum TileNameType
     Orange = 5,
     Pear = 6,
     Strawbery = 7,
+    
+    
+    Block = 100,
+    Ice = 101,
 }
 public class Fruit : MonoBehaviour
 {
@@ -33,10 +37,10 @@ public class Fruit : MonoBehaviour
             animator.SetBool(Constant.FruitAnim.isChosen, isChoosen);
         }
     }
+    
     public void OnClick()
     {
         SetupFruit();
         BoardManager.Instance.SetFruit(this);
     }
-
 }

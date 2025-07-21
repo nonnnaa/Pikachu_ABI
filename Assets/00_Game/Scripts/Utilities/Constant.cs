@@ -2,7 +2,7 @@ namespace Constant
 {
     public static class FruitAnim
     {
-        public static string isChosen = "isChosen";
+        public static readonly string isChosen = "isChosen";
     }
     
 }

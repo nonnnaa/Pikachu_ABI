@@ -26,12 +26,12 @@ public class CanvasPauseGame : UICanvas
     }
     void OnClickReplayButton()
     {
-        GameManager.Instance.Endlevel();
+        GameManager.Instance.EndLevel();
         GameManager.Instance.StartLevel(LevelManager.Instance.CurrentLevelID);
     }
     void OnClickQuitButton()
     {
-        GameManager.Instance.Endlevel();
+        GameManager.Instance.EndLevel();
         GameManager.Instance.GoToMainMenu();
     }
 }

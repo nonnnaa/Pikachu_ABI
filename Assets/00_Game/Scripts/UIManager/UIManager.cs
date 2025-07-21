@@ -39,11 +39,15 @@ public class UIManager : Singleton<UIManager>
         {
             OpenUI<CanvasPauseGame>();
         };
+
+        GameManager.Instance.OnGameWin += () =>
+        {
+            OpenUI<CanvasCompleteGame>();
+        };
         GameManager.Instance.OnGameLose += () =>
         {
-            OpenUI<CanvasLoseGame>();
+            OpenUI<CanvasCompleteGame>();
         };
-        
     }
     
     // mo canvas
@@ -99,11 +103,11 @@ public class UIManager : Singleton<UIManager>
             if (canvas.Value != null && canvas.Value.gameObject.activeInHierarchy)
             {
                 canvas.Value.Close(0);
-                Debug.Log(canvas +" : " + canvas.Value.gameObject.activeInHierarchy);
+                //Debug.Log(canvas +" : " + canvas.Value.gameObject.activeInHierarchy);
             }
             else
             {
-                Debug.Log($"Canvas null ? : {canvas.Key} + {canvas.Value}, Canvas active ? : {canvas.Value.gameObject.activeSelf}");
+                //Debug.Log($"Canvas null ? : {canvas.Key} + {canvas.Value}, Canvas active ? : {canvas.Value.gameObject.activeSelf}");
             }
         }
     }

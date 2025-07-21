@@ -7,13 +7,38 @@ public class CanvasGamePlay : UICanvas
     [SerializeField] private float levelTime;
     [SerializeField] private Slider timeSlider;
 
-    [SerializeField] private int score;
+    [SerializeField] private int currentScore;
     [SerializeField] private TextMeshProUGUI scoreText;
     
     [SerializeField] private Button pauseButton;
-    [SerializeField] private TimeInGameController timeInGameController;
-    private int[] starsTime; // Thoi gian de nhan duoc sao
+    [SerializeField] private TimeManager timeManager;
+    private int[] starsTime; // Thoi gian de tru sao => max la 3 sao
     
+    private void Start()
+    {
+        pauseButton.onClick.AddListener(OnClickPauseButton);
+        GameManager.Instance.OnGamePause += () =>
+        {
+            timeManager.enabled = false;
+        };
+        GameManager.Instance.OnResumeGame += () =>
+        {
+            timeManager.enabled = true;
+        };
+        GameManager.Instance.OnLevelStart += () =>
+        {
+            timeManager.enabled = true;
+        };
+        GameManager.Instance.OnLevelEnd += () =>
+        {
+            timeManager.enabled = false;
+        };
+        OnInit();
+    }
+    private void Update()
+    {
+        timeSlider.value =  timeManager.GetCurrentTimeLeft() / levelTime;
+    }
     
     void OnClickPauseButton()
     {
@@ -29,37 +54,13 @@ public class CanvasGamePlay : UICanvas
     void OnInit()
     {
         timeSlider.value = 1f;
-        score = LevelManager.Instance.GetCurrentLevelData().targetScore;
+        currentScore = LevelManager.Instance.GetCurrentLevelData().targetScore;
         levelTime = LevelManager.Instance.GetCurrentLevelData().time;
         UpdateScore();
     }
 
     void UpdateScore()
     {
-        scoreText.text = score.ToString();
+        scoreText.text = currentScore.ToString();
     }
-    
-    private void Start()
-    {
-        pauseButton.onClick.AddListener(OnClickPauseButton);
-        GameManager.Instance.OnGamePause += () =>
-        {
-            timeInGameController.enabled = false;
-        };
-        GameManager.Instance.OnResumeGame += () =>
-        {
-            timeInGameController.enabled = true;
-        };
-        GameManager.Instance.OnLevelStart += () =>
-        {
-            timeInGameController.enabled = true;
-        };
-        OnInit();
-    }
-    private void Update()
-    {
-        timeSlider.value =  timeInGameController.GetCurrentTimeLeft() / levelTime;
-    }
-    
-    
 }

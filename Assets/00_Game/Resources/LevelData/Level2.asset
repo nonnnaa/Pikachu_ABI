@@ -71,6 +71,6 @@ MonoBehaviour:
       y: 3
       value: 12345
   starTimeGoals:
-  - 50
-  - 30
-  - 20
+  - 25
+  - 15
+  - 5

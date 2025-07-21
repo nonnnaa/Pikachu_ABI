@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TimeInGameController : MonoBehaviour
+public class TimeManager : SingletonMono<TimeManager>
 {
     [SerializeField] private RectTransform startPos, endPos;
     [SerializeField] private TextMeshProUGUI timeText;
@@ -13,8 +13,10 @@ public class TimeInGameController : MonoBehaviour
     [SerializeField] private Slider timeSlider;
     [SerializeField] private List<float> starTimeGoals;
     [SerializeField] private List<GameObject> starPos;
-    [SerializeField, Range(0, 2)] private int currentTimeGoal;
+    [SerializeField] private int currentTimeGoal;
+    [SerializeField] private int currentStar;
     
+    public int CurrentStar => currentStar;
     public float GetCurrentTimeLeft() => timeLeft;
     void Start()
     {
@@ -24,7 +26,7 @@ public class TimeInGameController : MonoBehaviour
 
     private void OnInit()
     {
-        //Debug.Log("OnInit TimeInGameController");
+        currentStar = 3;
         currentTimeGoal = 0;
         currentTime = 0;
         startTime = LevelManager.Instance.GetCurrentLevelData().time;
@@ -46,14 +48,20 @@ public class TimeInGameController : MonoBehaviour
         timeLeft = startTime -  currentTime;
         timeSlider.value = timeLeft / startTime;
         timeText.text = timeLeft.ToString("F0"); // lay phan nguyen cua so thuc f1 => lay 1 chu so sau dau phay
-        if (timeLeft < starTimeGoals[currentTimeGoal])
+        if (currentTimeGoal < 3 && timeLeft < starTimeGoals[currentTimeGoal])
         {
-            currentTimeGoal = currentTime > 2 ? 2 : currentTimeGoal++;
+            currentTimeGoal++;
+            currentStar--;
         }
-
         if (timeLeft < 0f)
         {
+            GameManager.Instance.EndLevel();
             GameManager.Instance.LoseGame();
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            GameManager.Instance.EndLevel();
+            GameManager.Instance.WinGame();
         }
     }
 }

@@ -12,6 +12,25 @@ public class LevelData : ScriptableObject
    public int targetScore;
    public List<TileRow> boardData;
    public List<float> starTimeGoals;
+   public List<List<int>> GetBoardValue()
+   {
+      List<List<int>> boardValue = new List<List<int>>();
+      if (boardData != null)
+      {
+         int row = boardData.Count;
+         int column = boardData[0].column.Count;
+         for (int i = 0; i < row; i++)
+         {
+            List<int> rowTmp = new List<int>();
+            for (int j = 0; j < column; j++)
+            {
+               rowTmp.Add(boardData[i].column[j].value);
+            }
+            boardValue.Add(rowTmp);
+         }
+      }
+      return boardValue;
+   }
 }
 
 

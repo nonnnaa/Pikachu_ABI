@@ -14,13 +14,13 @@ public class Test : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.V) && UIManager.Instance.IsUIOpened<CanvasGamePlay>())
         {
             UIManager.Instance.CloseAll();
-            UIManager.Instance.OpenUI<CanvasVictory>();
+            UIManager.Instance.OpenUI<CanvasCompleteGame>();
         }
 
         if (Input.GetKeyDown(KeyCode.F) && UIManager.Instance.IsUIOpened<CanvasGamePlay>())
         {
             UIManager.Instance.CloseAll();
-            UIManager.Instance.OpenUI<CanvasLoseGame>();           
+            //UIManager.Instance.OpenUI();           
         }
     }
 }

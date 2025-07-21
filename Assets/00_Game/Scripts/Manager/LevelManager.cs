@@ -8,24 +8,23 @@ public class LevelManager : SingletonMono<LevelManager>
     [SerializeField] private string levelDataPath = "LevelData";
     [SerializeField] private LevelData[] levelDatas;
     [SerializeField] private Transform levelParent;
+    
     private int currentLevelID;
-    public int CurrentLevelID => currentLevelID;
     private Dictionary<Collider2D, Level> levelDataMapping;
     private LevelData currentLevelData;
     private Dictionary<int,Level> levelMapping;
+    
+    public int CurrentLevelID => currentLevelID;
     public LevelData GetCurrentLevelData()
     {
         return currentLevelData;
     }
-    public Action LevelLoaded;
-    
-    
     
     private void Start()
     {
         LoadAllLevelData();
         GetAllLevelInMap();
-        OnInit();
+        //OnInit();
         levelDataMapping =  new Dictionary<Collider2D, Level>();
         GameManager.Instance.OnLevelStart += () =>
         {
@@ -35,11 +34,6 @@ public class LevelManager : SingletonMono<LevelManager>
         {
             levelParent.gameObject.SetActive(true);
         };
-    }
-    
-    private void OnInit()
-    {
-        LevelLoaded?.Invoke();
     }
     
     void LoadAllLevelData()
@@ -75,6 +69,9 @@ public class LevelManager : SingletonMono<LevelManager>
     {
         return levelMapping[id];
     }
+    
+    
+    
     private void Update()
     {
         // Xu ly va cham vao Level

@@ -1,6 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Van de : Time limit, storage limit => not recommend
+// Y tuong tuong tu nhu BFS_Solve => dua vao maxSegment de limit duong di
+
+
+
+
+
+
 public class IDS_Solver : MonoBehaviour
 {
     // Start call => IDS(grid, start, goal, limit, maxSegment);

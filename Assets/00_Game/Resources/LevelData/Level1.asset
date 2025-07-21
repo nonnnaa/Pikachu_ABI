@@ -15,7 +15,7 @@ MonoBehaviour:
   levelId: 1
   row: 8
   column: 8
-  time: 50
+  time: 60
   targetScore: 100
   boardData:
   - column:
@@ -39,6 +39,6 @@ MonoBehaviour:
       y: 2
       value: -1
   starTimeGoals:
-  - 50
-  - 40
   - 30
+  - 20
+  - 10

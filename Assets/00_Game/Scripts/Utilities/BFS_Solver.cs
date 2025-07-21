@@ -17,11 +17,11 @@ public class BFS_Solver : MonoBehaviour
         var path = FindPath(currentBoard, start, goal, maxSegments);
         if (path != null)
         {
-            Debug.Log($"Found path with {CountStraightSegments(path)} segments.");
+            //Debug.Log($"Found path with {CountStraightSegments(path)} segments.");
             PrintPath(path);
             return (true, path);
         }
-        Debug.Log("No valid path found.");
+        //Debug.Log("No valid path found.");
         return (false, null);
     }
     
@@ -109,7 +109,7 @@ public class BFS_Solver : MonoBehaviour
         {
             if (!visitedSet.Add(current))
             {
-                Debug.LogError($"Infinite loop detected while reconstructing path at {current.pos}");
+                //Debug.LogError($"Infinite loop detected while reconstructing path at {current.pos}");
                 return null;
             }
 
@@ -119,7 +119,7 @@ public class BFS_Solver : MonoBehaviour
 
             if (!parentMap.TryGetValue(current, out var parent))
             {
-                Debug.LogWarning($"Parent not found for {current.pos} with dir {current.dir}");
+                //Debug.LogWarning($"Parent not found for {current.pos} with dir {current.dir}");
                 return null;
             }
 
@@ -155,7 +155,7 @@ public class BFS_Solver : MonoBehaviour
     {
         if (path == null || path.Count == 0)
         {
-            Debug.Log("Path is empty or null.");
+            //Debug.Log("Path is empty or null.");
             return;
         }
 
@@ -165,6 +165,6 @@ public class BFS_Solver : MonoBehaviour
             output += path[i].ToString();
             if (i < path.Count - 1) output += " -> ";
         }
-        Debug.Log(output);
+        //Debug.Log(output);
     }
 }

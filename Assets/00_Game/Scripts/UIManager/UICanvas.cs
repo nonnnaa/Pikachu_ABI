@@ -49,7 +49,7 @@ public class UICanvas : MonoBehaviour
         else
         {
             gameObject.SetActive(false);
-            Debug.Log(gameObject.name + ": " + gameObject.activeInHierarchy);
+            //Debug.Log(gameObject.name + ": " + gameObject.activeInHierarchy);
         }
         yield return new WaitForSeconds(time);
     }
