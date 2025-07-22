@@ -32,7 +32,7 @@ public class Fruit : MonoBehaviour
     public void SetupFruit()
     {
         isChoosen = !isChoosen;
-        if (animator != null)
+        if (animator.runtimeAnimatorController != null)
         {
             animator.SetBool(Constant.FruitAnim.isChosen, isChoosen);
         }

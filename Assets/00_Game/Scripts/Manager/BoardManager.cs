@@ -6,12 +6,10 @@ using Random = UnityEngine.Random;
 
 public class BoardManager : SingletonMono<BoardManager>
 {
-    #region Data
-    [SerializeField] private int row, column;
-    [SerializeField] public int maxSegment;
-    #endregion
+    private const int maxSegment = 3;
     
     #region Temp
+    private int row, column;
     private List<List<Fruit>> currentFruitBoard;
     [SerializeField] private Fruit[] fruitsChosen =  new Fruit[2];
     [Range(0, 1)] private int currentIdFruitChosen;
@@ -83,16 +81,12 @@ public class BoardManager : SingletonMono<BoardManager>
             
             // handle if fruitsChosen[0] = fruitsChosen[1]
 
-            if (fruitsChosen[0] != null && fruitsChosen[1] != null &&
-                fruitsChosen[0].nameType == fruitsChosen[1].nameType)
+            if (CheckFruitValidToConnect(fruitsChosen[0], fruitsChosen[1]))
             {
                 var res = BFS_Solver.BFS(currentFruitBoard, fruitsChosen[0].coordinate, fruitsChosen[1].coordinate,
                     maxSegment);
                 if (res.Item1)
                 {
-                    // fruitsChosen[0].gameObject.SetActive(false);
-                    // fruitsChosen[1].gameObject.SetActive(false);
-
                     StartCoroutine(DelayDeactiveFruit(fruitsChosen[0]));
                     StartCoroutine(DelayDeactiveFruit(fruitsChosen[1]));
                     fruitsChosen[0] = null;
@@ -106,11 +100,37 @@ public class BoardManager : SingletonMono<BoardManager>
     #endregion
     
     #region Functions
+
+    List<(float, float)> RandomFruitsPosition(List<List<int>> boardValue)
+    {
+        List<(float, float)> listPos = new List<(float, float)>();
+        for (int x = 0; x < column; x++)
+        {
+            currentFruitBoard.Add(new List<Fruit>());
+            for (int y = 0; y < row; y++)
+            {
+                if (IsValidCoordinate(x, y, column, row) && IsNormalFruit((TileNameType)boardValue[x][y]))
+                {
+                    listPos.Add((x + _offsetX, -(y + _offsetY)));
+                }
+            }
+        }
+        return listPos;
+    }
+
+    
+    // Check ngoai tru canh cua Grid (board)
+    bool IsValidCoordinate(int x, int y, int columnGrid, int rowGrid)
+    {
+        return x >= 1 && x <= columnGrid - 2 && y >= 1 && y <= rowGrid - 2;
+    }
+    
+    
     // Tao bang
     public void GenerateBoard()
     {
         LevelData levelData = LevelManager.Instance.GetCurrentLevelData();
-        List<List<int>> fruitBoard = levelData.GetBoardValue();
+        List<List<int>> fruitBoardValue = levelData.GetBoardValue();
         canInteractive = true;
         column = levelData.column;
         row = levelData.row;
@@ -119,27 +139,42 @@ public class BoardManager : SingletonMono<BoardManager>
         _offsetX = -(column / 2f) + 0.5f;
         _offsetY = -(row / 2f) + 0.5f;
         
-        for (int x = 0; x < column; x++)
+        // for (int x = 0; x < column; x++)
+        // {
+        //     currentFruitBoard.Add(new List<Fruit>());
+        //     for (int y = 0; y < row; y++)
+        //     {
+        //         if (x >= 1 && x <= column - 2  && y >= 1 && y <= row - 2)
+        //         {
+        //             //var fruit = Instantiate(GetRandomFruit(), new Vector3(x + _offsetX, -(y + _offsetY)), Quaternion.identity);
+        //             var fruit = Instantiate(GetFruit(fruitBoardValue[x][y]), new Vector3(x + _offsetX, -(y + _offsetY)), Quaternion.identity);
+        //             fruit.transform.SetParent(board);
+        //             fruit.coordinate =  new Vector2Int(y, x);
+        //             currentFruitBoard[x].Add(fruit);
+        //         }
+        //         else
+        //         {
+        //             var fruit = Instantiate(GetEmptyTile(), new Vector3(x + _offsetX, -(y + _offsetY)), Quaternion.identity);
+        //             fruit.transform.SetParent(board);
+        //             fruit.coordinate =  new Vector2Int(y, x);
+        //             currentFruitBoard[x].Add(fruit);
+        //         }
+        //     }
+        // }
+        List<(float, float)> coordinates = RandomFruitsPosition(fruitBoardValue);
+
+        while (coordinates.Count > 0 && coordinates.Count % 2 == 0)
         {
-            currentFruitBoard.Add(new List<Fruit>());
-            for (int y = 0; y < row; y++)
-            {
-                if (x >= 1 && x <= column - 2  && y >= 1 && y <= row - 2)
-                {
-                    var fruit = Instantiate(GetRandomFruit(), new Vector3(x + _offsetX, -(y + _offsetY)), Quaternion.identity);
-                    fruit.transform.SetParent(board);
-                    fruit.coordinate =  new Vector2Int(y, x);
-                    currentFruitBoard[x].Add(fruit);
-                }
-                else
-                {
-                    var fruit = Instantiate(GetEmptyTile(), new Vector3(x + _offsetX, -(y + _offsetY)), Quaternion.identity);
-                    fruit.transform.SetParent(board);
-                    fruit.coordinate =  new Vector2Int(y, x);
-                    currentFruitBoard[x].Add(fruit);
-                }
-            }
+            int id1 = Random.Range(0, coordinates.Count);
+            (float x, float y) = coordinates[id1];
+            // var fruit = Instantiate(GetRandomFruit(), new Vector3(x + _offsetX, -(y + _offsetY)), Quaternion.identity);
+            //              var fruit = Instantiate(GetFruit(fruitBoardValue[x][y]), new Vector3(x + _offsetX, -(y + _offsetY)), Quaternion.identity);
+            //              fruit.transform.SetParent(board);
+            //              fruit.coordinate =  new Vector2Int(y, x);
+            //              currentFruitBoard[x].Add(fruit);
+            
         }
+        
     }
     
     // Get Fruit From Value Of Data
@@ -151,12 +186,16 @@ public class BoardManager : SingletonMono<BoardManager>
             case 0:
                 return GetRandomFruit();
             case 100:
-                return fruitPrefabDictionary[(TileNameType)100]; // ep kieu tu int -> enum BlcckTile = 100 
+                // Get Block
+                return fruitPrefabDictionary[(TileNameType)100]; // ep kieu tu int -> enum BlockTile = 100 
             case 101:
+                // Get Ice
                 return fruitPrefabDictionary[(TileNameType)101];
+            case 102:
+                // Get Booster Bom
+                return fruitPrefabDictionary[(TileNameType)102];
         }
         return GetEmptyTile();
-        
     }
     
     // Xac dinh Fruit Hien tai 
@@ -210,7 +249,7 @@ public class BoardManager : SingletonMono<BoardManager>
     {
         int id = Random.Range(0, fruitprefabs.Length);
         TileNameType type = fruitPrefabDictionary.Keys.ToArray()[id];
-        while (type == TileNameType.TileEmpty)
+        while (!IsNormalFruit(type))
         {
             id = Random.Range(0, fruitsChosen.Length);
             type = fruitPrefabDictionary.Keys.ToArray()[id];
@@ -241,6 +280,19 @@ public class BoardManager : SingletonMono<BoardManager>
         yield return new  WaitForSeconds(0.3f);
         fruit?.gameObject.SetActive(false);
     }
+
+    bool IsNormalFruit(TileNameType fruitType)
+    {
+        return fruitType != TileNameType.TileEmpty && fruitType != TileNameType.Block &&  fruitType != TileNameType.Ice;
+    }
     
+    bool CheckFruitValidToConnect(Fruit fruit1, Fruit fruit2)
+    {
+        return fruit1 != null 
+               && fruit2 != null
+               && IsNormalFruit(fruit1.nameType)
+               && IsNormalFruit(fruit2.nameType)
+               && fruitsChosen[0].nameType == fruitsChosen[1].nameType;
+    }
     #endregion
 }

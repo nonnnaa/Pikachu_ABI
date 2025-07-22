@@ -11,7 +11,7 @@ public class TimeManager : SingletonMono<TimeManager>
     [SerializeField] private float timeLeft;
     [SerializeField] private float currentTime;
     [SerializeField] private Slider timeSlider;
-    [SerializeField] private List<float> starTimeGoals;
+    [SerializeField] private List<int> starTimeGoals;
     [SerializeField] private List<GameObject> starPos;
     [SerializeField] private int currentTimeGoal;
     [SerializeField] private int currentStar;

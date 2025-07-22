@@ -10,8 +10,9 @@ public class LevelData : ScriptableObject
    public int row, column;
    public float time;
    public int targetScore;
+   public List<int> starTimeGoals; // time nay la de tru di khong phai cong sao => rule game max la 3 sao cu qua time[i] thi bi tru di 1 sao
+   public List<FruitCount> randomFruitCounts;
    public List<TileRow> boardData;
-   public List<float> starTimeGoals;
    public List<List<int>> GetBoardValue()
    {
       List<List<int>> boardValue = new List<List<int>>();
@@ -64,5 +65,18 @@ public class TileRow
          return "[]";
 
       return "[" + string.Join(", ", column) + "]";
+   }
+}
+
+[Serializable]
+public struct FruitCount
+{
+   public TileNameType fruitType;
+   public int count;
+
+   public FruitCount(TileNameType fruitType, int count)
+   {
+      this.fruitType = fruitType;
+      this.count = count;
    }
 }
