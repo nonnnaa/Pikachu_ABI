@@ -9,6 +9,9 @@ public class MapManager : SingletonMono<MapManager>
     {
         GameManager.Instance.OnLevelStart += SetDeactive;
         GameManager.Instance.OnMainMenu += SetActive;
+        
+        
+        
     }
 
     public void SetDeactive()
