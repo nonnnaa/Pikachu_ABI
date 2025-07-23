@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 [CreateAssetMenu(fileName = "LevelData", menuName = "ScriptableObjectData/LevelData")]
 public class LevelData : ScriptableObject
 {
@@ -40,13 +39,13 @@ public class LevelData : ScriptableObject
 public class TileJson
 {
    public int x, y, value;
+   
    public TileJson(int x, int y, int value)
    {
       this.x = x;
       this.y = y;
       this.value = value;
    }
-
    public override string ToString()
    {
       return $"({x},{y}:{value})";
@@ -59,6 +58,10 @@ public class TileRow
 {
    public List<TileJson> column;
 
+   public TileRow()
+   {
+      column = new List<TileJson>();
+   }
    public override string ToString()
    {
       if (column == null || column.Count == 0)

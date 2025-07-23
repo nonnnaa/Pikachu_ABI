@@ -129,27 +129,6 @@ public class BFS_Solver : MonoBehaviour
         path.Reverse();
         return path;
     }
-    
-    // Dem doan thang tren path
-    private static int CountStraightSegments(List<Vector2Int> path)
-    {
-        if (path == null || path.Count < 2) return 0;
-
-        int segments = 1;
-        Vector2Int prevDir = path[1] - path[0];
-
-        for (int i = 1; i < path.Count - 1; i++)
-        {
-            Vector2Int dir = path[i + 1] - path[i];
-            if (dir != prevDir)
-            {
-                segments++;
-                prevDir = dir;
-            }
-        }
-        return segments;
-    }
-
     // In path
     private static void PrintPath(List<Vector2Int> path)
     {

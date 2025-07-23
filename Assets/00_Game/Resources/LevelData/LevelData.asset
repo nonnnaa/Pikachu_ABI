@@ -10,27 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a55e62e4ff996954982586dbc26604aa, type: 3}
-  m_Name: Level1
+  m_Name: LevelData
   m_EditorClassIdentifier: 
-  levelId: 1
-  row: 12
-  column: 12
-  time: 60
+  levelId: 0
+  row: 9
+  column: 10
+  time: 3
   targetScore: 100
-  starTimeGoals: 1e0000000f0000000a000000
+  starTimeGoals: 030000000200000001000000
   randomFruitCounts:
   - fruitType: 1
-    count: 18
-  - fruitType: 2
-    count: 36
-  - fruitType: 7
-    count: 6
-  - fruitType: 3
-    count: 34
-  - fruitType: 5
-    count: 4
-  - fruitType: 4
+    count: 22
+  - fruitType: 1
     count: 2
+  - fruitType: 1
+    count: 2
+  - fruitType: 1
+    count: 20
   boardData:
   - column:
     - x: 0
@@ -63,12 +59,6 @@ MonoBehaviour:
     - x: 0
       y: 9
       value: 0
-    - x: 0
-      y: 10
-      value: 0
-    - x: 0
-      y: 11
-      value: 0
   - column:
     - x: 1
       y: 0
@@ -99,12 +89,6 @@ MonoBehaviour:
       value: -1
     - x: 1
       y: 9
-      value: -1
-    - x: 1
-      y: 10
-      value: -1
-    - x: 1
-      y: 11
       value: 0
   - column:
     - x: 2
@@ -136,12 +120,6 @@ MonoBehaviour:
       value: -1
     - x: 2
       y: 9
-      value: -1
-    - x: 2
-      y: 10
-      value: -1
-    - x: 2
-      y: 11
       value: 0
   - column:
     - x: 3
@@ -173,12 +151,6 @@ MonoBehaviour:
       value: -1
     - x: 3
       y: 9
-      value: -1
-    - x: 3
-      y: 10
-      value: -1
-    - x: 3
-      y: 11
       value: 0
   - column:
     - x: 4
@@ -210,12 +182,6 @@ MonoBehaviour:
       value: -1
     - x: 4
       y: 9
-      value: -1
-    - x: 4
-      y: 10
-      value: -1
-    - x: 4
-      y: 11
       value: 0
   - column:
     - x: 5
@@ -247,12 +213,6 @@ MonoBehaviour:
       value: -1
     - x: 5
       y: 9
-      value: -1
-    - x: 5
-      y: 10
-      value: -1
-    - x: 5
-      y: 11
       value: 0
   - column:
     - x: 6
@@ -284,12 +244,6 @@ MonoBehaviour:
       value: -1
     - x: 6
       y: 9
-      value: -1
-    - x: 6
-      y: 10
-      value: -1
-    - x: 6
-      y: 11
       value: 0
   - column:
     - x: 7
@@ -321,12 +275,6 @@ MonoBehaviour:
       value: -1
     - x: 7
       y: 9
-      value: -1
-    - x: 7
-      y: 10
-      value: -1
-    - x: 7
-      y: 11
       value: 0
   - column:
     - x: 8
@@ -334,145 +282,28 @@ MonoBehaviour:
       value: 0
     - x: 8
       y: 1
-      value: -1
+      value: 0
     - x: 8
       y: 2
-      value: -1
+      value: 0
     - x: 8
       y: 3
-      value: -1
+      value: 0
     - x: 8
       y: 4
-      value: -1
+      value: 0
     - x: 8
       y: 5
-      value: -1
+      value: 0
     - x: 8
       y: 6
-      value: -1
+      value: 0
     - x: 8
       y: 7
-      value: -1
+      value: 0
     - x: 8
       y: 8
-      value: -1
+      value: 0
     - x: 8
       y: 9
-      value: -1
-    - x: 8
-      y: 10
-      value: -1
-    - x: 8
-      y: 11
-      value: 0
-  - column:
-    - x: 9
-      y: 0
-      value: 0
-    - x: 9
-      y: 1
-      value: -1
-    - x: 9
-      y: 2
-      value: -1
-    - x: 9
-      y: 3
-      value: -1
-    - x: 9
-      y: 4
-      value: -1
-    - x: 9
-      y: 5
-      value: -1
-    - x: 9
-      y: 6
-      value: -1
-    - x: 9
-      y: 7
-      value: -1
-    - x: 9
-      y: 8
-      value: -1
-    - x: 9
-      y: 9
-      value: -1
-    - x: 9
-      y: 10
-      value: -1
-    - x: 9
-      y: 11
-      value: 0
-  - column:
-    - x: 10
-      y: 0
-      value: 0
-    - x: 10
-      y: 1
-      value: -1
-    - x: 10
-      y: 2
-      value: -1
-    - x: 10
-      y: 3
-      value: -1
-    - x: 10
-      y: 4
-      value: -1
-    - x: 10
-      y: 5
-      value: -1
-    - x: 10
-      y: 6
-      value: -1
-    - x: 10
-      y: 7
-      value: -1
-    - x: 10
-      y: 8
-      value: -1
-    - x: 10
-      y: 9
-      value: -1
-    - x: 10
-      y: 10
-      value: -1
-    - x: 10
-      y: 11
-      value: 0
-  - column:
-    - x: 11
-      y: 0
-      value: 0
-    - x: 11
-      y: 1
-      value: 0
-    - x: 11
-      y: 2
-      value: 0
-    - x: 11
-      y: 3
-      value: 0
-    - x: 11
-      y: 4
-      value: 0
-    - x: 11
-      y: 5
-      value: 0
-    - x: 11
-      y: 6
-      value: 0
-    - x: 11
-      y: 7
-      value: 0
-    - x: 11
-      y: 8
-      value: 0
-    - x: 11
-      y: 9
-      value: 0
-    - x: 11
-      y: 10
-      value: 0
-    - x: 11
-      y: 11
       value: 0

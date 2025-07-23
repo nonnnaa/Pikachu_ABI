@@ -9,7 +9,7 @@ public class SoundManager : SingletonMono<SoundManager>
     public void SetMusicBGVolumn(float volume)
     {
         musicBGVolumn = volume;
-        Debug.Log(musicBGVolumn);
+        //Debug.Log(musicBGVolumn);
     }
 
     public void SetMusicVFXVolumn(float volume)
