@@ -13,7 +13,7 @@ public class LevelManager : SingletonMono<LevelManager>
     private Dictionary<Collider2D, Level> levelDataMapping;
     private LevelData currentLevelData;
     private Dictionary<int,Level> levelMapping;
-    
+    private bool canInteractive;
     public int CurrentLevelID => currentLevelID;
     public LevelData GetCurrentLevelData()
     {
@@ -29,10 +29,12 @@ public class LevelManager : SingletonMono<LevelManager>
         GameManager.Instance.OnLevelStart += () =>
         {
             levelParent.gameObject.SetActive(false);
+            canInteractive = false;
         };
         GameManager.Instance.OnMainMenu += () =>
         {
             levelParent.gameObject.SetActive(true);
+            canInteractive = true;
         };
     }
     
@@ -77,6 +79,7 @@ public class LevelManager : SingletonMono<LevelManager>
         // Xu ly va cham vao Level
         if (Input.GetMouseButtonDown(0))
         {
+            if (!canInteractive) return;
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
 

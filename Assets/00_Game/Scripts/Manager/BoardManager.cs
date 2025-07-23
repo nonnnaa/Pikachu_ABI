@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using Random = UnityEngine.Random;
 
 public class BoardManager : SingletonMono<BoardManager>
 {
-    private const int maxSegment = 3;
+    private int maxSegment = 3; // Rule Game
     
     #region Temp
     private int row, column;
@@ -19,25 +20,31 @@ public class BoardManager : SingletonMono<BoardManager>
     private Dictionary<TileNameType, Fruit> fruitPrefabDictionary;
     private Dictionary<Collider2D, Fruit> fruitDictionary;
     private bool canInteractive;
+    // Score
+    private int currentConnected;
+    private int maxConnect;
+    private int maxScore;
+    private int connectScore;
+    private int currentScore;
     #endregion
+    
+    public int GetCurrentScore() => currentScore;
+    
+    public event Action<int> UpdateScore;
     
     #region LifeCycle Messages
     private void Start()
     {
-        currentIdFruitChosen = 0;
-        canInteractive = true;
-        fruitDictionary = new Dictionary<Collider2D, Fruit>(); 
-        currentFruitBoard = new List<List<Fruit>>();
-        LoadAllFruits();
-        GameManager.Instance.OnLevelStart += GenerateBoard;
         GameManager.Instance.OnLevelStart += () =>
         {
             board.gameObject.SetActive(true);
+            OnInit();
+            GenerateBoard();
         };
         GameManager.Instance.OnLevelEnd += () =>
         {
             board.gameObject.SetActive(false);
-            ClearBoard();
+            Despawn();
         };
         GameManager.Instance.OnGamePause += () =>
         {
@@ -54,9 +61,10 @@ public class BoardManager : SingletonMono<BoardManager>
         if (Input.GetMouseButtonDown(0))
         {
             if (!canInteractive) return;
+
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
-            
+        
             Collider2D collider = hit.collider;
             if (collider != null)
             {
@@ -78,7 +86,7 @@ public class BoardManager : SingletonMono<BoardManager>
                     }
                 }
             }
-            
+
             // handle if fruitsChosen[0] = fruitsChosen[1]
 
             if (CheckFruitValidToConnect(fruitsChosen[0], fruitsChosen[1]))
@@ -93,14 +101,25 @@ public class BoardManager : SingletonMono<BoardManager>
                     fruitsChosen[1] = null;
                     // Ve Line noi 2 diem
                     PathLineDrawer.Instance.DrawPath(GetPositionList(res.Item2));
+                    currentScore += Random.Range(connectScore, connectScore * 2);
+                    UpdateScore?.Invoke(currentScore);
+                    currentConnected++;
+                    if (currentConnected >= maxConnect)
+                    {
+                        GameManager.Instance.EndLevel();
+                        GameManager.Instance.WinGame();
+                    }
                 }
+            }
+            else
+            {
+                //Debug.Log("Fruits IS InValid");
             }
         }
     }
     #endregion
     
     #region Functions
-
     
     // (xPos, yPos, x, y) -> tuong ung (vi tri x, vi tri y, toa do x, toa do y) , vi tri : vi tri tren scene, toa do : toa so tren mang 2 chieu (so nguyen >= 0)
     List<(float, float, int , int)> RandomFruitsPosition(List<List<int>> boardValue)
@@ -114,23 +133,61 @@ public class BoardManager : SingletonMono<BoardManager>
         {
             for (int x = 0; x < columnTmp; x++)
             {
-                Debug.Log(IsValidCoordinate(x, y, columnTmp, rowTmp) + " " +  IsNormalFruit((TileNameType)boardValue[y][x]));
-                if (IsValidCoordinate(x, y, columnTmp, rowTmp) && IsNormalFruit((TileNameType)boardValue[y][x]))
+                //Debug.Log(IsValidCoordinate(x, y, columnTmp, rowTmp) + " " +  IsNormalFruit((TileNameType)boardValue[y][x]));
+                if (boardValue[y][x] == -1)
                 {
                     listPos.Add((x + _offsetX, -(y + _offsetY), x, y));
-                }
+                } 
             }
         }
         return listPos;
     }
-
     
-    // Check ngoai tru canh cua Grid (board)
-    bool IsValidCoordinate(int x, int y, int columnGrid, int rowGrid)
+    // (xPos, yPos, x, y) -> tuong ung (vi tri x, vi tri y, toa do x, toa do y) , vi tri : vi tri tren scene, toa do : toa so tren mang 2 chieu (so nguyen >= 0)
+    List<(float, float, int , int)> RandomSpecialFruitsPosition(List<List<int>> boardValue)
     {
-        return x >= 1 && x <= columnGrid - 2 && y >= 1 && y <= rowGrid - 2;
+        List<(float, float, int, int)> listPos = new List<(float, float, int, int)>();
+        int rowTmp = boardValue.Count;
+        int columnTmp = boardValue[0].Count;
+        
+        // Debug.Log(rowTmp + " " +  columnTmp);
+        for (int y = 0; y < rowTmp; y++)
+        {
+            for (int x = 0; x < columnTmp; x++)
+            {
+                //Debug.Log(IsValidCoordinate(x, y, columnTmp, rowTmp) + " " +  IsNormalFruit((TileNameType)boardValue[y][x]));
+                if (boardValue[y][x] != -1)
+                {
+                    listPos.Add((x + _offsetX, -(y + _offsetY), x, y));
+                } 
+            }
+        }
+        return listPos;
     }
     
+    void OnInit()
+    {
+        currentConnected = 0;
+        currentIdFruitChosen = 0;
+        currentScore = 0;
+        connectScore = Random.Range(10, 15);
+        maxScore = LevelManager.Instance.GetCurrentLevelData().targetScore;
+        canInteractive = true;
+        fruitDictionary = new Dictionary<Collider2D, Fruit>(); 
+        currentFruitBoard = new List<List<Fruit>>();
+        LoadAllFruits();
+    }
+    
+    // Load Fruit tu Resources
+    void LoadAllFruits()
+    {
+        fruitprefabs = Resources.LoadAll<Fruit>("Fruit");
+        fruitPrefabDictionary = new Dictionary<TileNameType, Fruit>();
+        for (int i=0 ; i<fruitprefabs.Length; i++)
+        {
+            fruitPrefabDictionary[fruitprefabs[i].nameType] = fruitprefabs[i];
+        }
+    }
     
     // Tao bang
     public void GenerateBoard()
@@ -145,68 +202,79 @@ public class BoardManager : SingletonMono<BoardManager>
         _offsetX = -(column / 2f) + 0.5f;
         _offsetY = -(row / 2f) + 0.5f;
         
-        // for (int x = 0; x < column; x++)
-        // {
-        //     currentFruitBoard.Add(new List<Fruit>());
-        //     for (int y = 0; y < row; y++)
-        //     {
-        //         if (x >= 1 && x <= column - 2  && y >= 1 && y <= row - 2)
-        //         {
-        //             //var fruit = Instantiate(GetRandomFruit(), new Vector3(x + _offsetX, -(y + _offsetY)), Quaternion.identity);
-        //             var fruit = Instantiate(GetFruit(fruitBoardValue[x][y]), new Vector3(x + _offsetX, -(y + _offsetY)), Quaternion.identity);
-        //             fruit.transform.SetParent(board);
-        //             fruit.coordinate =  new Vector2Int(y, x);
-        //             currentFruitBoard[x].Add(fruit);
-        //         }
-        //         else
-        //         {
-        //             var fruit = Instantiate(GetEmptyTile(), new Vector3(x + _offsetX, -(y + _offsetY)), Quaternion.identity);
-        //             fruit.transform.SetParent(board);
-        //             fruit.coordinate =  new Vector2Int(y, x);
-        //             currentFruitBoard[x].Add(fruit);
-        //         }
-        //     }
-        // }
-        List<(float, float, int, int)> coordinates = RandomFruitsPosition(fruitBoardValue);
-        Debug.Log(coordinates.Count);
-        // while (coordinates.Count > 0 && coordinates.Count % 2 == 0)
-        // {
-        //     int id1 = Random.Range(0, coordinates.Count);
-        //     (float xPos1, float yPos1, int x1, int y1) = coordinates[id1];
-        //     var fruit1 = Instantiate(GetFruit(fruitBoardValue[x1][y1]), new Vector2(xPos1, yPos1), Quaternion.identity);
-        //     fruit1.transform.SetParent(board);
-        //     fruit1.coordinate =  new Vector2Int(x1, y1);
-        //     currentFruitBoard[x1].Add(fruit1);
-        //     coordinates.RemoveAt(id1);
-        //     
-        //     int id2 = Random.Range(0, coordinates.Count);
-        //     (float xPos2, float yPos2, int x2, int y2) = coordinates[id2];
-        //     var fruit2 = Instantiate(GetFruit(fruitBoardValue[x2][y2]), new Vector2(xPos2, yPos2), Quaternion.identity);
-        //     fruit2.transform.SetParent(board);
-        //     fruit2.coordinate =  new Vector2Int(x2, y2);
-        //     currentFruitBoard[x2].Add(fruit2);
-        //     coordinates.RemoveAt(id2);
-        // }
+        List<(float, float, int, int)> coordinatesRandom = RandomFruitsPosition(fruitBoardValue);
+        for (int i = 0; i < row; i++)
+        {
+            List<Fruit> fruits = new List<Fruit>();
+            for (int j = 0; j < column; j++)
+            {
+                fruits.Add(null);
+            }
+            currentFruitBoard.Add(fruits);
+        }
+        
+        // Spanw Random Fruits => Sinh theo cap
+        List<FruitCount> fruitCounts = levelData.randomFruitCounts;
+        foreach (var fruitCountTmp in fruitCounts)
+        {
+            TileNameType type = fruitCountTmp.fruitType;
+            int fruitCount = fruitCountTmp.count;
+            int coordinatesSize = coordinatesRandom.Count;
+            while (fruitCount > 0 && coordinatesRandom.Count % 2 == 0 && coordinatesRandom.Count > 0)
+            {
+                // Spawn fruit1
+                int id1 = Random.Range(0, coordinatesSize);
+                //Debug.Log(id1);
+                (float xPos1, float yPos1, int x1, int y1) = coordinatesRandom[id1];
+                var fruit1 = Instantiate(GetFruit(type), new Vector3(xPos1, yPos1, 0), Quaternion.identity);
+                fruit1.transform.SetParent(board);
+                fruit1.coordinate =  new Vector2Int(x1, y1);
+                currentFruitBoard[y1][x1] =  fruit1;
+                coordinatesRandom.RemoveAt(id1);
+                fruitCount--;
+                coordinatesSize--;
+                
+                // Spawn fruit2
+                int id2 = Random.Range(0, coordinatesSize);
+                //Debug.Log(id2);
+                (float xPos2, float yPos2, int x2, int y2) = coordinatesRandom[id2];
+                var fruit2 = Instantiate(GetFruit(type), new Vector3(xPos2, yPos2, 0), Quaternion.identity);
+                fruit2.transform.SetParent(board);
+                fruit2.coordinate =  new Vector2Int(x2, y2);
+                currentFruitBoard[y2][x2] =  fruit2;
+                coordinatesRandom.RemoveAt(id2);
+                fruitCount--;
+                coordinatesSize--;
+            }
+        }
+        // Spawn Other Fruit Not from Random
+        List<(float, float, int, int)> coordinatesSpecial = RandomSpecialFruitsPosition(fruitBoardValue);
+        foreach (var item in coordinatesSpecial)
+        {
+            (float xPos, float yPos, int x, int y) = item;
+            var fruit = Instantiate(GetFruit((TileNameType)fruitBoardValue[y][x]), new Vector3(xPos, yPos, 0), Quaternion.identity);
+            fruit.transform.SetParent(board);
+            fruit.coordinate =  new Vector2Int(x, y);
+            currentFruitBoard[y][x] =  fruit;
+        }
 
-        // List<FruitCount> listFruitCounst = levelData.randomFruitCounts;
-        //
-        //
-        // foreach (FruitCount randomFruit in listFruitCounst)
-        // {
-        //     for (int i = 0; i < randomFruit.count; i++)
-        //     {
-        //         int id = Random.Range(0, coordinates.Count);
-        //         (float xPos, float yPos, int x, int y) = coordinates[id];
-        //         var fruit1 = Instantiate(GetFruit(randomFruit.fruitType), new Vector2(xPos, yPos), Quaternion.identity);
-        //         fruit1.transform.SetParent(board);
-        //         fruit1.coordinate =  new Vector2Int(x, y);
-        //         coordinates.RemoveAt(i);
-        //     }
-        // }
+        int cnt = 0;
+        for (int i = 0; i < fruitBoardValue.Count; i++)
+        {
+            for (int j = 0; j < fruitBoardValue[i].Count; j++)
+            {
+                if (IsNormalFruit((TileNameType)fruitBoardValue[i][j]))
+                {
+                    cnt++;
+                }
+            }
+        }
+
+        maxConnect = cnt / 2;
+        Debug.Log("MAX_CONNECT : " + maxConnect);
     }
     
     // Get Fruit From Value Of Data
-
     Fruit GetFruit(TileNameType type)
     {
         return fruitPrefabDictionary[type];
@@ -245,61 +313,23 @@ public class BoardManager : SingletonMono<BoardManager>
         return positionList;
     }
     
-    
-    // Load Fruit tu Resources
-    void LoadAllFruits()
-    {
-        fruitprefabs = Resources.LoadAll<Fruit>("Fruit");
-        fruitPrefabDictionary = new Dictionary<TileNameType, Fruit>();
-        for (int i=0 ; i<fruitprefabs.Length; i++)
-        {
-            fruitPrefabDictionary[fruitprefabs[i].nameType] = fruitprefabs[i];
-        }
-    }
-
-    
-    // Get Fruit != Empty
-    Fruit GetRandomFruit()
-    {
-        int id = Random.Range(0, fruitprefabs.Length);
-        TileNameType type = fruitPrefabDictionary.Keys.ToArray()[id];
-        while (!IsNormalFruit(type))
-        {
-            id = Random.Range(0, fruitsChosen.Length);
-            type = fruitPrefabDictionary.Keys.ToArray()[id];
-        }
-        return fruitPrefabDictionary[type];
-    }
-
-    // Get Empty Fruit
-    Fruit GetEmptyTile() => fruitPrefabDictionary[TileNameType.TileEmpty];
-
-    // Xoa board
-    private void ClearBoard()
-    {
-        foreach (var fruitList in currentFruitBoard)
-        {
-            foreach (var fruit in fruitList)
-            {
-                Destroy(fruit.gameObject);
-            }
-        }
-        currentFruitBoard.Clear();
-        fruitDictionary.Clear();
-    }
-
     // Tao delay time de fruit vs line bien mat cung thoi gian (cung 0.3s)
     IEnumerator DelayDeactiveFruit(Fruit fruit)
     {
+        fruit.SetInteractive(false);
         yield return new  WaitForSeconds(0.3f);
-        fruit?.gameObject.SetActive(false);
-    }
-
-    bool IsNormalFruit(TileNameType fruitType)
-    {
-        return fruitType != TileNameType.Block &&  fruitType != TileNameType.Ice;
+        if (fruit == null || fruit.gameObject == null)
+            yield break;
+        fruit.gameObject.SetActive(false);
     }
     
+    // Check Fruit can Random
+    bool IsNormalFruit(TileNameType fruitType)
+    {
+        return fruitType != TileNameType.TileEmpty && fruitType != TileNameType.Block &&  fruitType != TileNameType.Ice;
+    }
+    
+    //Check Condition to Connect
     bool CheckFruitValidToConnect(Fruit fruit1, Fruit fruit2)
     {
         return fruit1 != null 
@@ -308,5 +338,19 @@ public class BoardManager : SingletonMono<BoardManager>
                && IsNormalFruit(fruit2.nameType)
                && fruitsChosen[0].nameType == fruitsChosen[1].nameType;
     }
+    
+    // Xoa board
+    private void Despawn()
+        {
+            foreach (var fruitList in currentFruitBoard)
+            {
+                foreach (var fruit in fruitList)
+                {
+                    Destroy(fruit.gameObject);
+                }
+            }
+            currentFruitBoard.Clear();
+            fruitDictionary.Clear();
+        }
     #endregion
 }

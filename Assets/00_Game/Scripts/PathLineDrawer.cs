@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,24 +11,20 @@ public class PathLineDrawer : SingletonMono<PathLineDrawer>
     [SerializeField] private float duration = .3f;
     [SerializeField] private float fps = 20f;
     private int animationStep;
-    
     private float fpsCounnter;
     private LineRenderer lineRenderer;
+    private bool isDrawing;
 
-    private bool isDrawing = false;
-
-    void Awake()
+    private void Awake()
     {
         lineRenderer = GetComponent<LineRenderer>();
+    }
+
+    void Start()
+    {
         lineRenderer.startWidth = lineWidth;
         lineRenderer.endWidth = lineWidth;
-
-        if (textures != null && textures.Length > 0)
-        {
-            lineRenderer.material = new Material(Shader.Find("Unlit/Transparent"));
-            lineRenderer.material.mainTexture = textures[0];
-            lineRenderer.material.mainTextureScale = new Vector2(1, 1);
-        }
+        GameManager.Instance.OnLevelEnd += ClearPath;
     }
 
     void Update()

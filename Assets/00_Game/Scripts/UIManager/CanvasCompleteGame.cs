@@ -25,7 +25,26 @@ public class CanvasCompleteGame : UICanvas
         base.Open();
         Debug.Log("Check Log IEnumerator : " + TimeManager.Instance.CurrentStar);
         OnStarShowAnim(TimeManager.Instance.CurrentStar);
+        StartCoroutine(OnScoreShowAnim(BoardManager.Instance.GetCurrentScore()));
     }
+
+    void UpdateScore(int score)
+    {
+        scoreText.text = score.ToString();
+    }
+
+    IEnumerator OnScoreShowAnim(int targetScore)
+    {
+        int currentScore = 0;
+        while (currentScore <= targetScore)
+        {
+            yield return new WaitForSeconds(0.001f);
+            currentScore++;
+            UpdateScore(currentScore);
+        }
+        UpdateScore(targetScore);
+    }
+    
 
     public void OnStarShowAnim(int starNumber)
     {
@@ -37,7 +56,6 @@ public class CanvasCompleteGame : UICanvas
         {
             titleCanvasText.text = lose;
         }
-        //StopCoroutine(ShowStar(starNumber));
         StartCoroutine(ShowStar(starNumber));
     }
 

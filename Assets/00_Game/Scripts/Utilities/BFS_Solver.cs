@@ -31,26 +31,12 @@ public class BFS_Solver : MonoBehaviour
         int height = board.Count;
         if (height <= 0) return null;
         int width = board[0].Count;
-
         var visited = new Dictionary<(Vector2Int pos, int dir), int>();
         var parentMap = new Dictionary<(Vector2Int pos, int dir), (Vector2Int parentPos, int parentDir)>();
 
         var queue = new Queue<(Vector2Int pos, int dir, int turns)>();
 
-        for (int i = 0; i < 4; i++)
-        {
-            Vector2Int next = start + directions[i];
-            if (!IsInBounds(width, height, next.x, next.y)) continue;
-
-            var cell = board[next.y][next.x];
-            if (IsCanMove(cell, next, goal))
-            {
-                queue.Enqueue((next, i, 1));
-                visited[(next, i)] = 1;
-                parentMap[(next, i)] = (start, i);
-            }
-        }
-
+        queue.Enqueue((start, -1, 0));
         while (queue.Count > 0)
         {
             var (current, dir, turns) = queue.Dequeue();

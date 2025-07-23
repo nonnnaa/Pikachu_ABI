@@ -28,12 +28,15 @@ public class CanvasGamePlay : UICanvas
         GameManager.Instance.OnLevelStart += () =>
         {
             timeManager.enabled = true;
+            OnInit();
         };
         GameManager.Instance.OnLevelEnd += () =>
         {
             timeManager.enabled = false;
         };
-        OnInit();
+
+        BoardManager.Instance.UpdateScore += UpdateScore;
+        //OnInit();
     }
     private void Update()
     {
@@ -54,13 +57,14 @@ public class CanvasGamePlay : UICanvas
     void OnInit()
     {
         timeSlider.value = 1f;
-        currentScore = LevelManager.Instance.GetCurrentLevelData().targetScore;
+        //currentScore = LevelManager.Instance.GetCurrentLevelData().targetScore;
         levelTime = LevelManager.Instance.GetCurrentLevelData().time;
-        UpdateScore();
+        UpdateScore(0);
     }
 
-    void UpdateScore()
+    void UpdateScore(int score)
     {
+        currentScore = score;
         scoreText.text = currentScore.ToString();
     }
 }

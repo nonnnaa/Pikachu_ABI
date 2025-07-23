@@ -22,12 +22,18 @@ public class Fruit : MonoBehaviour
     public TileNameType nameType;
     private Animator animator;
     public bool isChoosen;
-    
+    private bool isInteractive;
+
+    public void SetInteractive(bool value)
+    {
+        isInteractive = value;
+    }
     private void Awake()
     {
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         animator = GetComponent<Animator>();
         isChoosen = false;
+        isInteractive = true;
     }
     public void SetupFruit()
     {
@@ -40,6 +46,7 @@ public class Fruit : MonoBehaviour
     
     public void OnClick()
     {
+        if (!isInteractive) return;
         SetupFruit();
         BoardManager.Instance.SetFruit(this);
     }
