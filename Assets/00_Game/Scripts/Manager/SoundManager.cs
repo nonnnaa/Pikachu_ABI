@@ -52,20 +52,36 @@ public class SoundManager : SingletonMono<SoundManager>
             bgAudioSource.loop = true;
             vfxAudioSource.loop = false;
         }
-    }
-
-    private void Start()
-    {
         soundBGDict =  new Dictionary<SoundBGType, AudioClip>();
         foreach (var sound in bgSounds)
         {
-           soundBGDict[sound.bgType] = sound.clip;
+            soundBGDict[sound.bgType] = sound.clip;
         }
         soundVFXDict = new Dictionary<SoundVFXType, AudioClip>();
         foreach (var sound in vfsSounds)
         {
             soundVFXDict[sound.vfxType] = sound.clip;
         }
+        GameManager.Instance.OnStartGame += () =>
+        {
+            Debug.Log("Game started");
+            SetMusicBG(SoundBGType.SoundBG0);
+        };
+        GameManager.Instance.OnMainMenu += () =>
+        {
+            Debug.Log("Level SoundManager");
+            SetMusicBG(SoundBGType.SoundBG1);
+        };
+        GameManager.Instance.OnLevelStart += SetMusicInGame;
+
+        GameManager.Instance.OnGameWin += () =>
+        {
+            SetMusicVFX(SoundVFXType.SoundWinGame);
+        };
+        GameManager.Instance.OnGameWin += () =>
+        {
+            SetMusicVFX(SoundVFXType.SoundLoseGame);
+        };
     }
 
     private void Update()
@@ -75,15 +91,33 @@ public class SoundManager : SingletonMono<SoundManager>
             vfxAudioSource.PlayOneShot(soundVFXDict[SoundVFXType.SoundOnClickMouse]);
         }
     }
+    public void SetMusicBG(SoundBGType type)
+    {
+        Debug.Log(type);
+        bgAudioSource.clip = soundBGDict[type];
+        bgAudioSource.Play();
+    }
 
+    public void SetMusicVFX(SoundVFXType type)
+    {
+        vfxAudioSource.clip = soundVFXDict[type];
+        vfxAudioSource.Play();
+    }
     public void SetMusicBGVolumn(float volume)
     {
         musicBGVolumn = volume;
+        bgAudioSource.volume = musicBGVolumn;
     }
 
+    public void SetMusicInGame()
+    {
+        bgAudioSource.clip = soundInGame;
+        bgAudioSource.Play();
+    }
+    
     public void SetMusicVFXVolumn(float volume)
     {
         musicVFXVolumn = volume;
-        Debug.Log(musicVFXVolumn);
+        vfxAudioSource.volume = musicVFXVolumn;
     }
 }

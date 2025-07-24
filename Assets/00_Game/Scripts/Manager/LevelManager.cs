@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,7 +19,7 @@ public class LevelManager : SingletonMono<LevelManager>
         return currentLevelData;
     }
     
-    private void Start()
+    private void Awake()
     {
         LoadAllLevelData();
         GetAllLevelInMap();
@@ -45,7 +44,6 @@ public class LevelManager : SingletonMono<LevelManager>
     void GetAllLevelInMap()
     {
         Level[] levels = levelParent.transform.GetComponentsInChildren<Level>();
-        //Debug.Log(levels.Length);
         levelMapping = new Dictionary<int, Level>();
         for (int i = 0; i < levels.Length; i++)
         {

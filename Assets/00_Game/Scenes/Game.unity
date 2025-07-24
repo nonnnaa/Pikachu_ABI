@@ -1566,6 +1566,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapParent: {fileID: 264106069}
+  maps:
+  - {fileID: 574295440}
+  - {fileID: 1682202383}
+  - {fileID: 754497564}
+  - {fileID: 1077785311}
+  - {fileID: 1375897471}
 --- !u!4 &1270900366
 Transform:
   m_ObjectHideFlags: 0
@@ -2213,8 +2219,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1726790105}
+  - component: {fileID: 1726790106}
   m_Layer: 0
-  m_Name: Render
+  m_Name: CameraManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2236,6 +2243,19 @@ Transform:
   - {fileID: 7215993657126135278}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1726790106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1726790104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ef9dbe64d8aa0a47a1d9bacb377e0bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCameraController: {fileID: 8199624984843288404}
 --- !u!1 &1765641746
 GameObject:
   m_ObjectHideFlags: 0
@@ -3524,22 +3544,22 @@ MonoBehaviour:
     bgType: 2
   - clip: {fileID: 8300000, guid: 8d3fb1b9297370144bd5d6ef7bd407cf, type: 3}
     bgType: 3
-  - clip: {fileID: 8300000, guid: 5b6db2f0bc5ecee4f9f692b6538cc608, type: 3}
-    bgType: 4
   - clip: {fileID: 8300000, guid: 430d0f10e90b33f4dae2eeed7d429b12, type: 3}
+    bgType: 4
+  - clip: {fileID: 8300000, guid: b0e0f773d426bf44b89b8aa3d673d878, type: 3}
     bgType: 5
   vfsSounds:
   - clip: {fileID: 8300000, guid: c2dc3604d885349d88f81e2735f94807, type: 3}
     vfxType: 0
-  - clip: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 15bd1820e8ec448ee8fc99fbfd8ce761, type: 3}
     vfxType: 1
-  - clip: {fileID: 0}
+  - clip: {fileID: 8300000, guid: ed3b0c622a2fa46a2a20eeeb07e0abbb, type: 3}
     vfxType: 2
-  - clip: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 3e6f1da1e6c2c4d39890f378935d5b84, type: 3}
     vfxType: 3
   soundInGame: {fileID: 8300000, guid: 44f7f11a548ca9e46b8d6493d44577ac, type: 3}
   musicBGVolumn: 1
-  musicVFXVolumn: 0
+  musicVFXVolumn: 1
 --- !u!20 &5892503556702107495
 Camera:
   m_ObjectHideFlags: 0
@@ -3601,7 +3621,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 5b6db2f0bc5ecee4f9f692b6538cc608, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -3747,7 +3767,7 @@ GameObject:
   - component: {fileID: 3260962124472173949}
   - component: {fileID: 8199624984843288404}
   m_Layer: 0
-  m_Name: Camera
+  m_Name: MainCamera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3767,7 +3787,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bottomLeft: {fileID: 574295440}
   topRight: {fileID: 1375897471}
-  panSpeed: 5
+  scrollSpeed: 20
   cam: {fileID: 5892503556702107495}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

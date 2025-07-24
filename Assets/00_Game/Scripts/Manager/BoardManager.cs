@@ -27,13 +27,11 @@ public class BoardManager : SingletonMono<BoardManager>
     private int connectScore;
     private int currentScore;
     #endregion
-    
     public int GetCurrentScore() => currentScore;
-    
     public event Action<int> UpdateScore;
     
     #region LifeCycle Messages
-    private void Start()
+    private void Awake()
     {
         GameManager.Instance.OnLevelStart += () =>
         {
@@ -109,6 +107,7 @@ public class BoardManager : SingletonMono<BoardManager>
                         GameManager.Instance.EndLevel();
                         GameManager.Instance.WinGame();
                     }
+                    SoundManager.Instance.SetMusicVFX(SoundVFXType.SoundGetPoint);
                 }
             }
             else
