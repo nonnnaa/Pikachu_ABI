@@ -1,0 +1,465 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a55e62e4ff996954982586dbc26604aa, type: 3}
+  m_Name: Level14
+  m_EditorClassIdentifier: 
+  levelId: 14
+  row: 13
+  column: 10
+  time: 300
+  targetScore: 900
+  starTimeGoals: c80000009600000064000000
+  randomFruitCounts:
+  - fruitType: 1
+    count: 10
+  - fruitType: 2
+    count: 2
+  - fruitType: 3
+    count: 2
+  - fruitType: 4
+    count: 2
+  - fruitType: 5
+    count: 10
+  - fruitType: 6
+    count: 2
+  - fruitType: 7
+    count: 2
+  - fruitType: 8
+    count: 2
+  - fruitType: 9
+    count: 2
+  - fruitType: 10
+    count: 10
+  - fruitType: 11
+    count: 2
+  - fruitType: 12
+    count: 2
+  - fruitType: 13
+    count: 2
+  - fruitType: 14
+    count: 8
+  - fruitType: 15
+    count: 2
+  - fruitType: 16
+    count: 2
+  - fruitType: 17
+    count: 4
+  - fruitType: 18
+    count: 4
+  - fruitType: 19
+    count: 6
+  - fruitType: 20
+    count: 6
+  boardData:
+  - column:
+    - x: 0
+      y: 0
+      value: 100
+    - x: 0
+      y: 1
+      value: 0
+    - x: 0
+      y: 2
+      value: 0
+    - x: 0
+      y: 3
+      value: 0
+    - x: 0
+      y: 4
+      value: 0
+    - x: 0
+      y: 5
+      value: 0
+    - x: 0
+      y: 6
+      value: 0
+    - x: 0
+      y: 7
+      value: 0
+    - x: 0
+      y: 8
+      value: 0
+    - x: 0
+      y: 9
+      value: 100
+  - column:
+    - x: 1
+      y: 0
+      value: 0
+    - x: 1
+      y: 1
+      value: -1
+    - x: 1
+      y: 2
+      value: -1
+    - x: 1
+      y: 3
+      value: -1
+    - x: 1
+      y: 4
+      value: -1
+    - x: 1
+      y: 5
+      value: -1
+    - x: 1
+      y: 6
+      value: -1
+    - x: 1
+      y: 7
+      value: -1
+    - x: 1
+      y: 8
+      value: -1
+    - x: 1
+      y: 9
+      value: 0
+  - column:
+    - x: 2
+      y: 0
+      value: 0
+    - x: 2
+      y: 1
+      value: -1
+    - x: 2
+      y: 2
+      value: -1
+    - x: 2
+      y: 3
+      value: -1
+    - x: 2
+      y: 4
+      value: -1
+    - x: 2
+      y: 5
+      value: -1
+    - x: 2
+      y: 6
+      value: -1
+    - x: 2
+      y: 7
+      value: -1
+    - x: 2
+      y: 8
+      value: -1
+    - x: 2
+      y: 9
+      value: 0
+  - column:
+    - x: 3
+      y: 0
+      value: 0
+    - x: 3
+      y: 1
+      value: -1
+    - x: 3
+      y: 2
+      value: -1
+    - x: 3
+      y: 3
+      value: -1
+    - x: 3
+      y: 4
+      value: -1
+    - x: 3
+      y: 5
+      value: -1
+    - x: 3
+      y: 6
+      value: -1
+    - x: 3
+      y: 7
+      value: -1
+    - x: 3
+      y: 8
+      value: -1
+    - x: 3
+      y: 9
+      value: 0
+  - column:
+    - x: 4
+      y: 0
+      value: 0
+    - x: 4
+      y: 1
+      value: -1
+    - x: 4
+      y: 2
+      value: -1
+    - x: 4
+      y: 3
+      value: -1
+    - x: 4
+      y: 4
+      value: 100
+    - x: 4
+      y: 5
+      value: 100
+    - x: 4
+      y: 6
+      value: -1
+    - x: 4
+      y: 7
+      value: -1
+    - x: 4
+      y: 8
+      value: -1
+    - x: 4
+      y: 9
+      value: 0
+  - column:
+    - x: 5
+      y: 0
+      value: 0
+    - x: 5
+      y: 1
+      value: -1
+    - x: 5
+      y: 2
+      value: -1
+    - x: 5
+      y: 3
+      value: -1
+    - x: 5
+      y: 4
+      value: -1
+    - x: 5
+      y: 5
+      value: -1
+    - x: 5
+      y: 6
+      value: -1
+    - x: 5
+      y: 7
+      value: -1
+    - x: 5
+      y: 8
+      value: -1
+    - x: 5
+      y: 9
+      value: 0
+  - column:
+    - x: 6
+      y: 0
+      value: 0
+    - x: 6
+      y: 1
+      value: -1
+    - x: 6
+      y: 2
+      value: -1
+    - x: 6
+      y: 3
+      value: 100
+    - x: 6
+      y: 4
+      value: -1
+    - x: 6
+      y: 5
+      value: -1
+    - x: 6
+      y: 6
+      value: 100
+    - x: 6
+      y: 7
+      value: -1
+    - x: 6
+      y: 8
+      value: -1
+    - x: 6
+      y: 9
+      value: 0
+  - column:
+    - x: 7
+      y: 0
+      value: 0
+    - x: 7
+      y: 1
+      value: -1
+    - x: 7
+      y: 2
+      value: -1
+    - x: 7
+      y: 3
+      value: -1
+    - x: 7
+      y: 4
+      value: -1
+    - x: 7
+      y: 5
+      value: -1
+    - x: 7
+      y: 6
+      value: -1
+    - x: 7
+      y: 7
+      value: -1
+    - x: 7
+      y: 8
+      value: -1
+    - x: 7
+      y: 9
+      value: 0
+  - column:
+    - x: 8
+      y: 0
+      value: 0
+    - x: 8
+      y: 1
+      value: -1
+    - x: 8
+      y: 2
+      value: -1
+    - x: 8
+      y: 3
+      value: -1
+    - x: 8
+      y: 4
+      value: 100
+    - x: 8
+      y: 5
+      value: 100
+    - x: 8
+      y: 6
+      value: -1
+    - x: 8
+      y: 7
+      value: -1
+    - x: 8
+      y: 8
+      value: -1
+    - x: 8
+      y: 9
+      value: 0
+  - column:
+    - x: 9
+      y: 0
+      value: 0
+    - x: 9
+      y: 1
+      value: -1
+    - x: 9
+      y: 2
+      value: -1
+    - x: 9
+      y: 3
+      value: -1
+    - x: 9
+      y: 4
+      value: -1
+    - x: 9
+      y: 5
+      value: -1
+    - x: 9
+      y: 6
+      value: -1
+    - x: 9
+      y: 7
+      value: -1
+    - x: 9
+      y: 8
+      value: -1
+    - x: 9
+      y: 9
+      value: 0
+  - column:
+    - x: 10
+      y: 0
+      value: 0
+    - x: 10
+      y: 1
+      value: -1
+    - x: 10
+      y: 2
+      value: -1
+    - x: 10
+      y: 3
+      value: -1
+    - x: 10
+      y: 4
+      value: -1
+    - x: 10
+      y: 5
+      value: -1
+    - x: 10
+      y: 6
+      value: -1
+    - x: 10
+      y: 7
+      value: -1
+    - x: 10
+      y: 8
+      value: -1
+    - x: 10
+      y: 9
+      value: 0
+  - column:
+    - x: 11
+      y: 0
+      value: 0
+    - x: 11
+      y: 1
+      value: -1
+    - x: 11
+      y: 2
+      value: -1
+    - x: 11
+      y: 3
+      value: -1
+    - x: 11
+      y: 4
+      value: -1
+    - x: 11
+      y: 5
+      value: -1
+    - x: 11
+      y: 6
+      value: -1
+    - x: 11
+      y: 7
+      value: -1
+    - x: 11
+      y: 8
+      value: -1
+    - x: 11
+      y: 9
+      value: 0
+  - column:
+    - x: 12
+      y: 0
+      value: 100
+    - x: 12
+      y: 1
+      value: 0
+    - x: 12
+      y: 2
+      value: 0
+    - x: 12
+      y: 3
+      value: 0
+    - x: 12
+      y: 4
+      value: 0
+    - x: 12
+      y: 5
+      value: 0
+    - x: 12
+      y: 6
+      value: 0
+    - x: 12
+      y: 7
+      value: 0
+    - x: 12
+      y: 8
+      value: 0
+    - x: 12
+      y: 9
+      value: 100

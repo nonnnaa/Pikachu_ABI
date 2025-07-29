@@ -21,7 +21,6 @@ public enum SoundVFXType
         SoundLoseGame = 2,
         SoundGetPoint = 3,
     }
-
     public enum SoundBGType
     {
         SoundBG0 = 0,
@@ -64,12 +63,12 @@ public class SoundManager : SingletonMono<SoundManager>
         }
         GameManager.Instance.OnStartGame += () =>
         {
-            Debug.Log("Game started");
+            //Debug.Log("Game started");
             SetMusicBG(SoundBGType.SoundBG0);
         };
         GameManager.Instance.OnMainMenu += () =>
         {
-            Debug.Log("Level SoundManager");
+            //Debug.Log("Level SoundManager");
             SetMusicBG(SoundBGType.SoundBG1);
         };
         GameManager.Instance.OnLevelStart += SetMusicInGame;
@@ -84,7 +83,7 @@ public class SoundManager : SingletonMono<SoundManager>
         };
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
@@ -93,7 +92,7 @@ public class SoundManager : SingletonMono<SoundManager>
     }
     public void SetMusicBG(SoundBGType type)
     {
-        Debug.Log(type);
+        //Debug.Log(type);
         bgAudioSource.clip = soundBGDict[type];
         bgAudioSource.Play();
     }

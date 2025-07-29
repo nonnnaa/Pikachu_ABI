@@ -151,4 +151,10 @@ public static class Utilities
 
         Debug.Log(result);
     }
+    
+    // Check Fruit can Random
+    public static bool IsNormalFruit(TileNameType fruitType)
+    {
+        return fruitType != TileNameType.TileEmpty && fruitType != TileNameType.Block &&  fruitType != TileNameType.Ice;
+    }
 }

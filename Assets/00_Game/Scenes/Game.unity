@@ -1858,9 +1858,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc9e0488e0b8b4b41ab0eb82b80b856a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fruitsChosen:
-  - {fileID: 0}
-  - {fileID: 0}
   board: {fileID: 413417822}
 --- !u!4 &1450433005
 Transform:

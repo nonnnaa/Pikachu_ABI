@@ -9,7 +9,7 @@ public class TimeManager : SingletonMono<TimeManager>
     [SerializeField] private TextMeshProUGUI timeText;
     [SerializeField] private float startTime;
     [SerializeField] private float timeLeft;
-    [SerializeField] private float currentTime;
+    [SerializeField] private float currentTime; // Muon thay doi time -> tac dong vao current time
     [SerializeField] private Slider timeSlider;
     [SerializeField] private List<int> starTimeGoals;
     [SerializeField] private List<GameObject> starPos;
@@ -62,6 +62,15 @@ public class TimeManager : SingletonMono<TimeManager>
         {
             GameManager.Instance.EndLevel();
             GameManager.Instance.WinGame();
+        }
+    }
+
+    public void TimeUp(float timeUpAmout)
+    {
+        currentTime -= timeUpAmout;
+        if (currentTime < 0)
+        { 
+            currentTime = 0;
         }
     }
 }
