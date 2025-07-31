@@ -5,11 +5,11 @@ public class LevelManager : SingletonMono<LevelManager>
 {
 
     [SerializeField] private string levelDataPath = "LevelData";
-    [SerializeField] private LevelData[] levelDatas;
+    private Dictionary<int,LevelData> levelDataMapping = new Dictionary<int, LevelData>();
     [SerializeField] private Transform levelParent;
     
     private int currentLevelID;
-    private Dictionary<Collider2D, Level> levelDataMapping;
+    private Dictionary<Collider2D, Level> levelColliderMapping;
     private LevelData currentLevelData;
     private Dictionary<int,Level> levelMapping;
     private bool canInteractive;
@@ -24,7 +24,7 @@ public class LevelManager : SingletonMono<LevelManager>
         LoadAllLevelData();
         GetAllLevelInMap();
         //OnInit();
-        levelDataMapping =  new Dictionary<Collider2D, Level>();
+        levelColliderMapping =  new Dictionary<Collider2D, Level>();
         GameManager.Instance.OnLevelStart += () =>
         {
             levelParent.gameObject.SetActive(false);
@@ -39,7 +39,11 @@ public class LevelManager : SingletonMono<LevelManager>
     
     void LoadAllLevelData()
     {
-        levelDatas = Resources.LoadAll<LevelData>(levelDataPath);
+        var levelDatas = Resources.LoadAll<LevelData>(levelDataPath);
+        foreach (var levelData in levelDatas)
+        {
+            levelDataMapping[levelData.levelId] = levelData;
+        }
     }
     void GetAllLevelInMap()
     {
@@ -57,20 +61,9 @@ public class LevelManager : SingletonMono<LevelManager>
     }
     public LevelData GetLevelDataByID(int id)
     {
-        if (id > 0)
-        {
-            return levelDatas[id - 1];
-        }
-        return null;
+        return levelDataMapping[id]; ;
     }
     public Level GetCurrentLevel() => levelMapping[currentLevelID];
-    
-    public Level GetLevelByLevelId(int id)
-    {
-        return levelMapping[id];
-    }
-    
-    
     
     private void Update()
     {
@@ -84,20 +77,20 @@ public class LevelManager : SingletonMono<LevelManager>
             Collider2D collider = hit.collider;
             if (collider != null)
             {
-                if (levelDataMapping.ContainsKey(collider))
+                if (levelColliderMapping.ContainsKey(collider))
                 {
-                    currentLevelID = levelDataMapping[collider].GetLevelID();
-                    currentLevelData = levelDataMapping[collider].GetLevelData();
-                    levelDataMapping[collider]?.OnClick();
+                    currentLevelID = levelColliderMapping[collider].GetLevelID();
+                    currentLevelData = levelColliderMapping[collider].GetLevelData();
+                    levelColliderMapping[collider]?.OnClick();
                 }
                 else
                 {
                     Level level = hit.collider.GetComponent<Level>();
                     if (level != null)
                     {
-                        levelDataMapping[collider] = level;
-                        currentLevelID = levelDataMapping[collider].GetLevelID();
-                        currentLevelData = levelDataMapping[collider].GetLevelData();
+                        levelColliderMapping[collider] = level;
+                        currentLevelID = levelColliderMapping[collider].GetLevelID();
+                        currentLevelData = levelColliderMapping[collider].GetLevelData();
                         level.OnClick(); 
                     }
                     else

@@ -248,6 +248,10 @@ public class BoardManager : SingletonMono<BoardManager>
         {
             for (int j1=0 ; j1<column; j1++)
             {
+                if(!currentActiveFruits.ContainsKey(new Vector2Int(j1, i1)))
+                {
+                    continue;
+                }
                 bool isFound = false;
                 for (int i2 = 0; i2 < row; i2++)
                 {
@@ -293,6 +297,11 @@ public class BoardManager : SingletonMono<BoardManager>
     void ShuffleBoardWithActiveFruits()
     {
         List<Fruit> fruitList = currentActiveFruits.Values.ToList();
+
+        foreach (var fruit in fruitList)
+        {
+            Debug.Log(fruit.Coordinate + " + " + fruit.NameType);
+        }
         while (fruitList.Count > 0)
         {
             
@@ -303,8 +312,6 @@ public class BoardManager : SingletonMono<BoardManager>
             id2 = Random.Range(0, fruitList.Count);
             fruit2Tmp = fruitList[id2];
             fruitList.RemoveAt(id2);
-            
-            //Debug.Log("Swap" + fruit1Tmp.NameType + " : " + fruit2Tmp.NameType);
             
             Utilities.SwapFruitData(fruit1Tmp, fruit2Tmp);
         }
@@ -323,6 +330,7 @@ public class BoardManager : SingletonMono<BoardManager>
     // Call From BoosterBase
     public void Shuffle()
     {
+        Debug.Log("Shuffle Size : " + currentActiveFruits.Count);
         ShuffleBoardWithActiveFruits();
         currentCoupleCanConnect = GetTilesCanMatch();
     }
@@ -373,7 +381,7 @@ public class BoardManager : SingletonMono<BoardManager>
         }
         ConnectFruits();
     }
-    private void OnFruitSelected(Fruit fruit)
+    public void OnFruitSelected(Fruit fruit)
     {
         if (fruit1 != null) fruit1.OnDeselected();
         if (fruit2 != null) fruit2.OnDeselected(); 

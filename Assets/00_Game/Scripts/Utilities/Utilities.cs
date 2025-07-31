@@ -181,6 +181,8 @@ public static class Utilities
     // Check Fruit can Random
     public static bool IsNormalFruit(TileNameType fruitType)
     {
-        return fruitType != TileNameType.TileEmpty && fruitType != TileNameType.Block &&  fruitType != TileNameType.Ice;
+        return fruitType != TileNameType.TileEmpty
+               && fruitType != TileNameType.Block
+               &&  fruitType != TileNameType.Ice;
     }
 }

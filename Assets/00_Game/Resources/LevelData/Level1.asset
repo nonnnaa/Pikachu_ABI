@@ -20,11 +20,11 @@ MonoBehaviour:
   starTimeGoals: 1e0000000f0000000a000000
   randomFruitCounts:
   - fruitType: 1
-    count: 6
+    count: 2
   - fruitType: 2
-    count: 6
+    count: 2
   - fruitType: 7
-    count: 6
+    count: 4
   - fruitType: 3
     count: 6
   - fruitType: 5
@@ -33,6 +33,16 @@ MonoBehaviour:
     count: 4
   - fruitType: 6
     count: 4
+  - fruitType: 18
+    count: 2
+  - fruitType: 22
+    count: 2
+  - fruitType: 25
+    count: 2
+  - fruitType: 13
+    count: 2
+  - fruitType: 17
+    count: 2
   boardData:
   - column:
     - x: 0

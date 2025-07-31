@@ -47,7 +47,6 @@ public class Fruit : MonoBehaviour
     [SerializeField] private TileNameType nameType;
     [SerializeField] private Animator animator;
     private Vector2Int coordinate;
-    private bool isSelected;
     private bool isInteractive;
 
     public void SetSprite(Sprite sprite)
@@ -69,13 +68,11 @@ public class Fruit : MonoBehaviour
     }
     private void OnInit()
     {
-        isSelected = false;
         isInteractive = true;
     }
     public void OnSelected()
     {
         if (!Utilities.IsNormalFruit(nameType)) return;
-        isSelected = true;
         outlineTransform.gameObject.SetActive(true);
         if (animator != null)
         {
@@ -96,7 +93,6 @@ public class Fruit : MonoBehaviour
     public void OnDeselected()
     {
         if (!Utilities.IsNormalFruit(nameType)) return;
-        isSelected = false;
         outlineTransform.gameObject.SetActive(false);
         if (animator != null)
         {
