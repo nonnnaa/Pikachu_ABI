@@ -42,14 +42,28 @@ public enum TileNameType
 }
 public class Fruit : MonoBehaviour
 {
-    public SpriteRenderer spriteRenderer;
+    private SpriteRenderer spriteRenderer;
     [SerializeField] private Transform outlineTransform;
-    public Vector2Int coordinate;
-    public TileNameType nameType;
+    [SerializeField] private TileNameType nameType;
+    private Vector2Int coordinate;
     private Animator animator;
-    public bool isSelected;
+    private bool isSelected;
     private bool isInteractive;
-    
+
+    public void SetSprite(Sprite sprite)
+    {
+        spriteRenderer.sprite = sprite;
+    }
+    public Sprite GetSprite() => spriteRenderer.sprite;
+    public bool IsSelected => isSelected;
+    public TileNameType NameType => nameType;
+
+    public void SetNameType(TileNameType inNameType)
+    {
+        nameType = inNameType;
+    }
+    public Vector2Int Coordinate => coordinate;
+    public Vector2Int SetCoordinate(Vector2Int value) => coordinate = value;
     private void Awake()
     {
         if (animator == null)
@@ -58,18 +72,13 @@ public class Fruit : MonoBehaviour
         }
         OnInit();
     }
-    public void SetInteractive(bool value)
-    {
-        isInteractive = value;
-    }
-    public void OnInit()
+    private void OnInit()
     {
         isSelected = false;
         isInteractive = true;
     }
     public void OnSelected()
     {
-        if (nameType == TileNameType.TileEmpty) return;
         isSelected = true;
         outlineTransform.gameObject.SetActive(true);
         if (animator != null)
@@ -77,18 +86,13 @@ public class Fruit : MonoBehaviour
             animator.SetBool(Constant.FruitAnim.isSelected, isSelected);
         }
     }
-
-
-
     public void OnConnected()
     {
-        if (nameType == TileNameType.TileEmpty) return;
         isInteractive = false;
         ShowAnimConnect();
     }
     public void OnDeselected()
     {
-        if (nameType == TileNameType.TileEmpty) return;
         isSelected = false;
         outlineTransform.gameObject.SetActive(false);
         if (animator != null)
@@ -99,10 +103,16 @@ public class Fruit : MonoBehaviour
     
     public void ShowAnimConnect()
     {
-        if (nameType == TileNameType.TileEmpty) return;
         StartCoroutine(DelayAnim());
     }
-    
+    public void SetupFruit()
+    {
+        isSelected = !isSelected;
+        if (animator != null)
+        {
+            animator.SetBool(Constant.FruitAnim.isSelected, isSelected);
+        }
+    }
     
     IEnumerator DelayAnim()
     {

@@ -74,7 +74,7 @@ public class BFS_Solver : MonoBehaviour
     {
         if (pos == goal) return true;
         if (cell == null) return false;
-        return !cell.gameObject.activeSelf || cell.nameType == TileNameType.TileEmpty;
+        return !cell.gameObject.activeSelf || cell.NameType == TileNameType.TileEmpty;
     }
 
     // Check dieu kien co nam trong board hay khong

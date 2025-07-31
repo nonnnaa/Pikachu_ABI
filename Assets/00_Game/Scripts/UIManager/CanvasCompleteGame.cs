@@ -23,7 +23,6 @@ public class CanvasCompleteGame : UICanvas
     public override void Open() 
     {
         base.Open();
-        Debug.Log("Check Log IEnumerator : " + TimeManager.Instance.CurrentStar);
         OnStarShowAnim(TimeManager.Instance.CurrentStar);
         StartCoroutine(OnScoreShowAnim(BoardManager.Instance.GetCurrentScore()));
     }
@@ -35,15 +34,21 @@ public class CanvasCompleteGame : UICanvas
 
     IEnumerator OnScoreShowAnim(int targetScore)
     {
-        int currentScore = 0;
-        while (currentScore <= targetScore)
+        float duration = 3f; 
+        float elapsed = 0f;
+        int startScore = 0;
+
+        while (elapsed < duration)
         {
-            yield return new WaitForSeconds(0.001f);
-            currentScore++;
-            UpdateScore(currentScore);
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            int displayScore = Mathf.RoundToInt(Mathf.Lerp(startScore, targetScore, t));
+            UpdateScore(displayScore);
+            yield return null;
         }
         UpdateScore(targetScore);
     }
+
     
 
     public void OnStarShowAnim(int starNumber)
