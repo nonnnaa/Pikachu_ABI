@@ -151,6 +151,33 @@ public static class Utilities
 
         Debug.Log(result);
     }
+
+    
+    public static bool CheckFruitValidToConnect(Fruit fruit1Input, Fruit fruit2Input)
+    {
+        return fruit1Input != null 
+               && fruit2Input != null
+               && fruit1Input.gameObject.activeInHierarchy
+               && fruit2Input.gameObject.activeInHierarchy
+               && IsNormalFruit(fruit1Input.NameType)
+               && IsNormalFruit(fruit2Input.NameType)
+               && fruit1Input.Coordinate != fruit2Input.Coordinate
+               && fruit1Input.NameType == fruit2Input.NameType;
+    }
+    
+    private static Sprite tempSprite;
+    private static TileNameType tempType;
+    public static void SwapFruitData(Fruit fruitA, Fruit fruitB)
+    {
+        tempSprite = fruitA.GetSprite();
+        fruitA.SetSprite(fruitB.GetSprite());
+        fruitB.SetSprite(tempSprite);
+
+        tempType = fruitA.NameType;
+        fruitA.SetNameType(fruitB.NameType);
+        fruitB.SetNameType(tempType);
+    }
+    
     
     // Check Fruit can Random
     public static bool IsNormalFruit(TileNameType fruitType)

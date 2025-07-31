@@ -28,13 +28,12 @@ public class BoardManager : SingletonMono<BoardManager>
     #region LifeCycle Messages
     private void Awake()
     {
+        LoadAllFruits();
         GameManager.Instance.OnLevelStart += () =>
         {
             board.gameObject.SetActive(true);
             OnInit();
             GenerateBoard();
-            //currentCoupleCanConnect = GetTilesCanMatch();
-            currentCoupleCanConnect = GetTilesCanMatch();
         };
         GameManager.Instance.OnLevelEnd += () =>
         {
@@ -50,15 +49,12 @@ public class BoardManager : SingletonMono<BoardManager>
             canInteractive = true;
         };
     }
-
-
     private Fruit fruitTmp;
     private Vector2 mousePosTmp;
     private RaycastHit2D hit;
     private Collider2D colliderCache;
     private void Update()
     {
-        // Xu ly va cham vao Fruits
         if (Input.GetMouseButtonDown(0))
         {
             if (!canInteractive) return;
@@ -80,14 +76,9 @@ public class BoardManager : SingletonMono<BoardManager>
                     fruitDictionary[collider] = fruitTmp;
                 }
             }
-            // handle if fruitsChosen[0].type = fruitsChosen[1].type
-            if (CheckFruitValidToConnect(fruit1, fruit2))
+            if (Utilities.CheckFruitValidToConnect(fruit1, fruit2))
             {
                 ConnectFruits();
-            }
-            else
-            {
-                //Debug.Log("Fruits IS InValid");
             }
         }
     }
@@ -96,65 +87,42 @@ public class BoardManager : SingletonMono<BoardManager>
     #region Functions
 
     private Vector2Int cacheV2;
-    List<(Vector3, Vector2Int)> RandomFruitsPosition(List<List<int>> boardValue)
+    (List<(Vector3, Vector2Int)> ,List<(Vector3, Vector2Int)>)  RandomFruitsPosition(List<List<int>> boardValue)
     {
-        List<(Vector3 ,Vector2Int)> listPos = new List<(Vector3, Vector2Int)>();
-        int rowTmp = boardValue.Count;
-        int columnTmp = boardValue[0].Count;
-        
-        for (int y = 0; y < rowTmp; y++)
+        List<(Vector3, Vector2Int)> listPos1 = new List<(Vector3, Vector2Int)>();
+        List<(Vector3, Vector2Int)> listPos2 = new List<(Vector3, Vector2Int)>();
+        for (int y = 0; y < row; y++)
         {
-            for (int x = 0; x < columnTmp; x++)
+            for (int x = 0; x < column; x++)
             {
+                cacheV3.x = x + offsetX;
+                cacheV3.y = -(y + offsetY);
+                cacheV3.z = 0;
+                cacheV2.x = x;
+                cacheV2.y = y;
                 if (boardValue[y][x] == -1)
                 {
-                    cacheV3.x = x + offsetX;
-                    cacheV3.y = -(y + offsetY);
-                    cacheV3.z = 0;
-                    cacheV2.x = x;
-                    cacheV2.y = y;
-                    listPos.Add((cacheV3, cacheV2));
-                } 
+                    listPos1.Add((cacheV3, cacheV2));
+                } else
+                {
+                    listPos2.Add((cacheV3, cacheV2));
+                }
             }
         }
-        return listPos;
+        return (listPos1,  listPos2);
     }
     
-    List<(Vector3, Vector2Int)> RandomSpecialFruitsPosition(List<List<int>> boardValue)
-    {
-        List<(Vector3, Vector2Int)> listPos = new List<(Vector3, Vector2Int)>();
-        int rowTmp = boardValue.Count;
-        int columnTmp = boardValue[0].Count;
-        
-        for (int y = 0; y < rowTmp; y++)
-        {
-            for (int x = 0; x < columnTmp; x++)
-            {
-                if (boardValue[y][x] != -1)
-                {
-                    cacheV3.x = x + offsetX;
-                    cacheV3.y = -(y + offsetY);
-                    cacheV3.z = 0;
-                    cacheV2.x = x;
-                    cacheV2.y = y;
-                    listPos.Add((cacheV3, cacheV2));
-                } 
-            }
-        }
-        return listPos;
-    }
     void OnInit()
     { ;
         currentScore = 0;
         connectScore = Random.Range(10, 15);
         canInteractive = true;
-        LoadAllFruits();
     }
     
     // Load Fruit tu Resources
     void LoadAllFruits()
     {
-        fruitprefabs = Resources.LoadAll<Fruit>("Fruit");
+        Fruit[] fruitprefabs = Resources.LoadAll<Fruit>("Fruit");
         fruitPrefabDictionary = new Dictionary<TileNameType, Fruit>();
         for (int i=0 ; i<fruitprefabs.Length; i++)
         {
@@ -165,6 +133,9 @@ public class BoardManager : SingletonMono<BoardManager>
     private Vector3 cacheV3;
     LevelData levelData;
     List<List<int>> fruitBoardValue  = new List<List<int>>();
+    List<(Vector3, Vector2Int)> inforListCache1 = new List<(Vector3, Vector2Int)>();
+    List<(Vector3, Vector2Int)> inforListCache2 = new List<(Vector3, Vector2Int)>();
+    List<FruitCount> fruitCounts =  new List<FruitCount>();
     // Tao bang
     public void GenerateBoard()
     {
@@ -178,7 +149,64 @@ public class BoardManager : SingletonMono<BoardManager>
         offsetX = -(column / 2f) + 0.5f;
         offsetY = -(row / 2f) + 0.5f;
         
-        List<(Vector3, Vector2Int)> coordinatesRandom = RandomFruitsPosition(fruitBoardValue);
+        inforListCache1.Clear();
+        inforListCache2.Clear();
+        (inforListCache1, inforListCache2) = RandomFruitsPosition(fruitBoardValue); ;
+        
+        ResizeCurrentBoard();
+        
+        // Spanw Random Fruits => Sinh theo cap
+        fruitCounts = levelData.randomFruitCounts;
+        foreach (var fruitCountTmp in fruitCounts)
+        {
+            TileNameType type = fruitCountTmp.fruitType;
+            int fruitCount = fruitCountTmp.count;
+            int coordinatesSize = inforListCache1.Count;
+            while (fruitCount > 0 && inforListCache1.Count % 2 == 0 && inforListCache1.Count > 0)
+            {
+                // Spawn fruit1
+                id1 = Random.Range(0, coordinatesSize);
+                //(float xPos1, float yPos1, int x1, int y1) 
+                (cacheV3, cacheV2) = inforListCache1[id1];
+                fruit1Tmp = Instantiate(GetFruit(type), cacheV3, Quaternion.identity);
+                fruit1Tmp.transform.SetParent(board);
+                fruit1Tmp.SetCoordinate(cacheV2);
+                currentFruitBoard[cacheV2.y][cacheV2.x] =  fruit1Tmp;
+                currentActiveFruits.Add(cacheV2, fruit1Tmp);
+                inforListCache1.RemoveAt(id1);
+                fruitCount--;
+                coordinatesSize--;
+                
+                // Spawn fruit2
+                id2 = Random.Range(0, coordinatesSize);
+                (cacheV3, cacheV2) = inforListCache1[id2];
+                fruit2Tmp = Instantiate(GetFruit(type), cacheV3, Quaternion.identity);
+                fruit2Tmp.transform.SetParent(board);
+                fruit2Tmp.SetCoordinate(cacheV2);
+                currentFruitBoard[cacheV2.y][cacheV2.x] =  fruit2Tmp;
+                currentActiveFruits.Add(cacheV2,fruit2Tmp);
+                inforListCache1.RemoveAt(id2);
+                fruitCount--;
+                coordinatesSize--;
+            }
+        }
+        // Spawn Other Fruit Not from Random ;
+        foreach (var item in inforListCache2)
+        {
+            (cacheV3, cacheV2) = item;
+            fruitTmp = Instantiate(GetFruit((TileNameType)fruitBoardValue[cacheV2.y][cacheV2.x]), cacheV3, Quaternion.identity);
+            fruitTmp.transform.SetParent(board);
+            fruitTmp.SetCoordinate(cacheV2);
+            currentFruitBoard[cacheV2.y][cacheV2.x] =  fruitTmp;
+        }
+        currentCoupleCanConnect = GetTilesCanMatch();
+    }
+    
+    
+    // Resize CurrentBoardFruit
+    private void ResizeCurrentBoard()
+    {
+        currentFruitBoard.Clear();
         for (int i = 0; i < row; i++)
         {
             List<Fruit> fruits = new List<Fruit>();
@@ -188,68 +216,8 @@ public class BoardManager : SingletonMono<BoardManager>
             }
             currentFruitBoard.Add(fruits);
         }
-        
-        
-        
-        //currentFruitBoard = new List<List<Fruit>>();
-        for (int i = 0; i < row; i++)
-        {
-            List<Fruit> rowTmp = new List<Fruit>();
-            for (int j = 0; j < column; j++)
-            {
-                rowTmp.Add(null);
-            }
-            currentFruitBoard.Add(rowTmp);
-        }
-        
-        
-        // Spanw Random Fruits => Sinh theo cap
-        List<FruitCount> fruitCounts = levelData.randomFruitCounts;
-        foreach (var fruitCountTmp in fruitCounts)
-        {
-            TileNameType type = fruitCountTmp.fruitType;
-            int fruitCount = fruitCountTmp.count;
-            int coordinatesSize = coordinatesRandom.Count;
-            while (fruitCount > 0 && coordinatesRandom.Count % 2 == 0 && coordinatesRandom.Count > 0)
-            {
-                // Spawn fruit1
-                id1 = Random.Range(0, coordinatesSize);
-                //(float xPos1, float yPos1, int x1, int y1) 
-                (cacheV3, cacheV2) = coordinatesRandom[id1];
-                fruit1Tmp = Instantiate(GetFruit(type), cacheV3, Quaternion.identity);
-                fruit1Tmp.transform.SetParent(board);
-                fruit1Tmp.SetCoordinate(cacheV2);
-                currentFruitBoard[cacheV2.y][cacheV2.x] =  fruit1Tmp;
-                currentActiveFruits.Add(cacheV2, fruit1Tmp);
-                coordinatesRandom.RemoveAt(id1);
-                fruitCount--;
-                coordinatesSize--;
-                
-                // Spawn fruit2
-                id2 = Random.Range(0, coordinatesSize);
-                (cacheV3, cacheV2) = coordinatesRandom[id2];
-                fruit2Tmp = Instantiate(GetFruit(type), cacheV3, Quaternion.identity);
-                fruit2Tmp.transform.SetParent(board);
-                fruit2Tmp.SetCoordinate(cacheV2);
-                currentFruitBoard[cacheV2.y][cacheV2.x] =  fruit2Tmp;
-                currentActiveFruits.Add(cacheV2,fruit2Tmp);
-                coordinatesRandom.RemoveAt(id2);
-                fruitCount--;
-                coordinatesSize--;
-            }
-        }
-        // Spawn Other Fruit Not from Random
-        List<(Vector3, Vector2Int)> coordinatesSpecial = RandomSpecialFruitsPosition(fruitBoardValue);
-        foreach (var item in coordinatesSpecial)
-        {
-            (cacheV3, cacheV2) = item;
-            fruitTmp = Instantiate(GetFruit((TileNameType)fruitBoardValue[cacheV2.y][cacheV2.x]), cacheV3, Quaternion.identity);
-            fruitTmp.transform.SetParent(board);
-            fruitTmp.SetCoordinate(cacheV2);
-            currentFruitBoard[cacheV2.y][cacheV2.x] =  fruitTmp;
-        }
     }
-    
+
     // Get Fruit From Value Of Data
     Fruit GetFruit(TileNameType type)
     {
@@ -268,25 +236,6 @@ public class BoardManager : SingletonMono<BoardManager>
         }
         return positionList;
     }
-    
-    // Check Fruit can Random
-    bool IsNormalFruit(TileNameType fruitType)
-    {
-        return fruitType != TileNameType.TileEmpty && fruitType != TileNameType.Block &&  fruitType != TileNameType.Ice;
-    }
-    
-    //Check Condition to Connect
-    bool CheckFruitValidToConnect(Fruit fruit1Input, Fruit fruit2Input)
-    {
-        return fruit1Input != null 
-               && fruit2Input != null
-               && fruit1Input.gameObject.activeInHierarchy
-               && fruit2Input.gameObject.activeInHierarchy
-               && IsNormalFruit(fruit1Input.NameType)
-               && IsNormalFruit(fruit2Input.NameType)
-               && fruit1Input.Coordinate != fruit2Input.Coordinate
-               && fruit1Input.NameType == fruit2Input.NameType;
-    }
     private void Despawn()
     {
         currentActiveFruits.Clear();
@@ -297,7 +246,6 @@ public class BoardManager : SingletonMono<BoardManager>
     HashSet<(Vector2Int, Vector2Int)> currentCoupleCache = new HashSet<(Vector2Int, Vector2Int)>();
     private HashSet<(Vector2Int, Vector2Int)> GetTilesCanMatch()
     {
-        
         currentCoupleCache.Clear();
         for (int i1=0 ; i1<row; i1++)
         {
@@ -312,7 +260,7 @@ public class BoardManager : SingletonMono<BoardManager>
                 {
                     for (int j2 = 0; j2 < column; j2++)
                     {
-                        if (!CheckFruitValidToConnect(currentFruitBoard[i1][j1], currentFruitBoard[i2][j2]))
+                        if (!Utilities.CheckFruitValidToConnect(currentFruitBoard[i1][j1], currentFruitBoard[i2][j2]))
                         {
                             continue;
                         }
@@ -380,26 +328,10 @@ public class BoardManager : SingletonMono<BoardManager>
             fruit2Tmp = fruitList[id2];
             fruitList.RemoveAt(id2);
             
-            SwapFruitData(fruit1Tmp, fruit2Tmp);
+            Utilities.SwapFruitData(fruit1Tmp, fruit2Tmp);
         }
     }
-    
-    
-    private Sprite tempSprite;
-    private TileNameType tempType;
-    void SwapFruitData(Fruit fruitA, Fruit fruitB)
-    {
-        tempSprite = fruitA.GetSprite();
-        fruitA.SetSprite(fruitB.GetSprite());
-        fruitB.SetSprite(tempSprite);
-
-        tempType = fruitA.NameType;
-        fruitA.SetNameType(fruitB.NameType);
-        fruitB.SetNameType(tempType);
-    }
-    
-    
-    public (Vector2Int, Vector2Int) GetSuggest()
+    private (Vector2Int, Vector2Int) GetSuggest()
     {
         (Vector2Int, Vector2Int)  result = (new Vector2Int(), new Vector2Int());
         foreach (var couple in currentCoupleCanConnect)
@@ -417,7 +349,7 @@ public class BoardManager : SingletonMono<BoardManager>
         currentCoupleCanConnect = GetTilesCanMatch();
     }
 
-    void ConnectFruits()
+    private void ConnectFruits()
     {
         var res = BFS_Solver.BFS(currentFruitBoard, fruit1.Coordinate, fruit2.Coordinate,
             maxSegment);
@@ -469,7 +401,7 @@ public class BoardManager : SingletonMono<BoardManager>
         ConnectFruits();
     }
 
-    void OnFruitSelected(Fruit fruit)
+    private void OnFruitSelected(Fruit fruit)
     {
         if (fruit1 != null)
         {

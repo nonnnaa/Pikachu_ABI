@@ -42,7 +42,7 @@ public enum TileNameType
 }
 public class Fruit : MonoBehaviour
 {
-    private SpriteRenderer spriteRenderer;
+    [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Transform outlineTransform;
     [SerializeField] private TileNameType nameType;
     private Vector2Int coordinate;
@@ -55,7 +55,6 @@ public class Fruit : MonoBehaviour
         spriteRenderer.sprite = sprite;
     }
     public Sprite GetSprite() => spriteRenderer.sprite;
-    public bool IsSelected => isSelected;
     public TileNameType NameType => nameType;
 
     public void SetNameType(TileNameType inNameType)
@@ -79,6 +78,7 @@ public class Fruit : MonoBehaviour
     }
     public void OnSelected()
     {
+        if (NameType == TileNameType.TileEmpty) return;
         isSelected = true;
         outlineTransform.gameObject.SetActive(true);
         if (animator != null)
@@ -88,11 +88,13 @@ public class Fruit : MonoBehaviour
     }
     public void OnConnected()
     {
+        if (NameType == TileNameType.TileEmpty) return;
         isInteractive = false;
         ShowAnimConnect();
     }
     public void OnDeselected()
     {
+        if (NameType == TileNameType.TileEmpty) return;
         isSelected = false;
         outlineTransform.gameObject.SetActive(false);
         if (animator != null)
@@ -103,15 +105,8 @@ public class Fruit : MonoBehaviour
     
     public void ShowAnimConnect()
     {
+        if (NameType == TileNameType.TileEmpty) return;
         StartCoroutine(DelayAnim());
-    }
-    public void SetupFruit()
-    {
-        isSelected = !isSelected;
-        if (animator != null)
-        {
-            animator.SetBool(Constant.FruitAnim.isSelected, isSelected);
-        }
     }
     
     IEnumerator DelayAnim()
