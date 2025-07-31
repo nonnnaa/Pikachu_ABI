@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 754348494c23b974b9e22b94e9593a2a, type: 2}
+    - target: {fileID: 183017360375316091, guid: 6681822d38bb9f74ca0f397bbf767f5a, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 754348494c23b974b9e22b94e9593a2a, type: 2}
     - target: {fileID: 1393836645415585421, guid: 6681822d38bb9f74ca0f397bbf767f5a, type: 3}
       propertyPath: m_Name
       value: Strawberry
@@ -38,15 +42,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1393836645415585426, guid: 6681822d38bb9f74ca0f397bbf767f5a, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1393836645415585426, guid: 6681822d38bb9f74ca0f397bbf767f5a, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1393836645415585426, guid: 6681822d38bb9f74ca0f397bbf767f5a, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1393836645415585426, guid: 6681822d38bb9f74ca0f397bbf767f5a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

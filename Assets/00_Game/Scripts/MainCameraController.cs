@@ -16,33 +16,6 @@ public class MainCameraController : MonoBehaviour
             return;
         }
         
-        // if (Input.GetMouseButtonDown(0))
-        // {
-        //     touchStart = cam.ScreenToWorldPoint(Input.mousePosition);
-        // }
-        //
-        // if (Input.GetMouseButton(0))
-        // {
-        //     Vector3 direction = touchStart - Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //     float finalYPos = cam.transform.position.y + direction.y;
-        //     finalYPos = Mathf.Clamp(finalYPos, bottomLeft.transform.position.y, topRight.transform.position.y);
-        //     if (Mathf.Abs(cam.transform.position.y - finalYPos) > 0.1f)
-        //     {
-        //         cam.transform.position 
-        //             = Vector3.MoveTowards(cam.transform.position, new Vector3(cam.transform.position.x, finalYPos, cam.transform.position.z), scrollSpeed * Time.deltaTime);
-        //     }
-        //     SoundBGType tmp = MapManager.Instance.GetBGNearest(transform);
-        //     if (currentBG != tmp)
-        //     {
-        //         currentBG = tmp;
-        //         if (!isFirst)
-        //         {
-        //             SoundManager.Instance.SetMusicBG(currentBG);
-        //         }
-        //         isFirst =  false;
-        //     }
-        //}
-        
 #if UNITY_EDITOR || UNITY_STANDALONE
         // Xử lý bằng chuột
         if (Input.GetMouseButtonDown(0))

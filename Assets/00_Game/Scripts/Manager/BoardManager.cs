@@ -76,7 +76,7 @@ public class BoardManager : SingletonMono<BoardManager>
                     fruitDictionary[collider] = fruitTmp;
                 }
             }
-            if (Utilities.CheckFruitValidToConnect(fruit1, fruit2))
+            if (Utilities.IsFruitsValidToConnect(fruit1, fruit2))
             {
                 ConnectFruits();
             }
@@ -85,9 +85,8 @@ public class BoardManager : SingletonMono<BoardManager>
     #endregion
     
     #region Functions
-
     private Vector2Int cacheV2;
-    (List<(Vector3, Vector2Int)> ,List<(Vector3, Vector2Int)>)  RandomFruitsPosition(List<List<int>> boardValue)
+    (List<(Vector3, Vector2Int)> ,List<(Vector3, Vector2Int)>)  GetFruitInforFromData(List<List<int>> boardValue)
     {
         List<(Vector3, Vector2Int)> listPos1 = new List<(Vector3, Vector2Int)>();
         List<(Vector3, Vector2Int)> listPos2 = new List<(Vector3, Vector2Int)>();
@@ -103,7 +102,8 @@ public class BoardManager : SingletonMono<BoardManager>
                 if (boardValue[y][x] == -1)
                 {
                     listPos1.Add((cacheV3, cacheV2));
-                } else
+                } 
+                else
                 {
                     listPos2.Add((cacheV3, cacheV2));
                 }
@@ -117,6 +117,14 @@ public class BoardManager : SingletonMono<BoardManager>
         currentScore = 0;
         connectScore = Random.Range(10, 15);
         canInteractive = true;
+        levelData = LevelManager.Instance.GetCurrentLevelData();
+        fruitBoardValue = levelData.GetBoardValue();
+        canInteractive = true;
+        column = levelData.column;
+        row = levelData.row;
+        // Tinh toa do goc tren cung ben trai trung voi goc ma tran 2 chieu
+        offsetX = -(column / 2f) + 0.5f;
+        offsetY = -(row / 2f) + 0.5f;
     }
     
     // Load Fruit tu Resources
@@ -139,23 +147,10 @@ public class BoardManager : SingletonMono<BoardManager>
     // Tao bang
     public void GenerateBoard()
     {
-        levelData = LevelManager.Instance.GetCurrentLevelData();
-        fruitBoardValue = levelData.GetBoardValue();
-        canInteractive = true;
-        column = levelData.column;
-        row = levelData.row;
-        
-        // Tinh toa do goc tren cung ben trai trung voi goc ma tran 2 chieu
-        offsetX = -(column / 2f) + 0.5f;
-        offsetY = -(row / 2f) + 0.5f;
-        
+        ResizeCurrentBoard();
         inforListCache1.Clear();
         inforListCache2.Clear();
-        (inforListCache1, inforListCache2) = RandomFruitsPosition(fruitBoardValue); ;
-        
-        ResizeCurrentBoard();
-        
-        // Spanw Random Fruits => Sinh theo cap
+        (inforListCache1, inforListCache2) = GetFruitInforFromData(fruitBoardValue); ;
         fruitCounts = levelData.randomFruitCounts;
         foreach (var fruitCountTmp in fruitCounts)
         {
@@ -166,13 +161,8 @@ public class BoardManager : SingletonMono<BoardManager>
             {
                 // Spawn fruit1
                 id1 = Random.Range(0, coordinatesSize);
-                //(float xPos1, float yPos1, int x1, int y1) 
                 (cacheV3, cacheV2) = inforListCache1[id1];
-                fruit1Tmp = Instantiate(GetFruit(type), cacheV3, Quaternion.identity);
-                fruit1Tmp.transform.SetParent(board);
-                fruit1Tmp.SetCoordinate(cacheV2);
-                currentFruitBoard[cacheV2.y][cacheV2.x] =  fruit1Tmp;
-                currentActiveFruits.Add(cacheV2, fruit1Tmp);
+                SpawnFruit(type, cacheV2, cacheV3, true);
                 inforListCache1.RemoveAt(id1);
                 fruitCount--;
                 coordinatesSize--;
@@ -180,11 +170,7 @@ public class BoardManager : SingletonMono<BoardManager>
                 // Spawn fruit2
                 id2 = Random.Range(0, coordinatesSize);
                 (cacheV3, cacheV2) = inforListCache1[id2];
-                fruit2Tmp = Instantiate(GetFruit(type), cacheV3, Quaternion.identity);
-                fruit2Tmp.transform.SetParent(board);
-                fruit2Tmp.SetCoordinate(cacheV2);
-                currentFruitBoard[cacheV2.y][cacheV2.x] =  fruit2Tmp;
-                currentActiveFruits.Add(cacheV2,fruit2Tmp);
+                SpawnFruit(type, cacheV2, cacheV3, true);
                 inforListCache1.RemoveAt(id2);
                 fruitCount--;
                 coordinatesSize--;
@@ -194,15 +180,19 @@ public class BoardManager : SingletonMono<BoardManager>
         foreach (var item in inforListCache2)
         {
             (cacheV3, cacheV2) = item;
-            fruitTmp = Instantiate(GetFruit((TileNameType)fruitBoardValue[cacheV2.y][cacheV2.x]), cacheV3, Quaternion.identity);
-            fruitTmp.transform.SetParent(board);
-            fruitTmp.SetCoordinate(cacheV2);
-            currentFruitBoard[cacheV2.y][cacheV2.x] =  fruitTmp;
+            SpawnFruit((TileNameType)fruitBoardValue[cacheV2.y][cacheV2.x], cacheV2, cacheV3, false);
         }
         currentCoupleCanConnect = GetTilesCanMatch();
     }
-    
-    
+    // Spawn Fruit
+    private void SpawnFruit(TileNameType fruitType, Vector2Int coordinates, Vector3 position, bool isRandomFruit)
+    {
+        fruitTmp = Instantiate(GetFruit(fruitType), position, Quaternion.identity);
+        fruitTmp.transform.SetParent(board);
+        fruitTmp.SetCoordinate(coordinates);
+        currentFruitBoard[coordinates.y][coordinates.x] =  fruitTmp;
+        if(isRandomFruit) currentActiveFruits.Add(coordinates,fruitTmp);
+    }
     // Resize CurrentBoardFruit
     private void ResizeCurrentBoard()
     {
@@ -239,9 +229,16 @@ public class BoardManager : SingletonMono<BoardManager>
     private void Despawn()
     {
         currentActiveFruits.Clear();
-        currentFruitBoard.Clear();
         fruitDictionary.Clear();
         currentCoupleCanConnect.Clear();
+        foreach (var item in currentFruitBoard)
+        {
+            foreach (var fruit in item)
+            {
+                Destroy(fruit.gameObject);
+            }
+        }
+        currentFruitBoard.Clear();
     }
     HashSet<(Vector2Int, Vector2Int)> currentCoupleCache = new HashSet<(Vector2Int, Vector2Int)>();
     private HashSet<(Vector2Int, Vector2Int)> GetTilesCanMatch()
@@ -251,28 +248,15 @@ public class BoardManager : SingletonMono<BoardManager>
         {
             for (int j1=0 ; j1<column; j1++)
             {
-                if (!currentActiveFruits.ContainsKey(new Vector2Int(j1, i1)))
-                {
-                    continue;
-                }
                 bool isFound = false;
                 for (int i2 = 0; i2 < row; i2++)
                 {
                     for (int j2 = 0; j2 < column; j2++)
                     {
-                        if (!Utilities.CheckFruitValidToConnect(currentFruitBoard[i1][j1], currentFruitBoard[i2][j2]))
-                        {
-                            continue;
-                        }
-                        if (currentCoupleCache.Contains((new Vector2Int(i1, j1), new Vector2Int(i2, j2))))
-                        {
-                            continue;
-                        }
-                        if (currentCoupleCache.Contains((new Vector2Int(i2, j2), new Vector2Int(i1, j1))))
-                        {
-                            continue;
-                        }
-                        if (!currentActiveFruits.ContainsKey(new Vector2Int(j2, i2)))
+                        if (!Utilities.IsFruitsValidToConnect(currentFruitBoard[i1][j1], currentFruitBoard[i2][j2])
+                            ||!currentActiveFruits.ContainsKey(new Vector2Int(j2, i2))
+                            ||currentCoupleCache.Contains((new Vector2Int(i1, j1), new Vector2Int(i2, j2)))
+                            ||currentCoupleCache.Contains((new Vector2Int(i2, j2), new Vector2Int(i1, j1))))
                         {
                             continue;
                         }
@@ -294,32 +278,24 @@ public class BoardManager : SingletonMono<BoardManager>
         }
         return currentCoupleCache;
     }
-
     void RemoveFruitFromCurrentCoupleCanConnect(Vector2Int coordinate1, Vector2Int coordinate2)
     {
-        if (currentCoupleCanConnect.Contains((coordinate1, coordinate2)))
-        {
-            currentCoupleCanConnect.Remove((coordinate1, coordinate2));
-        }
-        if (currentCoupleCanConnect.Contains((coordinate2, coordinate1)))
-        {
-            currentCoupleCanConnect.Remove((coordinate2, coordinate1));
-        }
+        currentCoupleCanConnect.Remove((coordinate1, coordinate2));
+        currentCoupleCanConnect.Remove((coordinate2, coordinate1));
     }
-
     void UpdateCurrentActiveFruits (Fruit fr1, Fruit fr2)
     {
         currentActiveFruits.Remove(fr1.Coordinate);
         currentActiveFruits.Remove(fr2.Coordinate);
     }
-
     private Fruit fruit1Tmp, fruit2Tmp;
     private int id1, id2;
-    void ShuffleBoardWithActiveFruits(Dictionary<Vector2Int, Fruit> currentFruitActives)
+    void ShuffleBoardWithActiveFruits()
     {
-        List<Fruit> fruitList = currentFruitActives.Values.ToList();
-        while (fruitList.Count > 0 &&  fruitList.Count % 2 == 0)
+        List<Fruit> fruitList = currentActiveFruits.Values.ToList();
+        while (fruitList.Count > 0)
         {
+            
             id1 =  Random.Range(0, fruitList.Count);
             fruit1Tmp = fruitList[id1];
             fruitList.RemoveAt(id1);
@@ -327,6 +303,8 @@ public class BoardManager : SingletonMono<BoardManager>
             id2 = Random.Range(0, fruitList.Count);
             fruit2Tmp = fruitList[id2];
             fruitList.RemoveAt(id2);
+            
+            //Debug.Log("Swap" + fruit1Tmp.NameType + " : " + fruit2Tmp.NameType);
             
             Utilities.SwapFruitData(fruit1Tmp, fruit2Tmp);
         }
@@ -345,7 +323,7 @@ public class BoardManager : SingletonMono<BoardManager>
     // Call From BoosterBase
     public void Shuffle()
     {
-        ShuffleBoardWithActiveFruits(currentActiveFruits);
+        ShuffleBoardWithActiveFruits();
         currentCoupleCanConnect = GetTilesCanMatch();
     }
 
@@ -357,18 +335,13 @@ public class BoardManager : SingletonMono<BoardManager>
         {
             fruit1.OnConnected();
             fruit2.OnConnected();
-            
             RemoveFruitFromCurrentCoupleCanConnect(fruit1.Coordinate, fruit2.Coordinate);
             UpdateCurrentActiveFruits(fruit1, fruit2);
             currentCoupleCanConnect = GetTilesCanMatch();
-
             fruit1 = null;
             fruit2 = null;
-            
             PathLineDrawer.Instance.DrawPath(GetPositionList(res.Item2));
             SoundManager.Instance.SetMusicVFX(SoundVFXType.SoundGetPoint);
-            
-            
             currentScore += Random.Range(connectScore, connectScore * 2);
             UpdateScore?.Invoke(currentScore);
                     
@@ -377,6 +350,7 @@ public class BoardManager : SingletonMono<BoardManager>
                 GameManager.Instance.EndLevel();
                 GameManager.Instance.WinGame();
             }
+            Debug.Log(currentActiveFruits.Count);
         }
     }
     public void Suggest()
@@ -387,7 +361,6 @@ public class BoardManager : SingletonMono<BoardManager>
             Debug.Log("NO PAIR OF FRUITS TO CONNECT.");
             return;
         }
-        
         fruit1 = currentActiveFruits[key1];
         fruit2 = currentActiveFruits[key2];
         if (fruit1 != null)
@@ -400,28 +373,14 @@ public class BoardManager : SingletonMono<BoardManager>
         }
         ConnectFruits();
     }
-
     private void OnFruitSelected(Fruit fruit)
     {
-        if (fruit1 != null)
-        {
-            fruit1.OnDeselected();
-        }
-        if (fruit2 != null)
-        {
-            fruit2.OnDeselected();
-        }
-
+        if (fruit1 != null) fruit1.OnDeselected();
+        if (fruit2 != null) fruit2.OnDeselected(); 
         if (fruit != null)
         {
-            if (fruit1 == null)
-            {
-                fruit1 = fruit;
-            }
-            else if (fruit2 == null)
-            {
-                fruit2 = fruit;
-            }
+            if (fruit1 == null) fruit1 = fruit;
+            else if (fruit2 == null) fruit2 = fruit;
             else
             {
                 fruit1 = fruit2;

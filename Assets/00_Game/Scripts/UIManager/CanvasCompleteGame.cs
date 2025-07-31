@@ -37,7 +37,6 @@ public class CanvasCompleteGame : UICanvas
         float duration = 3f; 
         float elapsed = 0f;
         int startScore = 0;
-
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;

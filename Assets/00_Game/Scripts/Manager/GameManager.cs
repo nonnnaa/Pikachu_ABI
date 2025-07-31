@@ -21,7 +21,6 @@ public class GameManager : SingletonMono<GameManager>
         OnMainMenu?.Invoke();
     }
     
-    //
     public void StartLevel(int levelIndex)
     {
         LevelManager.Instance.LoadLevel(levelIndex);

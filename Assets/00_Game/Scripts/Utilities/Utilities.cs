@@ -153,7 +153,7 @@ public static class Utilities
     }
 
     
-    public static bool CheckFruitValidToConnect(Fruit fruit1Input, Fruit fruit2Input)
+    public static bool IsFruitsValidToConnect(Fruit fruit1Input, Fruit fruit2Input)
     {
         return fruit1Input != null 
                && fruit2Input != null
@@ -165,18 +165,17 @@ public static class Utilities
                && fruit1Input.NameType == fruit2Input.NameType;
     }
     
-    private static Sprite tempSprite;
-    private static TileNameType tempType;
     public static void SwapFruitData(Fruit fruitA, Fruit fruitB)
     {
-        tempSprite = fruitA.GetSprite();
+        var tempSprite = fruitA.GetSprite();
         fruitA.SetSprite(fruitB.GetSprite());
         fruitB.SetSprite(tempSprite);
 
-        tempType = fruitA.NameType;
+        var tempType = fruitA.NameType;
         fruitA.SetNameType(fruitB.NameType);
         fruitB.SetNameType(tempType);
     }
+
     
     
     // Check Fruit can Random

@@ -34,7 +34,6 @@ public class Level : MonoBehaviour
 
     public void OnClick()
     {
-        //Debug.Log($"Click : {levelId}");
         if (UIManager.Instance.IsUIOpened<CanvasPrePlay>())
         {
             UIManager.Instance.CloseUI<CanvasPrePlay>(0f);

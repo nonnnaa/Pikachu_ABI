@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelId: 1
   row: 8
-  column: 9
+  column: 8
   time: 60
   targetScore: 100
   starTimeGoals: 1e0000000f0000000a000000
@@ -28,11 +28,11 @@ MonoBehaviour:
   - fruitType: 3
     count: 6
   - fruitType: 5
-    count: 6
+    count: 4
   - fruitType: 4
-    count: 6
+    count: 4
   - fruitType: 6
-    count: 6
+    count: 4
   boardData:
   - column:
     - x: 0
@@ -59,9 +59,6 @@ MonoBehaviour:
     - x: 0
       y: 7
       value: 0
-    - x: 0
-      y: 8
-      value: 0
   - column:
     - x: 1
       y: 0
@@ -86,9 +83,6 @@ MonoBehaviour:
       value: -1
     - x: 1
       y: 7
-      value: -1
-    - x: 1
-      y: 8
       value: 0
   - column:
     - x: 2
@@ -114,9 +108,6 @@ MonoBehaviour:
       value: -1
     - x: 2
       y: 7
-      value: -1
-    - x: 2
-      y: 8
       value: 0
   - column:
     - x: 3
@@ -142,9 +133,6 @@ MonoBehaviour:
       value: -1
     - x: 3
       y: 7
-      value: -1
-    - x: 3
-      y: 8
       value: 0
   - column:
     - x: 4
@@ -170,9 +158,6 @@ MonoBehaviour:
       value: -1
     - x: 4
       y: 7
-      value: -1
-    - x: 4
-      y: 8
       value: 0
   - column:
     - x: 5
@@ -198,9 +183,6 @@ MonoBehaviour:
       value: -1
     - x: 5
       y: 7
-      value: -1
-    - x: 5
-      y: 8
       value: 0
   - column:
     - x: 6
@@ -226,9 +208,6 @@ MonoBehaviour:
       value: -1
     - x: 6
       y: 7
-      value: -1
-    - x: 6
-      y: 8
       value: 0
   - column:
     - x: 7
@@ -254,7 +233,4 @@ MonoBehaviour:
       value: 0
     - x: 7
       y: 7
-      value: 0
-    - x: 7
-      y: 8
       value: 0

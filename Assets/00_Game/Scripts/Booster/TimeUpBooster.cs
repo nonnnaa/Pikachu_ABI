@@ -22,7 +22,6 @@ public class TimeUpBooster : BoosterBase
            TimeManager.Instance.TimeUp(timeUpAmout);
        }
        base.OnActive();
-       
    }
      
    protected override void OnDespawn()

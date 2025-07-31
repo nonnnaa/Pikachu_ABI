@@ -45,8 +45,8 @@ public class Fruit : MonoBehaviour
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Transform outlineTransform;
     [SerializeField] private TileNameType nameType;
+    [SerializeField] private Animator animator;
     private Vector2Int coordinate;
-    private Animator animator;
     private bool isSelected;
     private bool isInteractive;
 
@@ -65,10 +65,6 @@ public class Fruit : MonoBehaviour
     public Vector2Int SetCoordinate(Vector2Int value) => coordinate = value;
     private void Awake()
     {
-        if (animator == null)
-        {
-            animator = GetComponent<Animator>();
-        }
         OnInit();
     }
     private void OnInit()
@@ -78,34 +74,39 @@ public class Fruit : MonoBehaviour
     }
     public void OnSelected()
     {
-        if (NameType == TileNameType.TileEmpty) return;
+        if (!Utilities.IsNormalFruit(nameType)) return;
         isSelected = true;
         outlineTransform.gameObject.SetActive(true);
         if (animator != null)
         {
-            animator.SetBool(Constant.FruitAnim.isSelected, isSelected);
+            animator.SetTrigger(Constant.FruitAnim.select);
         }
     }
     public void OnConnected()
     {
         if (NameType == TileNameType.TileEmpty) return;
         isInteractive = false;
+        if (animator != null)
+        {
+            animator.ResetTrigger(Constant.FruitAnim.connect);
+            animator.SetTrigger(Constant.FruitAnim.connect);
+        }
         ShowAnimConnect();
     }
     public void OnDeselected()
     {
-        if (NameType == TileNameType.TileEmpty) return;
+        if (!Utilities.IsNormalFruit(nameType)) return;
         isSelected = false;
         outlineTransform.gameObject.SetActive(false);
         if (animator != null)
         {
-            animator.SetBool(Constant.FruitAnim.isSelected, isSelected);
+            animator.SetTrigger(Constant.FruitAnim.deSelect);
         }
     }
     
     public void ShowAnimConnect()
     {
-        if (NameType == TileNameType.TileEmpty) return;
+        if (!Utilities.IsNormalFruit(nameType)) return;
         StartCoroutine(DelayAnim());
     }
     
