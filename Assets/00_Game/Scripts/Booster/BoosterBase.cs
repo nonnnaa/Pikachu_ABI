@@ -22,9 +22,7 @@ public class BoosterBase : MonoBehaviour
      }
      protected virtual void Start()
      {
-          numberBooster = 99;
-          UpdateTextNumberBooster(numberBooster);
-          isInteractive = true;
+          OnInit();
      }
 
      protected virtual void OnInit()
@@ -33,6 +31,7 @@ public class BoosterBase : MonoBehaviour
           UpdateTextNumberBooster(numberBooster);
           boosterImage.fillAmount = 1f;
           isInteractive = true;
+          CoolDownBooster();
      }
 
      protected virtual void OnActive()

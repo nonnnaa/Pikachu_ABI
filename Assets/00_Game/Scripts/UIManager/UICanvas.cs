@@ -4,7 +4,7 @@ using UnityEngine;
 public class UICanvas : MonoBehaviour
 {
     [SerializeField] bool isDestroyOnClose;
-    private void Awake()
+    protected virtual void Awake()
     {
         RectTransform rect = GetComponent<RectTransform>();
         float ratio = Screen.width / (float)Screen.height;

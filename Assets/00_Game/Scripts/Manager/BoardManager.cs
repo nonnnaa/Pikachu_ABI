@@ -9,6 +9,7 @@ public class BoardManager : SingletonMono<BoardManager>
 {
     private int maxSegment = 3; // Rule Game
     [SerializeField] private Transform board;
+    public bool IsActive => board.gameObject.activeInHierarchy;
     #region Temp
     private int row, column;
     private List<List<Fruit>> currentFruitBoard = new List<List<Fruit>>();
@@ -35,10 +36,7 @@ public class BoardManager : SingletonMono<BoardManager>
             OnInit();
             GenerateBoard();
         };
-        GameManager.Instance.OnLevelEnd += () =>
-        {
-            Despawn();
-        };
+        GameManager.Instance.OnLevelEnd += Despawn;
         GameManager.Instance.OnGamePause += () =>
         {
             canInteractive = false;
@@ -74,10 +72,6 @@ public class BoardManager : SingletonMono<BoardManager>
                     OnFruitSelected(fruitTmp);
                     fruitDictionary[collider] = fruitTmp;
                 }
-            }
-            if (Utilities.IsFruitsValidToConnect(fruit1, fruit2))
-            {
-                ConnectFruits();
             }
         }
     }
@@ -213,7 +207,7 @@ public class BoardManager : SingletonMono<BoardManager>
             }
         }
         currentFruitBoard.Clear();
-        Invoke(nameof(DeactiveBoard), 0.5f);;
+        DeactiveBoard();
     }
     void DeactiveBoard() => board.gameObject.SetActive(false);
     HashSet<(Vector2Int, Vector2Int)> currentCoupleCache = new HashSet<(Vector2Int, Vector2Int)>();
@@ -264,7 +258,6 @@ public class BoardManager : SingletonMono<BoardManager>
     {
         currentCoupleCanConnect.Remove((coordinate1, coordinate2));
         currentCoupleCanConnect.Remove((coordinate2, coordinate1));
-        
         currentActiveFruits.Remove(coordinate1);
         currentActiveFruits.Remove(coordinate2);
     }
@@ -338,6 +331,10 @@ public class BoardManager : SingletonMono<BoardManager>
     }
     public void Suggest()
     {
+        if(fruit1 != null) fruit1.OnDeselected();
+        if(fruit2 != null) fruit2.OnDeselected();
+        fruit1 = null;
+        fruit2 = null;
         (Vector2Int key1, Vector2Int key2) = GetSuggest();
         //Debug.Log($"Suggest {key1} + {key2}");
         if (key1 == Vector2Int.zero)
@@ -365,6 +362,10 @@ public class BoardManager : SingletonMono<BoardManager>
                 fruit2 = fruit;
             }
             fruit.OnSelected();
+        }
+        if (Utilities.IsFruitsValidToConnect(fruit1, fruit2))
+        {
+            ConnectFruits();
         }
     }
     // ReInit Current Active Fruits

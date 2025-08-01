@@ -1,20 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SuggestBooster : BoosterBase
 {
+    
+    protected override void OnInit()
+    {
+        numberBooster = 99;
+        UpdateTextNumberBooster(numberBooster);
+        boosterImage.fillAmount = 1f;
+        CoolDownBooster();
+    }
     protected override void OnActive()
     {
-        if (numberBooster <= 0 || !isInteractive)
+        if (numberBooster <= 0 || !isInteractive || !BoardManager.Instance.IsActive)
         {
             Debug.Log("booster is inactive");
             return;
         }
         base.OnActive();
-        if (numberBooster > 0 )
-        {
-            BoardManager.Instance.Suggest();
-        } 
+        BoardManager.Instance.Suggest();
+        
     }
 }

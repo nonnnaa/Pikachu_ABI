@@ -72,12 +72,15 @@ public class SoundManager : SingletonMono<SoundManager>
             SetMusicBG(SoundBGType.SoundBG1);
         };
         GameManager.Instance.OnLevelStart += SetMusicInGame;
-
+        GameManager.Instance.OnLevelEnd += () =>
+        {
+            TurnOffMusicBG();
+        };
         GameManager.Instance.OnGameWin += () =>
         {
             SetMusicVFX(SoundVFXType.SoundWinGame);
         };
-        GameManager.Instance.OnGameWin += () =>
+        GameManager.Instance.OnGameLose += () =>
         {
             SetMusicVFX(SoundVFXType.SoundLoseGame);
         };
@@ -119,4 +122,6 @@ public class SoundManager : SingletonMono<SoundManager>
         musicVFXVolumn = volume;
         vfxAudioSource.volume = musicVFXVolumn;
     }
+
+    public void TurnOffMusicBG() => bgAudioSource.Pause();
 }

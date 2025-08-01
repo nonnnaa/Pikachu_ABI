@@ -100,11 +100,8 @@ public class Fruit : MonoBehaviour
     
     IEnumerator DelayAnim()
     {
+        OnDeselected();
         yield return new  WaitForSeconds(0.5f);
         gameObject.SetActive(false); 
     }
-    
-
-
-    
 }
