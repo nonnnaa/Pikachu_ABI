@@ -33,11 +33,11 @@ MonoBehaviour:
     count: 6
   - fruitType: 6
     count: 6
-  - fruitType: 18
+  - fruitType: 14
     count: 4
-  - fruitType: 10
+  - fruitType: 15
     count: 4
-  - fruitType: 22
+  - fruitType: 16
     count: 2
   boardData:
   - column:

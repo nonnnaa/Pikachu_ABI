@@ -190,6 +190,13 @@ public class BoardManager : SingletonMono<BoardManager>
         fruitTmp = Instantiate(GetFruit(fruitType), position, Quaternion.identity);
         fruitTmp.transform.SetParent(board);
         fruitTmp.SetCoordinate(coordinates);
+        
+        // Đảm bảo sprite được load đúng cách
+        if (fruitTmp.GetComponent<SpriteRenderer>() != null)
+        {
+            fruitTmp.GetComponent<SpriteRenderer>().sprite = fruitTmp.GetSprite();
+        } ;
+        
         currentFruitBoard[coordinates.y][coordinates.x] =  fruitTmp;
         if(isRandomFruit) currentActiveFruits.Add(coordinates,fruitTmp);
     }
@@ -297,25 +304,25 @@ public class BoardManager : SingletonMono<BoardManager>
     void ShuffleBoardWithActiveFruits()
     {
         List<Fruit> fruitList = currentActiveFruits.Values.ToList();
-
-        foreach (var fruit in fruitList)
-        {
-            Debug.Log(fruit.Coordinate + " + " + fruit.NameType);
-        }
+        
         while (fruitList.Count > 0)
         {
-            
             id1 =  Random.Range(0, fruitList.Count);
             fruit1Tmp = fruitList[id1];
             fruitList.RemoveAt(id1);
-            
             id2 = Random.Range(0, fruitList.Count);
             fruit2Tmp = fruitList[id2];
             fruitList.RemoveAt(id2);
             
+            Vector2Int coordinate1 = fruit1Tmp.Coordinate;
+            Vector2Int coordinate2 = fruit2Tmp.Coordinate;
+            (currentFruitBoard[coordinate1.y][coordinate1.x], currentFruitBoard[coordinate2.y][coordinate2.x]) = (
+                currentFruitBoard[coordinate2.y][coordinate2.x], currentFruitBoard[coordinate1.y][coordinate1.x]);
+            
             Utilities.SwapFruitData(fruit1Tmp, fruit2Tmp);
         }
     }
+    
     private (Vector2Int, Vector2Int) GetSuggest()
     {
         (Vector2Int, Vector2Int)  result = (new Vector2Int(), new Vector2Int());
@@ -332,6 +339,7 @@ public class BoardManager : SingletonMono<BoardManager>
     {
         Debug.Log("Shuffle Size : " + currentActiveFruits.Count);
         ShuffleBoardWithActiveFruits();
+        OnInitCurrentActiveFruits();
         currentCoupleCanConnect = GetTilesCanMatch();
     }
 
@@ -358,12 +366,13 @@ public class BoardManager : SingletonMono<BoardManager>
                 GameManager.Instance.EndLevel();
                 GameManager.Instance.WinGame();
             }
-            Debug.Log(currentActiveFruits.Count);
+            //Debug.Log(currentActiveFruits.Count);
         }
     }
     public void Suggest()
     {
         (Vector2Int key1, Vector2Int key2) = GetSuggest();
+        Debug.Log($"Suggest {key1} + {key2}");
         if (key1 == Vector2Int.zero)
         {
             Debug.Log("NO PAIR OF FRUITS TO CONNECT.");
@@ -395,6 +404,21 @@ public class BoardManager : SingletonMono<BoardManager>
                 fruit2 = fruit;
             }
             fruit.OnSelected();
+        }
+    }
+
+    void OnInitCurrentActiveFruits()
+    {
+        currentActiveFruits.Clear();
+        foreach (var fruits in currentFruitBoard)
+        {
+            foreach (var fruit in fruits)
+            {
+                if (Utilities.IsNormalFruit(fruit.NameType))
+                {
+                    currentActiveFruits.Add(fruit.Coordinate, fruit);
+                }
+            }
         }
     }
     #endregion

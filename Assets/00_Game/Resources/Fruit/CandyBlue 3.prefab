@@ -11,7 +11,7 @@ PrefabInstance:
     - target: {fileID: 183017360375316091, guid: 6681822d38bb9f74ca0f397bbf767f5a, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 1290fc15d3436ae46acf9a794235cecc, type: 2}
+      objectReference: {fileID: 22100000, guid: c3b38616da0298940a64139f9d95e935, type: 2}
     - target: {fileID: 1393836645415585421, guid: 6681822d38bb9f74ca0f397bbf767f5a, type: 3}
       propertyPath: m_Name
       value: CandyBlue 3

@@ -48,7 +48,17 @@ public class Fruit : MonoBehaviour
     [SerializeField] private Animator animator;
     private Vector2Int coordinate;
     private bool isInteractive;
+    
+    // Property để truy cập trực tiếp SpriteRenderer
+    public SpriteRenderer SpriteRenderer => spriteRenderer;
 
+    
+    public RuntimeAnimatorController GetAnimatorController() => animator.runtimeAnimatorController;
+
+    public void SetAnimatorController(RuntimeAnimatorController controller)
+    {
+        animator.runtimeAnimatorController = controller;
+    }
     public void SetSprite(Sprite sprite)
     {
         spriteRenderer.sprite = sprite;
@@ -60,6 +70,20 @@ public class Fruit : MonoBehaviour
     {
         nameType = inNameType;
     }
+    
+    // Hàm debug để kiểm tra sprite
+    public void DebugSpriteInfo()
+    {
+        if (spriteRenderer != null)
+        {
+            Debug.Log($"Fruit {nameType}: Sprite = {spriteRenderer.sprite?.name}, SortingOrder = {spriteRenderer.sortingOrder}, Enabled = {spriteRenderer.enabled}");
+        }
+        else
+        {
+            Debug.LogWarning($"Fruit {nameType}: SpriteRenderer is null!");
+        }
+    }
+    
     public Vector2Int Coordinate => coordinate;
     public Vector2Int SetCoordinate(Vector2Int value) => coordinate = value;
     private void Awake()
@@ -72,7 +96,7 @@ public class Fruit : MonoBehaviour
     }
     public void OnSelected()
     {
-        if (!Utilities.IsNormalFruit(nameType)) return;
+        if (NameType == TileNameType.TileEmpty) return;
         outlineTransform.gameObject.SetActive(true);
         if (animator != null)
         {
@@ -92,7 +116,7 @@ public class Fruit : MonoBehaviour
     }
     public void OnDeselected()
     {
-        if (!Utilities.IsNormalFruit(nameType)) return;
+        if (NameType == TileNameType.TileEmpty) return;
         outlineTransform.gameObject.SetActive(false);
         if (animator != null)
         {
@@ -102,7 +126,7 @@ public class Fruit : MonoBehaviour
     
     public void ShowAnimConnect()
     {
-        if (!Utilities.IsNormalFruit(nameType)) return;
+        if (NameType == TileNameType.TileEmpty) return;
         StartCoroutine(DelayAnim());
     }
     
@@ -111,4 +135,5 @@ public class Fruit : MonoBehaviour
         yield return new  WaitForSeconds(0.3f);
         gameObject.SetActive(false); 
     }
+    
 }

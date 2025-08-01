@@ -167,13 +167,10 @@ public static class Utilities
     
     public static void SwapFruitData(Fruit fruitA, Fruit fruitB)
     {
-        var tempSprite = fruitA.GetSprite();
-        fruitA.SetSprite(fruitB.GetSprite());
-        fruitB.SetSprite(tempSprite);
-
-        var tempType = fruitA.NameType;
-        fruitA.SetNameType(fruitB.NameType);
-        fruitB.SetNameType(tempType);
+        (fruitA.transform.position, fruitB.transform.position) = (fruitB.transform.position, fruitA.transform.position);
+        Vector2Int tempCoord = fruitA.Coordinate;
+        fruitA.SetCoordinate(fruitB.Coordinate);
+        fruitB.SetCoordinate(tempCoord);
     }
 
     
@@ -185,4 +182,10 @@ public static class Utilities
                && fruitType != TileNameType.Block
                &&  fruitType != TileNameType.Ice;
     }
+    
+    static void Swap<T>(ref T a, ref T b)
+    {
+        (a, b) = (b, a);
+    }
+
 }
