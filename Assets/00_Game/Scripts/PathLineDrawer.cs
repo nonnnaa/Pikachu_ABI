@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +7,7 @@ public class PathLineDrawer : SingletonMono<PathLineDrawer>
 {
     public float lineWidth = 0.15f;
     [SerializeField] private Texture[] textures;
-    [SerializeField] private float duration = .3f;
+    [SerializeField] private float duration = .5f;
     [SerializeField] private float fps = 20f;
     private int animationStep;
     private float fpsCounnter;

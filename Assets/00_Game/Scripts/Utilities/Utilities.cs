@@ -182,10 +182,4 @@ public static class Utilities
                && fruitType != TileNameType.Block
                &&  fruitType != TileNameType.Ice;
     }
-    
-    static void Swap<T>(ref T a, ref T b)
-    {
-        (a, b) = (b, a);
-    }
-
 }

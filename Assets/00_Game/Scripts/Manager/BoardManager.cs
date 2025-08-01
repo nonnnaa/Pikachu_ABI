@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -15,7 +16,6 @@ public class BoardManager : SingletonMono<BoardManager>
     private HashSet<(Vector2Int, Vector2Int)> currentCoupleCanConnect =  new HashSet<(Vector2Int, Vector2Int)>();
     private Fruit fruit1, fruit2;
     private float offsetX, offsetY;
-    private Fruit[] fruitprefabs;
     private Dictionary<TileNameType, Fruit> fruitPrefabDictionary = new Dictionary<TileNameType, Fruit>();
     private Dictionary<Collider2D, Fruit> fruitDictionary = new Dictionary<Collider2D, Fruit>();
     private bool canInteractive;
@@ -37,7 +37,6 @@ public class BoardManager : SingletonMono<BoardManager>
         };
         GameManager.Instance.OnLevelEnd += () =>
         {
-            board.gameObject.SetActive(false);
             Despawn();
         };
         GameManager.Instance.OnGamePause += () =>
@@ -86,32 +85,24 @@ public class BoardManager : SingletonMono<BoardManager>
     
     #region Functions
     private Vector2Int cacheV2;
+    List<(Vector3, Vector2Int)> listPos1 = new List<(Vector3, Vector2Int)>();
+    List<(Vector3, Vector2Int)> listPos2 = new List<(Vector3, Vector2Int)>();
     (List<(Vector3, Vector2Int)> ,List<(Vector3, Vector2Int)>)  GetFruitInforFromData(List<List<int>> boardValue)
     {
-        List<(Vector3, Vector2Int)> listPos1 = new List<(Vector3, Vector2Int)>();
-        List<(Vector3, Vector2Int)> listPos2 = new List<(Vector3, Vector2Int)>();
+        listPos1.Clear();
+        listPos2.Clear();
         for (int y = 0; y < row; y++)
         {
             for (int x = 0; x < column; x++)
-            {
-                cacheV3.x = x + offsetX;
-                cacheV3.y = -(y + offsetY);
-                cacheV3.z = 0;
-                cacheV2.x = x;
-                cacheV2.y = y;
-                if (boardValue[y][x] == -1)
-                {
-                    listPos1.Add((cacheV3, cacheV2));
-                } 
-                else
-                {
-                    listPos2.Add((cacheV3, cacheV2));
-                }
+            { ;
+                cacheV3.Set(x + offsetX, -(y + offsetY), 0);
+                cacheV2.Set(x, y);
+                if (boardValue[y][x] == -1) listPos1.Add((cacheV3, cacheV2));
+                else listPos2.Add((cacheV3, cacheV2));
             }
         }
         return (listPos1,  listPos2);
     }
-    
     void OnInit()
     { ;
         currentScore = 0;
@@ -126,15 +117,14 @@ public class BoardManager : SingletonMono<BoardManager>
         offsetX = -(column / 2f) + 0.5f;
         offsetY = -(row / 2f) + 0.5f;
     }
-    
     // Load Fruit tu Resources
     void LoadAllFruits()
     {
-        Fruit[] fruitprefabs = Resources.LoadAll<Fruit>("Fruit");
+        Fruit[] fruits = Resources.LoadAll<Fruit>("Fruit");
         fruitPrefabDictionary = new Dictionary<TileNameType, Fruit>();
-        for (int i=0 ; i<fruitprefabs.Length; i++)
+        foreach (var fruit in fruits)
         {
-            fruitPrefabDictionary[fruitprefabs[i].NameType] = fruitprefabs[i];
+            fruitPrefabDictionary[fruit.NameType] = fruit;
         }
     }
 
@@ -189,40 +179,17 @@ public class BoardManager : SingletonMono<BoardManager>
     {
         fruitTmp = Instantiate(GetFruit(fruitType), position, Quaternion.identity);
         fruitTmp.transform.SetParent(board);
-        fruitTmp.SetCoordinate(coordinates);
-        
-        // Đảm bảo sprite được load đúng cách
-        if (fruitTmp.GetComponent<SpriteRenderer>() != null)
-        {
-            fruitTmp.GetComponent<SpriteRenderer>().sprite = fruitTmp.GetSprite();
-        } ;
-        
+        fruitTmp.SetCoordinate(coordinates); 
         currentFruitBoard[coordinates.y][coordinates.x] =  fruitTmp;
         if(isRandomFruit) currentActiveFruits.Add(coordinates,fruitTmp);
     }
-    // Resize CurrentBoardFruit
-    private void ResizeCurrentBoard()
-    {
-        currentFruitBoard.Clear();
-        for (int i = 0; i < row; i++)
-        {
-            List<Fruit> fruits = new List<Fruit>();
-            for (int j = 0; j < column; j++)
-            {
-                fruits.Add(null);
-            }
-            currentFruitBoard.Add(fruits);
-        }
-    }
-
     // Get Fruit From Value Of Data
     Fruit GetFruit(TileNameType type)
     {
         return fruitPrefabDictionary[type];
     }
-
     // Chuyen coordinate trong ma tran 2 chieu sang toa do thuc te
-    private List<Vector3> GetPositionList(List<Vector2Int> coordinates)
+    private List<Vector3> GetPositionListFromData(List<Vector2Int> coordinates)
     {
         List<Vector3> positionList = new List<Vector3>();
         for (int i = 0; i < coordinates.Count; i++)
@@ -246,7 +213,9 @@ public class BoardManager : SingletonMono<BoardManager>
             }
         }
         currentFruitBoard.Clear();
+        Invoke(nameof(DeactiveBoard), 0.5f);;
     }
+    void DeactiveBoard() => board.gameObject.SetActive(false);
     HashSet<(Vector2Int, Vector2Int)> currentCoupleCache = new HashSet<(Vector2Int, Vector2Int)>();
     private HashSet<(Vector2Int, Vector2Int)> GetTilesCanMatch()
     {
@@ -289,22 +258,25 @@ public class BoardManager : SingletonMono<BoardManager>
         }
         return currentCoupleCache;
     }
-    void RemoveFruitFromCurrentCoupleCanConnect(Vector2Int coordinate1, Vector2Int coordinate2)
+    
+    // Remove fruits when Update Board (Connect)
+    void RemoveFruit(Vector2Int coordinate1, Vector2Int coordinate2)
     {
         currentCoupleCanConnect.Remove((coordinate1, coordinate2));
         currentCoupleCanConnect.Remove((coordinate2, coordinate1));
+        
+        currentActiveFruits.Remove(coordinate1);
+        currentActiveFruits.Remove(coordinate2);
     }
-    void UpdateCurrentActiveFruits (Fruit fr1, Fruit fr2)
-    {
-        currentActiveFruits.Remove(fr1.Coordinate);
-        currentActiveFruits.Remove(fr2.Coordinate);
-    }
+    
+    // Shuffle Handle
     private Fruit fruit1Tmp, fruit2Tmp;
     private int id1, id2;
+    private List<Fruit> fruitList = new List<Fruit>();
     void ShuffleBoardWithActiveFruits()
     {
-        List<Fruit> fruitList = currentActiveFruits.Values.ToList();
-        
+        fruitList.Clear();
+        fruitList = currentActiveFruits.Values.ToList();
         while (fruitList.Count > 0)
         {
             id1 =  Random.Range(0, fruitList.Count);
@@ -322,7 +294,7 @@ public class BoardManager : SingletonMono<BoardManager>
             Utilities.SwapFruitData(fruit1Tmp, fruit2Tmp);
         }
     }
-    
+    // Get Suggest from currentCoupleCanConnect
     private (Vector2Int, Vector2Int) GetSuggest()
     {
         (Vector2Int, Vector2Int)  result = (new Vector2Int(), new Vector2Int());
@@ -333,16 +305,13 @@ public class BoardManager : SingletonMono<BoardManager>
         }
         return result;
     }
-        
     // Call From BoosterBase
     public void Shuffle()
     {
-        Debug.Log("Shuffle Size : " + currentActiveFruits.Count);
         ShuffleBoardWithActiveFruits();
         OnInitCurrentActiveFruits();
         currentCoupleCanConnect = GetTilesCanMatch();
     }
-
     private void ConnectFruits()
     {
         var res = BFS_Solver.BFS(currentFruitBoard, fruit1.Coordinate, fruit2.Coordinate,
@@ -351,12 +320,11 @@ public class BoardManager : SingletonMono<BoardManager>
         {
             fruit1.OnConnected();
             fruit2.OnConnected();
-            RemoveFruitFromCurrentCoupleCanConnect(fruit1.Coordinate, fruit2.Coordinate);
-            UpdateCurrentActiveFruits(fruit1, fruit2);
+            RemoveFruit(fruit1.Coordinate, fruit2.Coordinate);
             currentCoupleCanConnect = GetTilesCanMatch();
             fruit1 = null;
             fruit2 = null;
-            PathLineDrawer.Instance.DrawPath(GetPositionList(res.Item2));
+            PathLineDrawer.Instance.DrawPath(GetPositionListFromData(res.Item2));
             SoundManager.Instance.SetMusicVFX(SoundVFXType.SoundGetPoint);
             currentScore += Random.Range(connectScore, connectScore * 2);
             UpdateScore?.Invoke(currentScore);
@@ -366,13 +334,12 @@ public class BoardManager : SingletonMono<BoardManager>
                 GameManager.Instance.EndLevel();
                 GameManager.Instance.WinGame();
             }
-            //Debug.Log(currentActiveFruits.Count);
         }
     }
     public void Suggest()
     {
         (Vector2Int key1, Vector2Int key2) = GetSuggest();
-        Debug.Log($"Suggest {key1} + {key2}");
+        //Debug.Log($"Suggest {key1} + {key2}");
         if (key1 == Vector2Int.zero)
         {
             Debug.Log("NO PAIR OF FRUITS TO CONNECT.");
@@ -380,17 +347,11 @@ public class BoardManager : SingletonMono<BoardManager>
         }
         fruit1 = currentActiveFruits[key1];
         fruit2 = currentActiveFruits[key2];
-        if (fruit1 != null)
-        {
-            fruit1.OnSelected();
-        }
-        if (fruit2 != null)
-        {
-            fruit2.OnSelected();
-        }
+        if (fruit1 != null) fruit1.OnSelected();
+        if (fruit2 != null) fruit2.OnSelected();
         ConnectFruits();
     }
-    public void OnFruitSelected(Fruit fruit)
+    private void OnFruitSelected(Fruit fruit)
     {
         if (fruit1 != null) fruit1.OnDeselected();
         if (fruit2 != null) fruit2.OnDeselected(); 
@@ -406,7 +367,7 @@ public class BoardManager : SingletonMono<BoardManager>
             fruit.OnSelected();
         }
     }
-
+    // ReInit Current Active Fruits
     void OnInitCurrentActiveFruits()
     {
         currentActiveFruits.Clear();
@@ -414,11 +375,25 @@ public class BoardManager : SingletonMono<BoardManager>
         {
             foreach (var fruit in fruits)
             {
-                if (Utilities.IsNormalFruit(fruit.NameType))
+                if (Utilities.IsNormalFruit(fruit.NameType) && fruit.gameObject.activeInHierarchy)
                 {
                     currentActiveFruits.Add(fruit.Coordinate, fruit);
                 }
             }
+        }
+    }
+    // Resize CurrentBoardFruit
+    private void ResizeCurrentBoard()
+    {
+        currentFruitBoard.Clear();
+        for (int i = 0; i < row; i++)
+        {
+            List<Fruit> fruits = new List<Fruit>();
+            for (int j = 0; j < column; j++)
+            {
+                fruits.Add(null);
+            }
+            currentFruitBoard.Add(fruits);
         }
     }
     #endregion

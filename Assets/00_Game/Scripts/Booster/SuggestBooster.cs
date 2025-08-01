@@ -4,30 +4,17 @@ using UnityEngine;
 
 public class SuggestBooster : BoosterBase
 {
-    private bool isInteract;
-
-    protected override void Start()
-    {
-        base.Start();
-        isInteract = true;
-    }
-
     protected override void OnActive()
     {
-        if (isInteract)
+        if (numberBooster <= 0 || !isInteractive)
         {
-            base.OnActive();
-            if (numberBooster > 0)
-            {
-                BoardManager.Instance.Suggest();
-            }
-            ChangeInteractive();
-            Invoke(nameof(ChangeInteractive), 0.5f);
+            Debug.Log("booster is inactive");
+            return;
         }
-    }
-
-    void ChangeInteractive()
-    {
-        isInteract = !isInteract;
+        base.OnActive();
+        if (numberBooster > 0 )
+        {
+            BoardManager.Instance.Suggest();
+        } 
     }
 }
