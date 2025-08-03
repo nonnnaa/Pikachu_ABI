@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -15,6 +16,8 @@ public class TimeManager : SingletonMono<TimeManager>
     [SerializeField] private List<GameObject> starPos;
     [SerializeField] private int currentTimeGoal;
     [SerializeField] private int currentStar;
+    private bool isTimeEnd;
+    public event Action<float> OnStarDecrease;
     
     public int CurrentStar => currentStar;
     public float GetCurrentTimeLeft() => timeLeft;
@@ -32,7 +35,7 @@ public class TimeManager : SingletonMono<TimeManager>
         startTime = LevelManager.Instance.GetCurrentLevelData().time;
         starTimeGoals = LevelManager.Instance.GetCurrentLevelData().starTimeGoals;
         timeSlider.value = 1;
-        
+        isTimeEnd = false;
         
         float distance = endPos.anchoredPosition.x - startPos.anchoredPosition.x;
         for (int i = 0; i < starTimeGoals.Count; i++)
@@ -52,6 +55,7 @@ public class TimeManager : SingletonMono<TimeManager>
         {
             currentTimeGoal++;
             currentStar--;
+            OnStarDecrease?.Invoke(2f);
         }
         if (timeLeft < 0f)
         {
@@ -62,6 +66,12 @@ public class TimeManager : SingletonMono<TimeManager>
         {
             GameManager.Instance.EndLevel();
             GameManager.Instance.WinGame();
+        }
+
+        if (!isTimeEnd && timeLeft <= 10f)
+        {
+            OnStarDecrease?.Invoke(10f);
+            isTimeEnd = true;
         }
     }
 

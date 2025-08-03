@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,6 +13,7 @@ public class CanvasGamePlay : UICanvas
     
     [SerializeField] private Button pauseButton;
     [SerializeField] private TimeManager timeManager;
+    [SerializeField] private Image alertImage;
     private int[] starsTime; // Thoi gian de tru sao => max la 3 sao
     
     private void Start()
@@ -37,6 +39,9 @@ public class CanvasGamePlay : UICanvas
 
         BoardManager.Instance.UpdateScore += UpdateScore;
         //OnInit();
+
+        TimeManager.Instance.OnStarDecrease += ShowAlert;
+
     }
     private void Update()
     {
@@ -67,4 +72,43 @@ public class CanvasGamePlay : UICanvas
         currentScore = score;
         scoreText.text = currentScore.ToString();
     }
+
+    void ShowAlert(float time)
+    {
+        StartCoroutine(ShowAlertAnimation(time));
+    }
+
+    IEnumerator ShowAlertAnimation(float time)
+    {
+        float duration = time;   // Tổng thời gian nhấp nháy
+        float timer = 0f;
+        float t = 0f;
+        bool fadingIn = true;
+        Color color = alertImage.color;
+        float blinkSpeed = 1.5f;
+        float maxAlpha = 0.5f;
+
+        while (timer < duration)
+        {
+            t += Time.deltaTime * blinkSpeed;
+            timer += Time.deltaTime;
+
+            color.a = fadingIn ? Mathf.Lerp(0f, maxAlpha, t) : Mathf.Lerp(maxAlpha, 0f, t);
+
+            alertImage.color = color;
+
+            if (t >= 1f)
+            {
+                t = 0f;
+                fadingIn = !fadingIn;
+            }
+
+            yield return null;
+        }
+
+        // Kết thúc animation, reset alpha về 0
+        color.a = 0f;
+        alertImage.color = color;
+    }
+
 }
