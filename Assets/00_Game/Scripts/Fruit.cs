@@ -58,14 +58,14 @@ public class Fruit : MonoBehaviour
     }
     private void OnInit()
     {
-        isInteractive = true;
+        isInteractive = true; 
     }
     public void OnSelected()
     {
         if (!isInteractive)  return;
         if (!Utilities.IsNormalFruit(nameType)) return;
         outlineTransform.gameObject.SetActive(true);
-        if (animator != null)
+        if (animator != null && animator.runtimeAnimatorController != null)
         {
             animator.SetTrigger(Constant.FruitAnim.select);
         }
@@ -75,7 +75,7 @@ public class Fruit : MonoBehaviour
         if(!isInteractive) return;
         if (!Utilities.IsNormalFruit(nameType)) return;
         isInteractive = false;
-        if (animator != null)
+        if (animator != null && animator.runtimeAnimatorController !=null)
         {
             animator.ResetTrigger(Constant.FruitAnim.connect);
             animator.SetTrigger(Constant.FruitAnim.connect);
@@ -87,7 +87,7 @@ public class Fruit : MonoBehaviour
         if(!isInteractive) return;
         if (!Utilities.IsNormalFruit(nameType)) return;
         outlineTransform.gameObject.SetActive(false);
-        if (animator != null)
+        if (animator != null && animator.runtimeAnimatorController !=null)
         {
             animator.SetTrigger(Constant.FruitAnim.deSelect);
         }

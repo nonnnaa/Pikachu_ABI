@@ -28,13 +28,10 @@ public class CanvasCompleteGame : UICanvas
         replayButton.onClick.AddListener(OnClickReplayButton);
         nextButton.onClick.AddListener(OnClickNextButton);
     }
-
-
     public override void Open() 
     {
         base.Open();
         OnShowAnim(TimeManager.Instance.CurrentStar);
-        //StartCoroutine(OnScoreShowAnim(BoardManager.Instance.GetCurrentScore()));
     }
 
     void UpdateScore(int score)
@@ -67,8 +64,6 @@ public class CanvasCompleteGame : UICanvas
     private void OnShowAnim(int starNumber)
     {
         titleCanvasText.text = starNumber > 0 ? win : lose;
-        
-        
         UIAnimator.ScaleBounce(this, rectTransform, contentCanvasGroup,
             startScale: 0.5f,
             overshootScale: 1.2f,
@@ -80,7 +75,7 @@ public class CanvasCompleteGame : UICanvas
             onComplete: () =>
             {
                 StartCoroutine(OnScoreShowAnim(BoardManager.Instance.GetCurrentScore()));
-                StartCoroutine(ShowStar(starNumber));
+                if(starNumber > 0) StartCoroutine(ShowStar(starNumber));
             });
     }
 
