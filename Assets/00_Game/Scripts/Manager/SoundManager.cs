@@ -95,8 +95,9 @@ public class SoundManager : SingletonMono<SoundManager>
     }
     public void SetMusicBG(SoundBGType type)
     {
-        //Debug.Log(type);
+        bgAudioSource.Stop();  
         bgAudioSource.clip = soundBGDict[type];
+        bgAudioSource.time = 0f; 
         bgAudioSource.Play();
     }
 
@@ -113,7 +114,9 @@ public class SoundManager : SingletonMono<SoundManager>
 
     public void SetMusicInGame()
     {
+        bgAudioSource.Stop();  
         bgAudioSource.clip = soundInGame;
+        bgAudioSource.time = 0f; 
         bgAudioSource.Play();
     }
     

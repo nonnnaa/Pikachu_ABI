@@ -503,6 +503,7 @@ MonoBehaviour:
   - {fileID: 4575713192360292131}
   - {fileID: 2768975964130076947}
   - {fileID: 4843739373978818879}
+  content: {fileID: 6846272798864614582}
 --- !u!1 &2843698006001350029
 GameObject:
   m_ObjectHideFlags: 0
@@ -990,7 +991,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4940496948056515451
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1151,7 +1152,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8911136939028529153
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1382,7 +1383,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8626865066118787311
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1700,8 +1701,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6380764853707573235}
+  - component: {fileID: 1126716720833543160}
   m_Layer: 5
-  m_Name: CompletePopup
+  m_Name: Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1722,11 +1724,23 @@ RectTransform:
   - {fileID: 831625462182850158}
   m_Father: {fileID: 5063866474856391964}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &1126716720833543160
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6846272798864614582}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7549518661719896275
 GameObject:
   m_ObjectHideFlags: 0

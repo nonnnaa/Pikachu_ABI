@@ -12,6 +12,16 @@ public class CanvasCompleteGame : UICanvas
     [SerializeField] private Button replayButton, nextButton;
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private Animator[] starAnimators;
+    [SerializeField] private GameObject content;
+    private RectTransform rectTransform;
+    private CanvasGroup contentCanvasGroup;
+    
+    protected override void Awake()
+    {
+        base.Awake();
+        rectTransform = content.GetComponent<RectTransform>();
+        contentCanvasGroup = content.GetComponent<CanvasGroup>();
+    }
 
     private void Start()
     {
@@ -23,8 +33,8 @@ public class CanvasCompleteGame : UICanvas
     public override void Open() 
     {
         base.Open();
-        OnStarShowAnim(TimeManager.Instance.CurrentStar);
-        StartCoroutine(OnScoreShowAnim(BoardManager.Instance.GetCurrentScore()));
+        OnShowAnim(TimeManager.Instance.CurrentStar);
+        //StartCoroutine(OnScoreShowAnim(BoardManager.Instance.GetCurrentScore()));
     }
 
     void UpdateScore(int score)
@@ -48,47 +58,87 @@ public class CanvasCompleteGame : UICanvas
         UpdateScore(targetScore);
     }
 
-    
-
-    public void OnStarShowAnim(int starNumber)
+    private AnimationCurve easeOutBack = new AnimationCurve(
+        new Keyframe(0f, 0f),
+        new Keyframe(0.7f, 1.1f), 
+        new Keyframe(1f, 1f)
+    );
+    private AnimationCurve easeInSmooth = AnimationCurve.EaseInOut(0, 0, 1, 1);
+    private void OnShowAnim(int starNumber)
     {
-        if (starNumber > 0)
-        {
-            titleCanvasText.text = win;
-        }
-        else
-        {
-            titleCanvasText.text = lose;
-        }
-        StartCoroutine(ShowStar(starNumber));
+        titleCanvasText.text = starNumber > 0 ? win : lose;
+        
+        
+        UIAnimator.ScaleBounce(this, rectTransform, contentCanvasGroup,
+            startScale: 0.5f,
+            overshootScale: 1.2f,
+            endScale: 1.0f,
+            upDuration: 0.3f,
+            downDuration: 0.2f,
+            curveUp: easeOutBack,
+            curveDown: easeInSmooth,
+            onComplete: () =>
+            {
+                StartCoroutine(OnScoreShowAnim(BoardManager.Instance.GetCurrentScore()));
+                StartCoroutine(ShowStar(starNumber));
+            });
     }
 
     IEnumerator ShowStar(int starNumber)
     {
-        for (int i = 0; i < starAnimators.Length; i++)
+        foreach (var t in starAnimators)
         {
-            starAnimators[i].gameObject.SetActive(false);
+            t.gameObject.SetActive(false);
         }
-        //Debug.Log("Check Log IEnumerator : " + starNumber);
+        yield return new WaitForSeconds(0.1f);
         for(int i = 0; i < starNumber; i++)
         {
             starAnimators[i].gameObject.SetActive(true);
-            //Debug.Log("star animator" + i + ": " + starAnimators[i].gameObject.activeInHierarchy);
             starAnimators[i].ResetTrigger(Show);
             starAnimators[i].SetTrigger(Show);
             yield return new WaitForSeconds(1f);
         }
     }
-
+    AnimationCurve easeOutSmooth = AnimationCurve.EaseInOut(0, 0, 1, 1);  // Co dần đều
+    AnimationCurve easeInBack = new AnimationCurve(
+        new Keyframe(0f, 0f),
+        new Keyframe(0.3f, 0.9f), // co nhẹ lại trước khi tụt
+        new Keyframe(1f, 1f)
+    );
+    
     void OnClickReplayButton()
     {
-        GameManager.Instance.EndLevel();
-        GameManager.Instance.StartLevel(LevelManager.Instance.CurrentLevelID);
+        UIAnimator.ScaleBounce(this, rectTransform, contentCanvasGroup,
+            startScale: 1.0f,           // Bắt đầu từ kích thước gốc
+            overshootScale: 1.1f,       // Tạo hiệu ứng co vào 1 chút
+            endScale: 0.5f,             // Co về nhỏ
+            upDuration: 0.2f,           // Phase co nhẹ vào (optional)
+            downDuration: 0.25f,        // Phase co mạnh về nhỏ
+            curveUp: easeInBack,        // Curve co nhẹ vào
+            curveDown: easeOutSmooth,   // Co dần đều về nhỏ
+            onComplete: () =>
+            {
+                GameManager.Instance.EndLevel();
+                GameManager.Instance.StartLevel(LevelManager.Instance.CurrentLevelID);
+            });
+        
     }
 
     void OnClickNextButton()
     {
-        GameManager.Instance.EndLevel();
-        GameManager.Instance.GoToMainMenu();
+        UIAnimator.ScaleBounce(this, rectTransform, contentCanvasGroup,
+            startScale: 1.0f,           // Bắt đầu từ kích thước gốc
+            overshootScale: 1.1f,       // Tạo hiệu ứng co vào 1 chút
+            endScale: 0.5f,             // Co về nhỏ
+            upDuration: 0.2f,           // Phase co nhẹ vào (optional)
+            downDuration: 0.25f,        // Phase co mạnh về nhỏ
+            curveUp: easeInBack,        // Curve co nhẹ vào
+            curveDown: easeOutSmooth,   // Co dần đều về nhỏ
+            onComplete: () =>
+            {
+                GameManager.Instance.EndLevel();
+                GameManager.Instance.GoToMainMenu();
+            });
+        
     }
 }

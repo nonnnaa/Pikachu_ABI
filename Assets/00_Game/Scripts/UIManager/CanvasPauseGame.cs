@@ -6,6 +6,7 @@ public class CanvasPauseGame : UICanvas
     [SerializeField] private Slider musicBGSlider, musicVFXSlider;
     [SerializeField] private Button closeButton, replayButton, quitButton;
     [SerializeField] private GameObject content;
+    [SerializeField] private Image panelImage;
     private RectTransform rectTransform;
     private CanvasGroup canvasGroup;
     private bool canOpen;
@@ -35,6 +36,9 @@ public class CanvasPauseGame : UICanvas
         if (!canOpen) return;
         base.Open();
         canOpen = false;
+        
+        
+        UIAnimator.Fade(this, panelImage, 0f, .7f);
         UIAnimator.SlideAndFade(this, rectTransform, canvasGroup,
             isShow: true,
             direction: UIAnimator.SlideDirection.Down);
@@ -48,6 +52,7 @@ public class CanvasPauseGame : UICanvas
     void OnClickCloseButton()
     {
         canOpen = true;
+        UIAnimator.Fade(this, panelImage, .7f, 0f);
         UIAnimator.SlideAndFade(this, rectTransform, canvasGroup,
             isShow: false,
             direction: UIAnimator.SlideDirection.Up,
@@ -59,12 +64,25 @@ public class CanvasPauseGame : UICanvas
     }
     void OnClickReplayButton()
     {
-        GameManager.Instance.EndLevel();
-        GameManager.Instance.StartLevel(LevelManager.Instance.CurrentLevelID);
+        UIAnimator.SlideAndFade(this, rectTransform, canvasGroup,
+            isShow: false,
+            direction: UIAnimator.SlideDirection.Up,
+            onComplete: () =>
+            {
+                GameManager.Instance.EndLevel();
+                GameManager.Instance.StartLevel(LevelManager.Instance.CurrentLevelID);
+            });
+        
     }
     void OnClickQuitButton()
     {
-        GameManager.Instance.EndLevel();
-        GameManager.Instance.GoToMainMenu();
+        UIAnimator.SlideAndFade(this, rectTransform, canvasGroup,
+            isShow: false,
+            direction: UIAnimator.SlideDirection.Up,
+            onComplete: () =>
+            {
+                GameManager.Instance.EndLevel();
+                GameManager.Instance.GoToMainMenu();
+            });
     }
 }
