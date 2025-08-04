@@ -326,7 +326,7 @@ MonoBehaviour:
   numberBoosterText: {fileID: 738530155232425528}
   boosterButton: {fileID: 277027032518105813}
   boosterImage: {fileID: 8083367356752627776}
-  timeLockBooster: 3
+  timeLockBooster: 1
   isInteractive: 0
 --- !u!1 &1181823040462824105
 GameObject:
@@ -2384,7 +2384,7 @@ MonoBehaviour:
   numberBoosterText: {fileID: 6737147506287375546}
   boosterButton: {fileID: 3884647569037655525}
   boosterImage: {fileID: 745531992991857594}
-  timeLockBooster: 3
+  timeLockBooster: 1
   isInteractive: 0
 --- !u!1 &5519210570682317505
 GameObject:
@@ -2527,7 +2527,7 @@ MonoBehaviour:
   numberBoosterText: {fileID: 3200249797216618492}
   boosterButton: {fileID: 7773675817315213784}
   boosterImage: {fileID: 3526663424187643074}
-  timeLockBooster: 3
+  timeLockBooster: 1
   isInteractive: 0
   timeUpAmout: 10
 --- !u!1 &5777401331283453261

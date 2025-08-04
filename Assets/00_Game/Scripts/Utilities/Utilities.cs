@@ -132,25 +132,6 @@ public static class Utilities
         UnityEditor.AssetDatabase.Refresh();
 #endif
     }
-    
-    public static void PrintGrid(int[,] grid)
-    {
-        int rows = grid.GetLength(0);
-        int cols = grid.GetLength(1);
-        string result = "";
-
-        for (int i = 0; i < rows; i++)
-        {
-            string row = "";
-            for (int j = 0; j < cols; j++)
-            {
-                row += grid[i, j] + " ";
-            }
-            result += row.TrimEnd() + "\n";
-        }
-
-        Debug.Log(result);
-    }
 
     
     public static bool IsFruitsValidToConnect(Fruit fruit1Input, Fruit fruit2Input)

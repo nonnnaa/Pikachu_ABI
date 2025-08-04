@@ -30,9 +30,9 @@ MonoBehaviour:
   - fruitType: 5
     count: 4
   - fruitType: 4
-    count: 4
+    count: 2
   - fruitType: 6
-    count: 6
+    count: 4
   boardData:
   - column:
     - x: 0
@@ -165,10 +165,10 @@ MonoBehaviour:
       value: 0
     - x: 5
       y: 1
-      value: -1
+      value: 1
     - x: 5
       y: 2
-      value: -1
+      value: 2
     - x: 5
       y: 3
       value: -1
@@ -190,10 +190,10 @@ MonoBehaviour:
       value: 0
     - x: 6
       y: 1
-      value: -1
+      value: 2
     - x: 6
       y: 2
-      value: -1
+      value: 1
     - x: 6
       y: 3
       value: -1

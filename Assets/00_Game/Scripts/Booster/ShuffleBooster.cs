@@ -11,8 +11,7 @@ public class ShuffleBooster : BoosterBase
             return;
         }
         base.OnActive();
-        Debug.Log("ShuffleBooster: OnActive");
+        //Debug.Log("ShuffleBooster: OnActive");
         BoardManager.Instance.Shuffle();
-        
     }
 }
