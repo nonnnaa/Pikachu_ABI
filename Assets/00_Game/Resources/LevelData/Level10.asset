@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level10
   m_EditorClassIdentifier: 
   levelId: 10
-  row: 14
+  row: 12
   column: 8
   time: 1000
   targetScore: 1000
@@ -28,10 +28,6 @@ MonoBehaviour:
   - fruitType: 4
     count: 4
   - fruitType: 5
-    count: 4
-  - fruitType: 7
-    count: 4
-  - fruitType: 13
     count: 4
   - fruitType: 14
     count: 2
@@ -109,14 +105,14 @@ MonoBehaviour:
       value: -1
     - x: 1
       y: 3
-      value: 100
-    - x: 1
-      y: 4
-      value: 100
-    - x: 1
-      y: 5
       value: -1
     - x: 1
+      y: 4
+      value: -1
+    - x: 1
+      y: 5
+      value: -1
+    - x: 1
       y: 6
       value: 100
     - x: 1
@@ -184,10 +180,10 @@ MonoBehaviour:
       value: -1
     - x: 4
       y: 3
-      value: -1
+      value: 100
     - x: 4
       y: 4
-      value: -1
+      value: 100
     - x: 4
       y: 5
       value: -1
@@ -228,7 +224,7 @@ MonoBehaviour:
       value: 0
     - x: 6
       y: 1
-      value: 101
+      value: -1
     - x: 6
       y: 2
       value: -1
@@ -243,7 +239,7 @@ MonoBehaviour:
       value: -1
     - x: 6
       y: 6
-      value: 101
+      value: -1
     - x: 6
       y: 7
       value: 0
@@ -253,172 +249,122 @@ MonoBehaviour:
       value: 0
     - x: 7
       y: 1
-      value: 101
+      value: -1
     - x: 7
       y: 2
       value: -1
     - x: 7
-      y: 3
-      value: -1
-    - x: 7
-      y: 4
-      value: -1
-    - x: 7
-      y: 5
-      value: -1
-    - x: 7
-      y: 6
-      value: 101
-    - x: 7
-      y: 7
-      value: 0
-  - column:
-    - x: 8
-      y: 0
-      value: 0
-    - x: 8
-      y: 1
-      value: -1
-    - x: 8
-      y: 2
-      value: -1
-    - x: 8
-      y: 3
-      value: -1
-    - x: 8
-      y: 4
-      value: -1
-    - x: 8
-      y: 5
-      value: -1
-    - x: 8
-      y: 6
-      value: -1
-    - x: 8
-      y: 7
-      value: 0
-  - column:
-    - x: 9
-      y: 0
-      value: 0
-    - x: 9
-      y: 1
-      value: -1
-    - x: 9
-      y: 2
-      value: -1
-    - x: 9
-      y: 3
-      value: -1
-    - x: 9
-      y: 4
-      value: -1
-    - x: 9
-      y: 5
-      value: -1
-    - x: 9
-      y: 6
-      value: -1
-    - x: 9
-      y: 7
-      value: 0
-  - column:
-    - x: 10
-      y: 0
-      value: 0
-    - x: 10
-      y: 1
-      value: -1
-    - x: 10
-      y: 2
-      value: -1
-    - x: 10
-      y: 3
-      value: -1
-    - x: 10
-      y: 4
-      value: -1
-    - x: 10
-      y: 5
-      value: -1
-    - x: 10
-      y: 6
-      value: -1
-    - x: 10
-      y: 7
-      value: 0
-  - column:
-    - x: 11
-      y: 0
-      value: 0
-    - x: 11
-      y: 1
-      value: -1
-    - x: 11
-      y: 2
-      value: -1
-    - x: 11
-      y: 3
-      value: -1
-    - x: 11
-      y: 4
-      value: -1
-    - x: 11
-      y: 5
-      value: -1
-    - x: 11
-      y: 6
-      value: -1
-    - x: 11
-      y: 7
-      value: 0
-  - column:
-    - x: 12
-      y: 0
-      value: 0
-    - x: 12
-      y: 1
-      value: 100
-    - x: 12
-      y: 2
-      value: -1
-    - x: 12
       y: 3
       value: 100
-    - x: 12
+    - x: 7
       y: 4
       value: 100
-    - x: 12
+    - x: 7
       y: 5
       value: -1
-    - x: 12
+    - x: 7
       y: 6
-      value: 100
-    - x: 12
+      value: -1
+    - x: 7
       y: 7
       value: 0
   - column:
-    - x: 13
+    - x: 8
       y: 0
       value: 0
-    - x: 13
+    - x: 8
+      y: 1
+      value: -1
+    - x: 8
+      y: 2
+      value: -1
+    - x: 8
+      y: 3
+      value: -1
+    - x: 8
+      y: 4
+      value: -1
+    - x: 8
+      y: 5
+      value: -1
+    - x: 8
+      y: 6
+      value: -1
+    - x: 8
+      y: 7
+      value: 0
+  - column:
+    - x: 9
+      y: 0
+      value: 0
+    - x: 9
+      y: 1
+      value: -1
+    - x: 9
+      y: 2
+      value: -1
+    - x: 9
+      y: 3
+      value: -1
+    - x: 9
+      y: 4
+      value: -1
+    - x: 9
+      y: 5
+      value: -1
+    - x: 9
+      y: 6
+      value: -1
+    - x: 9
+      y: 7
+      value: 0
+  - column:
+    - x: 10
+      y: 0
+      value: 0
+    - x: 10
+      y: 1
+      value: 100
+    - x: 10
+      y: 2
+      value: -1
+    - x: 10
+      y: 3
+      value: -1
+    - x: 10
+      y: 4
+      value: -1
+    - x: 10
+      y: 5
+      value: -1
+    - x: 10
+      y: 6
+      value: 100
+    - x: 10
+      y: 7
+      value: 0
+  - column:
+    - x: 11
+      y: 0
+      value: 0
+    - x: 11
       y: 1
       value: 0
-    - x: 13
+    - x: 11
       y: 2
       value: 0
-    - x: 13
+    - x: 11
       y: 3
       value: 0
-    - x: 13
+    - x: 11
       y: 4
       value: 0
-    - x: 13
+    - x: 11
       y: 5
       value: 0
-    - x: 13
+    - x: 11
       y: 6
       value: 0
-    - x: 13
+    - x: 11
       y: 7
       value: 0

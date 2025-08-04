@@ -14,6 +14,56 @@ public class LevelManager : SingletonMono<LevelManager>
     private Dictionary<int,Level> levelMapping;
     private bool canInteractive;
     public int CurrentLevelID => currentLevelID;
+    
+    private LevelProgression progression;
+    
+    private void LoadProgression()
+    {
+        progression = SaveLoadManager.Instance.LoadLevelProgress();
+        // Nếu lần đầu chơi, mở khóa level 1
+        if (progression.levels.Count == 0)
+        {
+            foreach (var kvp in levelMapping)
+            {
+                var data = new LevelProgressData
+                {
+                    levelId = kvp.Key,
+                    isUnlock = (kvp.Key == 1),
+                    stars = 0
+                };
+                progression.levels.Add(data);
+            }
+            SaveProgression(); // Save lại file khởi tạo
+        }
+    }
+    public bool HasLevel(int levelId) => levelMapping.ContainsKey(levelId);
+    public Level GetLevel(int levelId) => levelMapping[levelId];
+
+    private void ApplyProgressionToLevels()
+    {
+        foreach (var data in progression.levels)
+        {
+            if (levelMapping.ContainsKey(data.levelId))
+            {
+                levelMapping[data.levelId].SetUnlock(data.isUnlock);
+                levelMapping[data.levelId].SetStars(data.stars);
+            }
+        }
+    }
+
+    public void SaveProgression()
+    {
+        // Cập nhật lại progression từ Level instances trong scene
+        foreach (var data in progression.levels)
+        {
+            if (levelMapping.TryGetValue(data.levelId, out Level level))
+            {
+                data.isUnlock = level.IsUnlock;
+                data.stars = level.GetStars();
+            }
+        }
+        SaveLoadManager.Instance.SaveLevelProgress(progression);
+    }
     public LevelData GetCurrentLevelData()
     {
         return currentLevelData;
@@ -24,6 +74,9 @@ public class LevelManager : SingletonMono<LevelManager>
         LoadAllLevelData();
         GetAllLevelInMap();
         //OnInit();
+        LoadProgression(); // <-- PHẢI gọi chỗ này
+    
+        ApplyProgressionToLevels();
         levelColliderMapping =  new Dictionary<Collider2D, Level>();
         GameManager.Instance.OnLevelStart += () =>
         {
@@ -35,8 +88,27 @@ public class LevelManager : SingletonMono<LevelManager>
             levelParent.gameObject.SetActive(true);
             canInteractive = true;
         };
+        GameManager.Instance.OnGameWin += OnGameWinHandler;
     }
-    
+    private void OnGameWinHandler()
+    {
+        var currentLevel = GetCurrentLevel();
+        if (currentLevel.GetStars() < 3) // Giả sử win game là đạt 3 sao
+        {
+            currentLevel.SetStars(3);
+        }
+
+        int nextLevelId = currentLevel.GetLevelID() + 1;
+        if (HasLevel(nextLevelId))
+        {
+            var nextLevel = GetLevel(nextLevelId);
+            if (!nextLevel.IsUnlock)
+            {
+                nextLevel.SetUnlock(true);
+            }
+        }
+        SaveProgression();
+    }
     void LoadAllLevelData()
     {
         var levelDatas = Resources.LoadAll<LevelData>(levelDataPath);

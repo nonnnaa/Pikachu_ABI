@@ -176,7 +176,6 @@ public class BoardManager : SingletonMono<BoardManager>
         fruitTmp.transform.SetParent(board);
         fruitTmp.SetCoordinate(coordinates); 
         currentFruitBoard[coordinates.y][coordinates.x] =  fruitTmp;
-        //if(isRandomFruit) currentActiveFruits.Add(coordinates,fruitTmp);
     }
     // Get Fruit From Value Of Data
     Fruit GetFruit(TileNameType type)
@@ -187,9 +186,9 @@ public class BoardManager : SingletonMono<BoardManager>
     private List<Vector3> GetPositionListFromData(List<Vector2Int> coordinates)
     {
         List<Vector3> positionList = new List<Vector3>();
-        for (int i = 0; i < coordinates.Count; i++)
+        foreach (var item in coordinates)
         {
-            Vector3 position = currentFruitBoard[coordinates[i].y][coordinates[i].x].transform.position;
+            Vector3 position = currentFruitBoard[item.y][item.x].transform.position;
             Vector3 newPos = new Vector3(position.x, position.y, -1);
             positionList.Add(newPos);
         }
@@ -264,7 +263,6 @@ public class BoardManager : SingletonMono<BoardManager>
         currentActiveFruits.Remove(coordinate2);
         currentInactiveFruits.Add(coordinate1);
         currentInactiveFruits.Add(coordinate2);
-        
         currentCoupleCanConnect = GetTilesCanMatch();
     }
     
@@ -292,9 +290,6 @@ public class BoardManager : SingletonMono<BoardManager>
             Utilities.SwapFruitData(fruitA, fruitB);
         }
     }
-
-
-
     // Get Suggest from currentCoupleCanConnect
     private (Vector2Int, Vector2Int) GetSuggest()
     {
@@ -313,11 +308,9 @@ public class BoardManager : SingletonMono<BoardManager>
         ShuffleBoardWithActiveFruits();
         OnInitCurrentActiveFruits();
         currentCoupleCanConnect = GetTilesCanMatch();
-
         int cnt = 0;
-        while (currentCoupleCanConnect.Count <= 0 && cnt++ < 50)
+        while (currentCoupleCanConnect.Count <= 0 && cnt++ < 100)
         {
-            
             ShuffleBoardWithActiveFruits();
             OnInitCurrentActiveFruits();
             currentCoupleCanConnect = GetTilesCanMatch();
@@ -339,7 +332,6 @@ public class BoardManager : SingletonMono<BoardManager>
             SoundManager.Instance.SetMusicVFX(SoundVFXType.SoundGetPoint);
             currentScore += Random.Range(connectScore, connectScore * 2);
             UpdateScore?.Invoke(currentScore);
-            
             Debug.Log(currentActiveFruits.Count);
             if (currentActiveFruits.Count <= 0)
             {
@@ -347,7 +339,6 @@ public class BoardManager : SingletonMono<BoardManager>
                 GameManager.Instance.WinGame();
                 return;
             }
-
             if (currentCoupleCanConnect.Count <= 0)
             {
                 Shuffle();

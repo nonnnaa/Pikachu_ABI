@@ -13,7 +13,6 @@ public class CanvasPrePlay : UICanvas
     // Lấy rectTransform & canvasGroup của content
     private RectTransform rectTransform;
     private CanvasGroup canvasGroup;
-
     protected override void Awake()
     {
         base.Awake();

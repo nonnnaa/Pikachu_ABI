@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelId: 18
   row: 12
-  column: 9
-  time: 1000
+  column: 8
+  time: 600
   targetScore: 100
   starTimeGoals: 2c010000c800000064000000
   randomFruitCounts:
@@ -26,11 +26,11 @@ MonoBehaviour:
   - fruitType: 3
     count: 2
   - fruitType: 7
-    count: 4
+    count: 2
   - fruitType: 11
-    count: 4
+    count: 2
   - fruitType: 13
-    count: 4
+    count: 2
   - fruitType: 14
     count: 2
   - fruitType: 15
@@ -44,7 +44,7 @@ MonoBehaviour:
   - fruitType: 19
     count: 2
   - fruitType: 20
-    count: 4
+    count: 2
   - fruitType: 21
     count: 2
   - fruitType: 22
@@ -56,17 +56,17 @@ MonoBehaviour:
   - fruitType: 25
     count: 2
   - fruitType: 26
-    count: 2
+    count: 4
   - fruitType: 27
-    count: 2
+    count: 4
   - fruitType: 28
     count: 4
   - fruitType: 29
     count: 4
   - fruitType: 30
-    count: 2
+    count: 4
   - fruitType: 31
-    count: 2
+    count: 4
   boardData:
   - column:
     - x: 0
@@ -93,16 +93,13 @@ MonoBehaviour:
     - x: 0
       y: 7
       value: 0
-    - x: 0
-      y: 8
-      value: 0
   - column:
     - x: 1
       y: 0
       value: 0
     - x: 1
       y: 1
-      value: 100
+      value: -1
     - x: 1
       y: 2
       value: -1
@@ -120,9 +117,6 @@ MonoBehaviour:
       value: -1
     - x: 1
       y: 7
-      value: 100
-    - x: 1
-      y: 8
       value: 0
   - column:
     - x: 2
@@ -148,9 +142,6 @@ MonoBehaviour:
       value: -1
     - x: 2
       y: 7
-      value: -1
-    - x: 2
-      y: 8
       value: 0
   - column:
     - x: 3
@@ -176,9 +167,6 @@ MonoBehaviour:
       value: -1
     - x: 3
       y: 7
-      value: -1
-    - x: 3
-      y: 8
       value: 0
   - column:
     - x: 4
@@ -192,21 +180,18 @@ MonoBehaviour:
       value: -1
     - x: 4
       y: 3
-      value: 100
+      value: -1
     - x: 4
       y: 4
-      value: 100
+      value: -1
     - x: 4
       y: 5
-      value: 100
+      value: -1
     - x: 4
       y: 6
       value: -1
     - x: 4
       y: 7
-      value: -1
-    - x: 4
-      y: 8
       value: 0
   - column:
     - x: 5
@@ -232,9 +217,6 @@ MonoBehaviour:
       value: -1
     - x: 5
       y: 7
-      value: -1
-    - x: 5
-      y: 8
       value: 0
   - column:
     - x: 6
@@ -260,9 +242,6 @@ MonoBehaviour:
       value: -1
     - x: 6
       y: 7
-      value: -1
-    - x: 6
-      y: 8
       value: 0
   - column:
     - x: 7
@@ -276,21 +255,18 @@ MonoBehaviour:
       value: -1
     - x: 7
       y: 3
-      value: 100
+      value: -1
     - x: 7
       y: 4
-      value: 100
+      value: -1
     - x: 7
       y: 5
-      value: 100
+      value: -1
     - x: 7
       y: 6
       value: -1
     - x: 7
       y: 7
-      value: -1
-    - x: 7
-      y: 8
       value: 0
   - column:
     - x: 8
@@ -316,9 +292,6 @@ MonoBehaviour:
       value: -1
     - x: 8
       y: 7
-      value: -1
-    - x: 8
-      y: 8
       value: 0
   - column:
     - x: 9
@@ -344,9 +317,6 @@ MonoBehaviour:
       value: -1
     - x: 9
       y: 7
-      value: -1
-    - x: 9
-      y: 8
       value: 0
   - column:
     - x: 10
@@ -354,7 +324,7 @@ MonoBehaviour:
       value: 0
     - x: 10
       y: 1
-      value: 100
+      value: -1
     - x: 10
       y: 2
       value: -1
@@ -372,9 +342,6 @@ MonoBehaviour:
       value: -1
     - x: 10
       y: 7
-      value: 100
-    - x: 10
-      y: 8
       value: 0
   - column:
     - x: 11
@@ -400,7 +367,4 @@ MonoBehaviour:
       value: 0
     - x: 11
       y: 7
-      value: 0
-    - x: 11
-      y: 8
       value: 0

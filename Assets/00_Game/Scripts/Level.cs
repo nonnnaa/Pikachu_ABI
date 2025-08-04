@@ -62,4 +62,22 @@ public class Level : MonoBehaviour
         return levelData;
     }
     public int GetLevelID() => levelId;
+    
+    public void SetUnlock(bool unlock)
+    {
+        isUnlock = unlock;
+        lockLevel.SetActive(!isUnlock);
+        number.SetActive(isUnlock);
+    }
+
+    public void SetStars(int starCount)
+    {
+        stars = starCount;
+        for (int i = 0; i < starsSprite.Length; i++)
+        {
+            starsSprite[i].gameObject.SetActive(i < stars);
+        }
+    }
+
+    public int GetStars() => stars;
 }

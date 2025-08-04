@@ -15,7 +15,7 @@ MonoBehaviour:
   levelId: 20
   row: 14
   column: 9
-  time: 1500
+  time: 1000
   targetScore: 100
   starTimeGoals: 2c010000c800000064000000
   randomFruitCounts:

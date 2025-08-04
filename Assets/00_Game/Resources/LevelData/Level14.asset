@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: Level14
   m_EditorClassIdentifier: 
   levelId: 14
-  row: 13
-  column: 10
+  row: 12
+  column: 8
   time: 300
   targetScore: 900
   starTimeGoals: c80000009600000064000000
   randomFruitCounts:
   - fruitType: 1
-    count: 10
+    count: 4
   - fruitType: 2
     count: 2
   - fruitType: 3
@@ -37,8 +37,6 @@ MonoBehaviour:
     count: 2
   - fruitType: 9
     count: 2
-  - fruitType: 10
-    count: 10
   - fruitType: 11
     count: 2
   - fruitType: 12
@@ -55,19 +53,15 @@ MonoBehaviour:
     count: 4
   - fruitType: 18
     count: 4
-  - fruitType: 19
-    count: 6
-  - fruitType: 20
-    count: 6
   boardData:
   - column:
     - x: 0
       y: 0
-      value: 100
-    - x: 0
-      y: 1
       value: 0
     - x: 0
+      y: 1
+      value: 0
+    - x: 0
       y: 2
       value: 0
     - x: 0
@@ -85,135 +79,105 @@ MonoBehaviour:
     - x: 0
       y: 7
       value: 0
-    - x: 0
-      y: 8
+  - column:
+    - x: 1
+      y: 0
       value: 0
-    - x: 0
-      y: 9
+    - x: 1
+      y: 1
+      value: -1
+    - x: 1
+      y: 2
+      value: -1
+    - x: 1
+      y: 3
+      value: -1
+    - x: 1
+      y: 4
+      value: -1
+    - x: 1
+      y: 5
+      value: -1
+    - x: 1
+      y: 6
+      value: -1
+    - x: 1
+      y: 7
+      value: 0
+  - column:
+    - x: 2
+      y: 0
+      value: 0
+    - x: 2
+      y: 1
+      value: -1
+    - x: 2
+      y: 2
+      value: -1
+    - x: 2
+      y: 3
+      value: -1
+    - x: 2
+      y: 4
+      value: -1
+    - x: 2
+      y: 5
+      value: -1
+    - x: 2
+      y: 6
+      value: -1
+    - x: 2
+      y: 7
+      value: 0
+  - column:
+    - x: 3
+      y: 0
+      value: 0
+    - x: 3
+      y: 1
+      value: -1
+    - x: 3
+      y: 2
+      value: -1
+    - x: 3
+      y: 3
+      value: -1
+    - x: 3
+      y: 4
+      value: -1
+    - x: 3
+      y: 5
+      value: -1
+    - x: 3
+      y: 6
+      value: -1
+    - x: 3
+      y: 7
+      value: 0
+  - column:
+    - x: 4
+      y: 0
+      value: 0
+    - x: 4
+      y: 1
+      value: -1
+    - x: 4
+      y: 2
+      value: -1
+    - x: 4
+      y: 3
       value: 100
-  - column:
-    - x: 1
-      y: 0
-      value: 0
-    - x: 1
-      y: 1
-      value: -1
-    - x: 1
-      y: 2
-      value: -1
-    - x: 1
-      y: 3
-      value: -1
-    - x: 1
-      y: 4
-      value: -1
-    - x: 1
-      y: 5
-      value: -1
-    - x: 1
-      y: 6
-      value: -1
-    - x: 1
-      y: 7
-      value: -1
-    - x: 1
-      y: 8
-      value: -1
-    - x: 1
-      y: 9
-      value: 0
-  - column:
-    - x: 2
-      y: 0
-      value: 0
-    - x: 2
-      y: 1
-      value: -1
-    - x: 2
-      y: 2
-      value: -1
-    - x: 2
-      y: 3
-      value: -1
-    - x: 2
-      y: 4
-      value: -1
-    - x: 2
-      y: 5
-      value: -1
-    - x: 2
-      y: 6
-      value: -1
-    - x: 2
-      y: 7
-      value: -1
-    - x: 2
-      y: 8
-      value: -1
-    - x: 2
-      y: 9
-      value: 0
-  - column:
-    - x: 3
-      y: 0
-      value: 0
-    - x: 3
-      y: 1
-      value: -1
-    - x: 3
-      y: 2
-      value: -1
-    - x: 3
-      y: 3
-      value: -1
-    - x: 3
-      y: 4
-      value: -1
-    - x: 3
-      y: 5
-      value: -1
-    - x: 3
-      y: 6
-      value: -1
-    - x: 3
-      y: 7
-      value: -1
-    - x: 3
-      y: 8
-      value: -1
-    - x: 3
-      y: 9
-      value: 0
-  - column:
-    - x: 4
-      y: 0
-      value: 0
-    - x: 4
-      y: 1
-      value: -1
-    - x: 4
-      y: 2
-      value: -1
-    - x: 4
-      y: 3
-      value: -1
     - x: 4
       y: 4
       value: 100
     - x: 4
       y: 5
-      value: 100
-    - x: 4
-      y: 6
       value: -1
     - x: 4
-      y: 7
+      y: 6
       value: -1
     - x: 4
-      y: 8
-      value: -1
-    - x: 4
-      y: 9
+      y: 7
       value: 0
   - column:
     - x: 5
@@ -239,12 +203,6 @@ MonoBehaviour:
       value: -1
     - x: 5
       y: 7
-      value: -1
-    - x: 5
-      y: 8
-      value: -1
-    - x: 5
-      y: 9
       value: 0
   - column:
     - x: 6
@@ -255,89 +213,71 @@ MonoBehaviour:
       value: -1
     - x: 6
       y: 2
-      value: -1
-    - x: 6
-      y: 3
       value: 100
     - x: 6
+      y: 3
+      value: -1
+    - x: 6
       y: 4
       value: -1
     - x: 6
       y: 5
-      value: -1
-    - x: 6
-      y: 6
       value: 100
     - x: 6
-      y: 7
+      y: 6
       value: -1
     - x: 6
-      y: 8
-      value: -1
-    - x: 6
-      y: 9
-      value: 0
-  - column:
-    - x: 7
-      y: 0
-      value: 0
-    - x: 7
-      y: 1
-      value: -1
-    - x: 7
-      y: 2
-      value: -1
-    - x: 7
-      y: 3
-      value: -1
-    - x: 7
-      y: 4
-      value: -1
-    - x: 7
-      y: 5
-      value: -1
-    - x: 7
-      y: 6
-      value: -1
-    - x: 7
       y: 7
-      value: -1
-    - x: 7
-      y: 8
-      value: -1
-    - x: 7
-      y: 9
       value: 0
   - column:
-    - x: 8
+    - x: 7
       y: 0
       value: 0
-    - x: 8
+    - x: 7
       y: 1
       value: -1
-    - x: 8
+    - x: 7
       y: 2
       value: -1
-    - x: 8
+    - x: 7
       y: 3
-      value: -1
-    - x: 8
+      value: 100
+    - x: 7
       y: 4
       value: 100
+    - x: 7
+      y: 5
+      value: -1
+    - x: 7
+      y: 6
+      value: -1
+    - x: 7
+      y: 7
+      value: 0
+  - column:
+    - x: 8
+      y: 0
+      value: 0
+    - x: 8
+      y: 1
+      value: -1
+    - x: 8
+      y: 2
+      value: -1
+    - x: 8
+      y: 3
+      value: -1
+    - x: 8
+      y: 4
+      value: -1
     - x: 8
       y: 5
-      value: 100
+      value: -1
     - x: 8
       y: 6
       value: -1
     - x: 8
       y: 7
-      value: -1
-    - x: 8
-      y: 8
-      value: -1
-    - x: 8
-      y: 9
       value: 0
   - column:
     - x: 9
@@ -363,12 +303,6 @@ MonoBehaviour:
       value: -1
     - x: 9
       y: 7
-      value: -1
-    - x: 9
-      y: 8
-      value: -1
-    - x: 9
-      y: 9
       value: 0
   - column:
     - x: 10
@@ -394,12 +328,6 @@ MonoBehaviour:
       value: -1
     - x: 10
       y: 7
-      value: -1
-    - x: 10
-      y: 8
-      value: -1
-    - x: 10
-      y: 9
       value: 0
   - column:
     - x: 11
@@ -407,59 +335,22 @@ MonoBehaviour:
       value: 0
     - x: 11
       y: 1
-      value: -1
+      value: 0
     - x: 11
       y: 2
-      value: -1
+      value: 0
     - x: 11
       y: 3
-      value: -1
+      value: 0
     - x: 11
       y: 4
-      value: -1
+      value: 0
     - x: 11
       y: 5
-      value: -1
+      value: 0
     - x: 11
       y: 6
-      value: -1
+      value: 0
     - x: 11
       y: 7
-      value: -1
-    - x: 11
-      y: 8
-      value: -1
-    - x: 11
-      y: 9
       value: 0
-  - column:
-    - x: 12
-      y: 0
-      value: 100
-    - x: 12
-      y: 1
-      value: 0
-    - x: 12
-      y: 2
-      value: 0
-    - x: 12
-      y: 3
-      value: 0
-    - x: 12
-      y: 4
-      value: 0
-    - x: 12
-      y: 5
-      value: 0
-    - x: 12
-      y: 6
-      value: 0
-    - x: 12
-      y: 7
-      value: 0
-    - x: 12
-      y: 8
-      value: 0
-    - x: 12
-      y: 9
-      value: 100

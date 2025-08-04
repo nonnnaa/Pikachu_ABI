@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelId: 12
   row: 10
-  column: 9
+  column: 8
   time: 100
   targetScore: 100
   starTimeGoals: 1e000000140000000a000000
@@ -39,8 +39,6 @@ MonoBehaviour:
     count: 8
   - fruitType: 2
     count: 8
-  - fruitType: 3
-    count: 8
   boardData:
   - column:
     - x: 0
@@ -60,15 +58,12 @@ MonoBehaviour:
       value: 100
     - x: 0
       y: 5
-      value: 100
-    - x: 0
-      y: 6
       value: 0
     - x: 0
-      y: 7
+      y: 6
       value: 0
     - x: 0
-      y: 8
+      y: 7
       value: 0
   - column:
     - x: 1
@@ -94,9 +89,6 @@ MonoBehaviour:
       value: -1
     - x: 1
       y: 7
-      value: -1
-    - x: 1
-      y: 8
       value: 0
   - column:
     - x: 2
@@ -122,14 +114,11 @@ MonoBehaviour:
       value: -1
     - x: 2
       y: 7
-      value: -1
-    - x: 2
-      y: 8
       value: 0
   - column:
     - x: 3
       y: 0
-      value: 0
+      value: 100
     - x: 3
       y: 1
       value: -1
@@ -150,10 +139,7 @@ MonoBehaviour:
       value: -1
     - x: 3
       y: 7
-      value: -1
-    - x: 3
-      y: 8
-      value: 0
+      value: 100
   - column:
     - x: 4
       y: 0
@@ -178,14 +164,11 @@ MonoBehaviour:
       value: -1
     - x: 4
       y: 7
-      value: -1
-    - x: 4
-      y: 8
       value: 100
   - column:
     - x: 5
       y: 0
-      value: 100
+      value: 1001
     - x: 5
       y: 1
       value: -1
@@ -206,14 +189,11 @@ MonoBehaviour:
       value: -1
     - x: 5
       y: 7
-      value: -1
-    - x: 5
-      y: 8
       value: 100
   - column:
     - x: 6
       y: 0
-      value: 0
+      value: 100
     - x: 6
       y: 1
       value: -1
@@ -234,10 +214,7 @@ MonoBehaviour:
       value: -1
     - x: 6
       y: 7
-      value: -1
-    - x: 6
-      y: 8
-      value: 0
+      value: 100
   - column:
     - x: 7
       y: 0
@@ -262,9 +239,6 @@ MonoBehaviour:
       value: -1
     - x: 7
       y: 7
-      value: -1
-    - x: 7
-      y: 8
       value: 0
   - column:
     - x: 8
@@ -290,9 +264,6 @@ MonoBehaviour:
       value: -1
     - x: 8
       y: 7
-      value: -1
-    - x: 8
-      y: 8
       value: 0
   - column:
     - x: 9
@@ -312,13 +283,10 @@ MonoBehaviour:
       value: 100
     - x: 9
       y: 5
-      value: 100
+      value: 0
     - x: 9
       y: 6
       value: 0
     - x: 9
       y: 7
-      value: 0
-    - x: 9
-      y: 8
       value: 0

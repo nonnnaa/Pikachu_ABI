@@ -41,7 +41,18 @@ public class SoundManager : SingletonMono<SoundManager>
     private Dictionary<SoundVFXType, AudioClip> soundVFXDict;
     private Dictionary<SoundBGType, AudioClip> soundBGDict;
     [Range(0f, 1f), SerializeField] private float musicBGVolumn, musicVFXVolumn;
+    private UserSettings userSettings;
 
+    private void Start()
+    {
+        userSettings = SaveLoadManager.Instance.LoadSettings();
+        ApplySettings();
+    }
+    private void ApplySettings()
+    {
+        SetMusicBGVolumn(userSettings.musicBGVolume);
+        SetMusicVFXVolumn(userSettings.musicVFXVolume);
+    }
 
     private void Awake()
     {
@@ -89,6 +100,7 @@ public class SoundManager : SingletonMono<SoundManager>
         };
     }
 
+    
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
@@ -113,7 +125,11 @@ public class SoundManager : SingletonMono<SoundManager>
     {
         musicBGVolumn = volume;
         bgAudioSource.volume = musicBGVolumn;
+        userSettings.musicBGVolume = volume;
+        SaveLoadManager.Instance.SaveSettings(userSettings);
     }
+    public float GetMusicBGVolumn() => bgAudioSource.volume;
+    public float GetMusicVFXVolumn() => vfxAudioSource.volume;
 
     public void SetMusicInGame()
     {
@@ -127,6 +143,8 @@ public class SoundManager : SingletonMono<SoundManager>
     {
         musicVFXVolumn = volume;
         vfxAudioSource.volume = musicVFXVolumn;
+        userSettings.musicVFXVolume = volume;
+        SaveLoadManager.Instance.SaveSettings(userSettings);
     }
 
     private void TurnOffMusicBG()
@@ -151,4 +169,13 @@ public class SoundManager : SingletonMono<SoundManager>
             alertAudioSource.Play();
         }
     }
+    private void OnApplicationQuit()
+    {
+        SaveSoundSettings();
+    }
+    private void SaveSoundSettings()
+    {
+        SaveLoadManager.Instance.SaveSettings(userSettings);
+    }
+
 }

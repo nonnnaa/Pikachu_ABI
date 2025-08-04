@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,7 +31,11 @@ public class CanvasPauseGame : UICanvas
         closeButton.onClick.AddListener(OnClickCloseButton);
         replayButton.onClick.AddListener(OnClickReplayButton);
         quitButton.onClick.AddListener(OnClickQuitButton);
+        musicBGSlider.value = SoundManager.Instance.GetMusicBGVolumn();
+        musicVFXSlider.value = SoundManager.Instance.GetMusicVFXVolumn();
     }
+    
+    
     public override void Open()
     {
         if (!canOpen) return;

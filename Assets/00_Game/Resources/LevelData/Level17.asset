@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelId: 17
   row: 12
-  column: 9
-  time: 3
+  column: 8
+  time: 300
   targetScore: 100
-  starTimeGoals: 030000000200000001000000
+  starTimeGoals: 960000006400000032000000
   randomFruitCounts:
   - fruitType: 1
     count: 2
@@ -49,15 +49,7 @@ MonoBehaviour:
     count: 2
   - fruitType: 17
     count: 2
-  - fruitType: 18
-    count: 2
   - fruitType: 19
-    count: 2
-  - fruitType: 20
-    count: 4
-  - fruitType: 21
-    count: 2
-  - fruitType: 22
     count: 2
   - fruitType: 23
     count: 2
@@ -75,20 +67,20 @@ MonoBehaviour:
   - column:
     - x: 0
       y: 0
-      value: 0
-    - x: 0
-      y: 1
-      value: 0
-    - x: 0
-      y: 2
-      value: 0
-    - x: 0
-      y: 3
-      value: 0
-    - x: 0
-      y: 4
       value: 100
     - x: 0
+      y: 1
+      value: 0
+    - x: 0
+      y: 2
+      value: 0
+    - x: 0
+      y: 3
+      value: 0
+    - x: 0
+      y: 4
+      value: 0
+    - x: 0
       y: 5
       value: 0
     - x: 0
@@ -96,14 +88,11 @@ MonoBehaviour:
       value: 0
     - x: 0
       y: 7
-      value: 0
-    - x: 0
-      y: 8
-      value: 0
+      value: 100
   - column:
     - x: 1
       y: 0
-      value: 0
+      value: 100
     - x: 1
       y: 1
       value: -1
@@ -124,14 +113,11 @@ MonoBehaviour:
       value: -1
     - x: 1
       y: 7
-      value: -1
-    - x: 1
-      y: 8
-      value: 0
+      value: 100
   - column:
     - x: 2
       y: 0
-      value: 0
+      value: 100
     - x: 2
       y: 1
       value: -1
@@ -152,14 +138,11 @@ MonoBehaviour:
       value: -1
     - x: 2
       y: 7
-      value: -1
-    - x: 2
-      y: 8
-      value: 0
+      value: 100
   - column:
     - x: 3
       y: 0
-      value: 0
+      value: 100
     - x: 3
       y: 1
       value: -1
@@ -180,10 +163,7 @@ MonoBehaviour:
       value: -1
     - x: 3
       y: 7
-      value: -1
-    - x: 3
-      y: 8
-      value: 0
+      value: 100
   - column:
     - x: 4
       y: 0
@@ -208,9 +188,6 @@ MonoBehaviour:
       value: -1
     - x: 4
       y: 7
-      value: -1
-    - x: 4
-      y: 8
       value: 100
   - column:
     - x: 5
@@ -236,9 +213,6 @@ MonoBehaviour:
       value: -1
     - x: 5
       y: 7
-      value: -1
-    - x: 5
-      y: 8
       value: 100
   - column:
     - x: 6
@@ -264,14 +238,11 @@ MonoBehaviour:
       value: -1
     - x: 6
       y: 7
-      value: -1
-    - x: 6
-      y: 8
       value: 100
   - column:
     - x: 7
       y: 0
-      value: 0
+      value: 100
     - x: 7
       y: 1
       value: -1
@@ -292,14 +263,11 @@ MonoBehaviour:
       value: -1
     - x: 7
       y: 7
-      value: -1
-    - x: 7
-      y: 8
-      value: 0
+      value: 100
   - column:
     - x: 8
       y: 0
-      value: 0
+      value: 100
     - x: 8
       y: 1
       value: -1
@@ -320,14 +288,11 @@ MonoBehaviour:
       value: -1
     - x: 8
       y: 7
-      value: -1
-    - x: 8
-      y: 8
-      value: 0
+      value: 100
   - column:
     - x: 9
       y: 0
-      value: 0
+      value: 100
     - x: 9
       y: 1
       value: -1
@@ -348,14 +313,11 @@ MonoBehaviour:
       value: -1
     - x: 9
       y: 7
-      value: -1
-    - x: 9
-      y: 8
-      value: 0
+      value: 100
   - column:
     - x: 10
       y: 0
-      value: 0
+      value: 100
     - x: 10
       y: 1
       value: -1
@@ -376,27 +338,24 @@ MonoBehaviour:
       value: -1
     - x: 10
       y: 7
-      value: -1
-    - x: 10
-      y: 8
-      value: 0
+      value: 100
   - column:
     - x: 11
       y: 0
-      value: 0
-    - x: 11
-      y: 1
-      value: 0
-    - x: 11
-      y: 2
-      value: 0
-    - x: 11
-      y: 3
-      value: 0
-    - x: 11
-      y: 4
       value: 100
     - x: 11
+      y: 1
+      value: 0
+    - x: 11
+      y: 2
+      value: 0
+    - x: 11
+      y: 3
+      value: 0
+    - x: 11
+      y: 4
+      value: 0
+    - x: 11
       y: 5
       value: 0
     - x: 11
@@ -404,7 +363,4 @@ MonoBehaviour:
       value: 0
     - x: 11
       y: 7
-      value: 0
-    - x: 11
-      y: 8
-      value: 0
+      value: 100
