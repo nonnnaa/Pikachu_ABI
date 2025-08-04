@@ -20,6 +20,7 @@ public enum SoundVFXType
         SoundWinGame = 1,
         SoundLoseGame = 2,
         SoundGetPoint = 3,
+        SoundAlert = 4
     }
     public enum SoundBGType
     {
@@ -32,10 +33,11 @@ public enum SoundVFXType
     }
 public class SoundManager : SingletonMono<SoundManager>
 {
-    [SerializeField] private AudioSource bgAudioSource, vfxAudioSource;
+    [SerializeField] private AudioSource bgAudioSource, vfxAudioSource, alertAudioSource;
     [SerializeField] List<SoundBG> bgSounds;
     [SerializeField] List<SoundVFX> vfsSounds;
     [SerializeField] private AudioClip soundInGame;
+    [SerializeField] private AudioClip soundAlertGame;
     private Dictionary<SoundVFXType, AudioClip> soundVFXDict;
     private Dictionary<SoundBGType, AudioClip> soundBGDict;
     [Range(0f, 1f), SerializeField] private float musicBGVolumn, musicVFXVolumn;
@@ -75,6 +77,7 @@ public class SoundManager : SingletonMono<SoundManager>
         GameManager.Instance.OnLevelEnd += () =>
         {
             TurnOffMusicBG();
+            StopAlertMusic();
         };
         GameManager.Instance.OnGameWin += () =>
         {
@@ -86,13 +89,14 @@ public class SoundManager : SingletonMono<SoundManager>
         };
     }
 
-    private void LateUpdate()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             vfxAudioSource.PlayOneShot(soundVFXDict[SoundVFXType.SoundOnClickMouse]);
         }
     }
+    
     public void SetMusicBG(SoundBGType type)
     {
         bgAudioSource.Stop();  
@@ -103,8 +107,7 @@ public class SoundManager : SingletonMono<SoundManager>
 
     public void SetMusicVFX(SoundVFXType type)
     {
-        vfxAudioSource.clip = soundVFXDict[type];
-        vfxAudioSource.Play();
+       vfxAudioSource.PlayOneShot(soundVFXDict[type]);
     }
     public void SetMusicBGVolumn(float volume)
     {
@@ -126,5 +129,26 @@ public class SoundManager : SingletonMono<SoundManager>
         vfxAudioSource.volume = musicVFXVolumn;
     }
 
-    public void TurnOffMusicBG() => bgAudioSource.Pause();
+    private void TurnOffMusicBG()
+    {
+        bgAudioSource.Pause();
+        vfxAudioSource.loop = false;
+    }
+
+    public void StopAlertMusic()
+    {
+        alertAudioSource.Stop();
+    }
+    public void PlayAlertSound(bool isOneShot)
+    {
+        if (isOneShot)
+        {
+            alertAudioSource.PlayOneShot(soundVFXDict[SoundVFXType.SoundAlert]);
+        }
+        else
+        {
+            alertAudioSource.Stop();
+            alertAudioSource.Play();
+        }
+    }
 }

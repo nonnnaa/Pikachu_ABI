@@ -64,7 +64,7 @@ public class LevelManager : SingletonMono<LevelManager>
         return levelDataMapping[id]; ;
     }
     public Level GetCurrentLevel() => levelMapping[currentLevelID];
-    
+    private Collider2D colliderCache;
     private void Update()
     {
         // Xu ly va cham vao Level
@@ -74,23 +74,23 @@ public class LevelManager : SingletonMono<LevelManager>
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
 
-            Collider2D collider = hit.collider;
-            if (collider != null)
+            colliderCache = hit.collider;
+            if (colliderCache != null)
             {
-                if (levelColliderMapping.ContainsKey(collider))
+                if (levelColliderMapping.ContainsKey(colliderCache))
                 {
-                    currentLevelID = levelColliderMapping[collider].GetLevelID();
-                    currentLevelData = levelColliderMapping[collider].GetLevelData();
-                    levelColliderMapping[collider]?.OnClick();
+                    currentLevelID = levelColliderMapping[colliderCache].GetLevelID();
+                    currentLevelData = levelColliderMapping[colliderCache].GetLevelData();
+                    levelColliderMapping[colliderCache]?.OnClick();
                 }
                 else
                 {
                     Level level = hit.collider.GetComponent<Level>();
                     if (level != null)
                     {
-                        levelColliderMapping[collider] = level;
-                        currentLevelID = levelColliderMapping[collider].GetLevelID();
-                        currentLevelData = levelColliderMapping[collider].GetLevelData();
+                        levelColliderMapping[colliderCache] = level;
+                        currentLevelID = levelColliderMapping[colliderCache].GetLevelID();
+                        currentLevelData = levelColliderMapping[colliderCache].GetLevelData();
                         level.OnClick(); 
                     }
                     else

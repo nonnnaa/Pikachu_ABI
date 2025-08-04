@@ -79,20 +79,25 @@ public class CanvasCompleteGame : UICanvas
             });
     }
 
-    IEnumerator ShowStar(int starNumber)
+    public override void Close(float time)
     {
+        base.Close(time);
         foreach (var t in starAnimators)
         {
             t.gameObject.SetActive(false);
         }
+    }
+    IEnumerator ShowStar(int starNumber)
+    {
         yield return new WaitForSeconds(0.1f);
-        for(int i = 0; i < starNumber; i++)
+        int id = 0;
+        while (id < starNumber)
         {
-            starAnimators[i].gameObject.SetActive(true);
-            starAnimators[i].ResetTrigger(Show);
-            starAnimators[i].SetTrigger(Show);
+            starAnimators[id].gameObject.SetActive(true);
+            starAnimators[id].SetTrigger(Show);
             yield return new WaitForSeconds(1f);
-        }
+            id++;
+        } 
     }
     AnimationCurve easeOutSmooth = AnimationCurve.EaseInOut(0, 0, 1, 1);  // Co dần đều
     AnimationCurve easeInBack = new AnimationCurve(

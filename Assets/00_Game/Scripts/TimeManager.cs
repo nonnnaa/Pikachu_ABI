@@ -18,7 +18,7 @@ public class TimeManager : SingletonMono<TimeManager>
     [SerializeField] private int currentStar;
     private bool isTimeEnd;
     public event Action<float> OnStarDecrease;
-    
+    public event Action OnStopAlert;
     public int CurrentStar => currentStar;
     public float GetCurrentTimeLeft() => timeLeft;
     void Start()
@@ -31,8 +31,8 @@ public class TimeManager : SingletonMono<TimeManager>
     {
         currentStar = 3;
         currentTimeGoal = 0;
-        currentTime = 0;
         startTime = LevelManager.Instance.GetCurrentLevelData().time;
+        timeLeft = startTime;
         starTimeGoals = LevelManager.Instance.GetCurrentLevelData().starTimeGoals;
         timeSlider.value = 1;
         isTimeEnd = false;
@@ -47,15 +47,15 @@ public class TimeManager : SingletonMono<TimeManager>
     }
     void Update()
     {
-        currentTime += Time.deltaTime;
-        timeLeft = startTime -  currentTime;
+        timeLeft -= Time.deltaTime;
         timeSlider.value = timeLeft / startTime;
         timeText.text = timeLeft.ToString("F0"); // lay phan nguyen cua so thuc f1 => lay 1 chu so sau dau phay
         if (currentTimeGoal < 3 && timeLeft < starTimeGoals[currentTimeGoal])
         {
             currentTimeGoal++;
             currentStar--;
-            OnStarDecrease?.Invoke(2f);
+            OnStarDecrease?.Invoke(1.25f);
+            SoundManager.Instance.PlayAlertSound(true);
         }
         if (timeLeft < 0f)
         {
@@ -71,16 +71,28 @@ public class TimeManager : SingletonMono<TimeManager>
         if (!isTimeEnd && timeLeft <= 10f)
         {
             OnStarDecrease?.Invoke(10f);
+            SoundManager.Instance.PlayAlertSound(false);
             isTimeEnd = true;
         }
     }
 
-    public void TimeUp(float timeUpAmout)
+    public void TimeUp(float timeUpAmount)
     {
-        currentTime -= timeUpAmout;
-        if (currentTime < 0)
-        { 
-            currentTime = 0;
+        if (timeLeft <= 10f)
+        {
+            OnStopAlert?.Invoke();
+            SoundManager.Instance.StopAlertMusic();
+            isTimeEnd = false;
         }
+        foreach (var t in starTimeGoals)
+        {
+            if (timeLeft <= t && timeLeft + timeUpAmount >= t)
+            {
+                currentStar++;
+                currentTimeGoal--;
+            }
+        }
+        timeLeft += timeUpAmount; 
+        if(timeLeft >= startTime) timeLeft = startTime;
     }
 }

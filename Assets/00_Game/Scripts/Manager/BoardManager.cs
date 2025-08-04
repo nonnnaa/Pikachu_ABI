@@ -59,18 +59,18 @@ public class BoardManager : SingletonMono<BoardManager>
             mousePosTmp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             hit = Physics2D.Raycast(mousePosTmp, Vector2.zero);
         
-            Collider2D collider = hit.collider;
-            if (collider != null)
+            colliderCache = hit.collider;
+            if (colliderCache != null)
             {
-                if (fruitDictionary.ContainsKey(collider))
+                if (fruitDictionary.ContainsKey(colliderCache))
                 {
-                    OnFruitSelected(fruitDictionary[collider]);
+                    OnFruitSelected(fruitDictionary[colliderCache]);
                 }
                 else
                 {
                     fruitTmp = hit.collider.GetComponent<Fruit>();
                     OnFruitSelected(fruitTmp);
-                    fruitDictionary[collider] = fruitTmp;
+                    fruitDictionary[colliderCache] = fruitTmp;
                 }
             }
         }

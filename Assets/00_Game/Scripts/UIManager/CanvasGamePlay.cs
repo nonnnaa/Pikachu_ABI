@@ -35,11 +35,10 @@ public class CanvasGamePlay : UICanvas
         GameManager.Instance.OnLevelEnd += () =>
         {
             timeManager.enabled = false;
+            StopAllCoroutines();
         };
-
+        TimeManager.Instance.OnStopAlert += StopAlertCoroutine;
         BoardManager.Instance.UpdateScore += UpdateScore;
-        //OnInit();
-
         TimeManager.Instance.OnStarDecrease += ShowAlert;
 
     }
@@ -62,7 +61,6 @@ public class CanvasGamePlay : UICanvas
     void OnInit()
     {
         timeSlider.value = 1f;
-        //currentScore = LevelManager.Instance.GetCurrentLevelData().targetScore;
         levelTime = LevelManager.Instance.GetCurrentLevelData().time;
         UpdateScore(0);
     }
@@ -73,11 +71,17 @@ public class CanvasGamePlay : UICanvas
         scoreText.text = currentScore.ToString();
     }
 
+    private Coroutine coroutineCache;
     void ShowAlert(float time)
     {
-        StartCoroutine(ShowAlertAnimation(time));
+        coroutineCache = StartCoroutine(ShowAlertAnimation(time));
     }
 
+    void StopAlertCoroutine()
+    {
+        StopCoroutine(coroutineCache);
+    }
+    
     IEnumerator ShowAlertAnimation(float time)
     {
         float duration = time;   // Tổng thời gian nhấp nháy
@@ -102,7 +106,6 @@ public class CanvasGamePlay : UICanvas
                 t = 0f;
                 fadingIn = !fadingIn;
             }
-
             yield return null;
         }
 
