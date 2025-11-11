@@ -32,6 +32,7 @@ public class BFS_Solver : MonoBehaviour
         if (height <= 0) return null;
         int width = board[0].Count;
         var visited = new Dictionary<(Vector2Int pos, int dir), int>();
+        
         var parentMap = new Dictionary<(Vector2Int pos, int dir), (Vector2Int parentPos, int parentDir)>();
 
         var queue = new Queue<(Vector2Int pos, int dir, int turns)>();
@@ -49,21 +50,21 @@ public class BFS_Solver : MonoBehaviour
             for (int i = 0; i < 4; i++)
             {
                 Vector2Int next = current + directions[i];
-                int newTurns = (i == dir) ? turns : turns + 1;
+                int currentDir = (i == dir) ? turns : turns + 1;
 
-                if (newTurns > maxSegments) continue;
+                if (currentDir > maxSegments) continue;
                 if (!IsInBounds(width, height, next.x, next.y)) continue;
 
                 var cell = board[next.y][next.x];
                 if (!IsCanMove(cell, next, goal)) continue;
 
                 var key = (next, i);
-                if (visited.TryGetValue(key, out int prevTurns) && prevTurns <= newTurns)
+                if (visited.TryGetValue(key, out int prevDir) && prevDir <= currentDir)
                     continue;
 
-                visited[key] = newTurns;
+                visited[key] = currentDir;
                 parentMap[key] = (current, dir);
-                queue.Enqueue((next, i, newTurns));
+                queue.Enqueue((next, i, currentDir));
             }
         }
         return null;

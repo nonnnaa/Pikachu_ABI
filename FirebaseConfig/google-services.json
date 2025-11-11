@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "522443486355",
+    "project_id": "pikachu-bc5d5",
+    "storage_bucket": "pikachu-bc5d5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:522443486355:android:d861334f38f167e7970966",
+        "android_client_info": {
+          "package_name": "com.risingvalestudio.pikachu"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhS0vVJCbcm5T9KGK9qosGLqh4CJe7vzU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

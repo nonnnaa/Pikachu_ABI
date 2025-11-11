@@ -11,6 +11,7 @@ public class LevelManager : SingletonMono<LevelManager>
     private int currentLevelID;
     private Dictionary<Collider2D, Level> levelColliderMapping;
     private LevelData currentLevelData;
+    private Level currentLevel;
     private Dictionary<int,Level> levelMapping;
     private bool canInteractive;
     public int CurrentLevelID => currentLevelID;
@@ -20,7 +21,6 @@ public class LevelManager : SingletonMono<LevelManager>
     private void LoadProgression()
     {
         progression = SaveLoadManager.Instance.LoadLevelProgress();
-        // Nếu lần đầu chơi, mở khóa level 1
         if (progression.levels.Count == 0)
         {
             foreach (var kvp in levelMapping)
@@ -72,8 +72,7 @@ public class LevelManager : SingletonMono<LevelManager>
     private void Awake()
     {
         LoadAllLevelData();
-        GetAllLevelInMap();
-        //OnInit();
+        GetAllLevelInMap(); ;
         LoadProgression(); // <-- PHẢI gọi chỗ này
     
         ApplyProgressionToLevels();
@@ -87,17 +86,14 @@ public class LevelManager : SingletonMono<LevelManager>
         {
             levelParent.gameObject.SetActive(true);
             canInteractive = true;
+            
         };
         GameManager.Instance.OnGameWin += OnGameWinHandler;
     }
     private void OnGameWinHandler()
     {
-        var currentLevel = GetCurrentLevel();
-        if (currentLevel.GetStars() < 3) // Giả sử win game là đạt 3 sao
-        {
-            currentLevel.SetStars(3);
-        }
-
+        currentLevel.SetStars(TimeManager.Instance.CurrentStar);
+        Debug.Log(currentLevel.GetStars());
         int nextLevelId = currentLevel.GetLevelID() + 1;
         if (HasLevel(nextLevelId))
         {
@@ -133,7 +129,7 @@ public class LevelManager : SingletonMono<LevelManager>
     }
     public LevelData GetLevelDataByID(int id)
     {
-        return levelDataMapping[id]; ;
+        return levelDataMapping[id]; 
     }
     public Level GetCurrentLevel() => levelMapping[currentLevelID];
     private Collider2D colliderCache;
@@ -154,16 +150,17 @@ public class LevelManager : SingletonMono<LevelManager>
                     currentLevelID = levelColliderMapping[colliderCache].GetLevelID();
                     currentLevelData = levelColliderMapping[colliderCache].GetLevelData();
                     levelColliderMapping[colliderCache]?.OnClick();
+                    currentLevel = levelColliderMapping[colliderCache];
                 }
                 else
                 {
-                    Level level = hit.collider.GetComponent<Level>();
-                    if (level != null)
+                    currentLevel = hit.collider.GetComponent<Level>();
+                    if (currentLevel != null)
                     {
-                        levelColliderMapping[colliderCache] = level;
+                        levelColliderMapping[colliderCache] = currentLevel;
                         currentLevelID = levelColliderMapping[colliderCache].GetLevelID();
                         currentLevelData = levelColliderMapping[colliderCache].GetLevelData();
-                        level.OnClick(); 
+                        currentLevel.OnClick(); 
                     }
                     else
                     {

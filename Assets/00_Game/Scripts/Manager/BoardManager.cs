@@ -332,7 +332,7 @@ public class BoardManager : SingletonMono<BoardManager>
             SoundManager.Instance.SetMusicVFX(SoundVFXType.SoundGetPoint);
             currentScore += Random.Range(connectScore, connectScore * 2);
             UpdateScore?.Invoke(currentScore);
-            Debug.Log(currentActiveFruits.Count);
+            //Debug.Log(currentActiveFruits.Count);
             if (currentActiveFruits.Count <= 0)
             {
                 GameManager.Instance.EndLevel();
@@ -352,7 +352,7 @@ public class BoardManager : SingletonMono<BoardManager>
         fruit1 = null;
         fruit2 = null;
         (Vector2Int key1, Vector2Int key2) = GetSuggest();
-        Debug.Log($"Suggest {key1} + {key2}");
+        //Debug.Log($"Suggest {key1} + {key2}");
         if (key1 == Vector2Int.zero)
         {
             Debug.Log("NO PAIR OF FRUITS TO CONNECT.");

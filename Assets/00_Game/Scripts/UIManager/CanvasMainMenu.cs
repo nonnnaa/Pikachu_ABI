@@ -7,6 +7,8 @@ public class CanvasMainMenu : UICanvas
     [SerializeField] private Slider musicBGSlider, musicVFXSlider;
     [SerializeField] private Button quitButton, settingsButton, closeButton;
     [SerializeField] private Transform content;
+    
+    [SerializeField] private Button rewardButton;
     private void Start()
     {
         musicBGSlider.onValueChanged.AddListener(value =>
@@ -22,6 +24,11 @@ public class CanvasMainMenu : UICanvas
         quitButton.onClick.AddListener(OnClickQuitButton);
         settingsButton.onClick.AddListener(OnClickSettingsButton);
         closeButton.onClick.AddListener(OnCloseButton);
+        rewardButton.onClick.AddListener((() =>
+        {
+            //AdsManager.Instance.LoadRewardedVideo();
+            AdsManager.Instance.ShowRewardedVideo();
+        }));
     }
     private void OnClickQuitButton()
     {

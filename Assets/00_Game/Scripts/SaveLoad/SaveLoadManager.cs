@@ -30,8 +30,9 @@ public class SaveLoadManager : SingletonMono<SaveLoadManager>
 
     private void Awake()
     {
-        progressionFilePath = Path.Combine(Application.persistentDataPath, "progression.json");
+        progressionFilePath = Path.Combine(Application.persistentDataPath, "level_progression.json");
         settingsFilePath = Path.Combine(Application.persistentDataPath, "settings.json");
+        //Debug.Log("Save Path: " + Application.persistentDataPath);
     }
 
     // Save Level Progression
@@ -39,7 +40,7 @@ public class SaveLoadManager : SingletonMono<SaveLoadManager>
     {
         string json = JsonUtility.ToJson(progression, true);
         File.WriteAllText(progressionFilePath, json);
-        Debug.Log($"Progress saved to: {progressionFilePath}");
+        //Debug.Log($"Progress saved to: {progressionFilePath}");
     }
 
     // Load Level Progression
@@ -53,7 +54,7 @@ public class SaveLoadManager : SingletonMono<SaveLoadManager>
         }
         else
         {
-            Debug.Log("No progression file found, creating new progression.");
+            //Debug.Log("No progression file found, creating new progression.");
             LevelProgression newProgress = new LevelProgression();
             SaveLevelProgress(newProgress); // Save file mặc định
             return newProgress;
@@ -65,7 +66,7 @@ public class SaveLoadManager : SingletonMono<SaveLoadManager>
     {
         string json = JsonUtility.ToJson(settings, true);
         File.WriteAllText(settingsFilePath, json);
-        Debug.Log($"User settings saved to: {settingsFilePath}");
+        //Debug.Log($"User settings saved to: {settingsFilePath}");
     }
 
     // Load User Settings
@@ -78,7 +79,7 @@ public class SaveLoadManager : SingletonMono<SaveLoadManager>
         }
         else
         {
-            Debug.Log("No settings file found, creating default settings.");
+            //Debug.Log("No settings file found, creating default settings.");
             UserSettings defaultSettings = new UserSettings();
             SaveSettings(defaultSettings); // Save file mặc định
             return defaultSettings;

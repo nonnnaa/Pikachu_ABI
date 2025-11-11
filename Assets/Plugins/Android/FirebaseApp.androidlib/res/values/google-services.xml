@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:keep="@string/gcm_defaultSenderId,@string/google_storage_bucket,@string/project_id,@string/google_api_key,@string/google_crash_reporting_api_key,@string/google_app_id">
+  <string name="gcm_defaultSenderId" translatable="false">522443486355</string>
+  <string name="google_storage_bucket" translatable="false">pikachu-bc5d5.firebasestorage.app</string>
+  <string name="project_id" translatable="false">pikachu-bc5d5</string>
+  <string name="google_api_key" translatable="false">AIzaSyAhS0vVJCbcm5T9KGK9qosGLqh4CJe7vzU</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAhS0vVJCbcm5T9KGK9qosGLqh4CJe7vzU</string>
+  <string name="google_app_id" translatable="false">1:522443486355:android:d861334f38f167e7970966</string>
+</resources>

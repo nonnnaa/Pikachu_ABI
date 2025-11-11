@@ -20,15 +20,14 @@ public class Level : MonoBehaviour
         {
             levelSpriteRenderer = GetComponent<SpriteRenderer>();
         }
-        starsSprite ??= GetComponentsInChildren<SpriteRenderer>(); // ??= tuong duong check null
-    }
-
-    void Start()
-    {
         if (levelData == null)
         {
             levelData = LevelManager.Instance.GetLevelDataByID(levelId);
         }
+    }
+
+    void Start()
+    {
         OnInit();
     }
 
@@ -46,11 +45,10 @@ public class Level : MonoBehaviour
     void OnInit()
     {
         // Hien thi sao
-        for (int i = 0; i < stars; i++)
+        for (int i = 0; i < 3; i++)
         {
-            starsSprite[i].gameObject.SetActive(true);
+            starsSprite[i].gameObject.SetActive(i < stars);
         }
-        
         // Hien thi lock image va number tren level
         lockLevel.SetActive(!isUnlock);
         number.SetActive(isUnlock);
@@ -72,12 +70,12 @@ public class Level : MonoBehaviour
 
     public void SetStars(int starCount)
     {
+        if (starCount < stars) return;
         stars = starCount;
-        for (int i = 0; i < starsSprite.Length; i++)
+        for (int i = 0; i < 3; i++)
         {
-            starsSprite[i].gameObject.SetActive(i < stars);
+            starsSprite[i].gameObject.SetActive(i <  stars);
         }
     }
-
     public int GetStars() => stars;
 }

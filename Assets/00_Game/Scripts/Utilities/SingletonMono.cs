@@ -1,22 +1,22 @@
 using UnityEngine;
 public class SingletonMono<T>: MonoBehaviour where T: MonoBehaviour
 {
-    private static T instance_;
+    private static T instance;
     public static T Instance
     {
         get
         {
-            if(instance_==null)
+            if(instance==null)
             {
-                instance_ = (T)FindAnyObjectByType(typeof(T));
-                if(instance_==null)
+                instance = (T)FindAnyObjectByType(typeof(T));
+                if(instance==null)
                 {
                     GameObject go = new GameObject();
                     go.name = "[@" + typeof(T).Name + "]";
-                    instance_ = go.AddComponent<T>();
+                    instance = go.AddComponent<T>();
                 }
             }
-            return instance_;
+            return instance;
         }
     }
 }

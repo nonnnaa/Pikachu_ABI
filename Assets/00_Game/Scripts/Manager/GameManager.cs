@@ -1,4 +1,6 @@
 using System;
+using UnityEngine.Device;
+
 public class GameManager : SingletonMono<GameManager>
 {
     public event Action OnStartGame; // => load vao man hinh game chua phai main menu
@@ -13,6 +15,7 @@ public class GameManager : SingletonMono<GameManager>
     
     private void Start()
     {
+        Application.targetFrameRate = 60;
         OnStartGame?.Invoke();
     }
 

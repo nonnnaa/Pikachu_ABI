@@ -15,9 +15,9 @@ MonoBehaviour:
   levelId: 10
   row: 12
   column: 8
-  time: 1000
-  targetScore: 1000
-  starTimeGoals: 2c010000c800000064000000
+  time: 120
+  targetScore: 500
+  starTimeGoals: 3c0000001e00000014000000
   randomFruitCounts:
   - fruitType: 1
     count: 2
@@ -60,13 +60,9 @@ MonoBehaviour:
   - fruitType: 31
     count: 2
   - fruitType: 32
-    count: 2
+    count: 4
   - fruitType: 33
-    count: 2
-  - fruitType: 8
-    count: 2
-  - fruitType: 9
-    count: 2
+    count: 4
   boardData:
   - column:
     - x: 0

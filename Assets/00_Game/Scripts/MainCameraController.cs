@@ -6,6 +6,13 @@ public class MainCameraController : MonoBehaviour
     [SerializeField] private Camera cam;
     private Vector3 touchStart;
     private SoundBGType currentBG = SoundBGType.SoundBG1;
+    public void InitPosCam()
+    {
+        cam.transform.position = bottomLeft.transform.position;
+    }
+    private float idleTimer = 0f;
+    private float idleThreshold = 0.2f;
+    private bool isDragging = false;
 
     void LateUpdate()
     {
@@ -15,9 +22,10 @@ public class MainCameraController : MonoBehaviour
             enabled = false;
             return;
         }
-        
-#if UNITY_EDITOR || UNITY_STANDALONE
-        // Xử lý bằng chuột
+
+        bool inputDetected = false;
+
+    #if UNITY_EDITOR || UNITY_STANDALONE
         if (Input.GetMouseButtonDown(0))
         {
             touchStart = cam.ScreenToWorldPoint(Input.mousePosition);
@@ -26,29 +34,45 @@ public class MainCameraController : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             HandleCameraDrag(Input.mousePosition);
+            inputDetected = true;
         }
-#elif UNITY_ANDROID || UNITY_IOS
-    // Xử lý bằng cảm ứng
-    if (Input.touchCount > 0)
-    {
-        Touch touch = Input.GetTouch(0);
-
-        if (touch.phase == TouchPhase.Began)
+    #elif UNITY_ANDROID || UNITY_IOS
+        if (Input.touchCount > 0)
         {
-            touchStart = cam.ScreenToWorldPoint(touch.position);
-        }
+            Touch touch = Input.GetTouch(0);
 
-        if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
+            if (touch.phase == TouchPhase.Began)
+            {
+                touchStart = cam.ScreenToWorldPoint(touch.position);
+            }
+
+            if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
+            {
+                HandleCameraDrag(touch.position);
+                inputDetected = true;
+            }
+        }
+    #endif
+
+        if (inputDetected)
         {
-            HandleCameraDrag(touch.position);
+            isDragging = true;
+            idleTimer = 0f; // Reset timer mỗi lần drag
+        }
+        else
+        {
+            if (isDragging)
+            {
+                idleTimer += Time.deltaTime;
+                if (idleTimer >= idleThreshold)
+                {
+                    CheckNearestBG();
+                    isDragging = false;
+                }
+            }
         }
     }
-#endif
-    }
-    public void InitPosCam()
-    {
-        cam.transform.position = bottomLeft.transform.position;
-    }
+
     void HandleCameraDrag(Vector3 inputPosition)
     {
         Vector3 direction = touchStart - cam.ScreenToWorldPoint(inputPosition);
@@ -63,13 +87,17 @@ public class MainCameraController : MonoBehaviour
                 scrollSpeed * Time.deltaTime
             );
         }
+    }
 
+    void CheckNearestBG()
+    {
         SoundBGType tmp = MapManager.Instance.GetBGNearest(transform);
         if (currentBG != tmp)
         {
             currentBG = tmp;
-
             SoundManager.Instance.SetMusicBG(currentBG);
         }
     }
+
+
 }
